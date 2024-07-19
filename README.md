@@ -12,7 +12,8 @@
 
 ## 開発の手順(VS Code,WSL前提)
 1. ctrl+@でUbuntuのシェル(コマンド実行するやつ)を開ける<br>その後，次のコマンドでリポジトリを最新にする．
-1. ```git fetch```
+1. ```git fetch```<br>
+```git rebase origin/develop```
 1. ブランチを作成し，そのブランチへ移動する．命名規則は次節参照のこと．<br>
 ```git branch feat-〇〇```<br>
 ```git checkout feat-〇〇```
