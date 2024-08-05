@@ -20,9 +20,12 @@
             <a class="header" href="/">留年プロテクター</a>
         </header>
 
-        <div class="main">
+        <div class="main"> <!--この中に機能を追加-->
             <div class="empty"></div>
             <h1>Under the development</h1>
+            <div class="jikanwari">
+                <
+            </div>
         </div>
 
         <footer>
