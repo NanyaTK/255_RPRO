@@ -17,6 +17,17 @@ header {
   text-align: center;
 }
 
+footer {
+  width: 100%;
+  box-sizing: border-box;
+  height: fit-content;
+  bottom: 0;
+  text-align: center;
+  font-size: smaller;
+  overflow: hidden;
+  z-index: 20;
+}
+
 .header {
   color: white;
   text-decoration: none;

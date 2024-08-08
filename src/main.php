@@ -5,12 +5,6 @@
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
     <link href="main.css" rel="stylesheet">
-    <script>
-        var screenWidth = window.screen.width;
-        if (screenWidth > 1000) {} else {
-            window.location = "main-sp.php"
-        }
-    </script>
 </head>
 
 <body>
@@ -21,11 +15,9 @@
 
         <div class="main">
             <div class="empty"></div>
-            <h1>Under the development</h1>
-
             <button id="signup-btn">新規登録</button>
-    <!-- ここから新規登録画面 -->
-            <div id="popup-wrapper"> 
+            <!-- ここから新規登録画面 -->
+            <div id="popup-wrapper">
                 <div id="popup-inside">
                     <div id="close">x</div>
                     <div id="message">
@@ -66,12 +58,12 @@
                                 <?php endforeach; ?>
                             </table>
                         </div>
-                            <button id="finalize-btn">確定する</button>
-                        </div>
+                        <button id="finalize-btn">確定する</button>
                     </div>
                 </div>
-    <!-- ここまで新規登録画面 -->
-    <!-- ここから時間割表示　 -->
+            </div>
+            <!-- ここまで新規登録画面 -->
+            <!-- ここから時間割表示　 -->
             <div class="jikanwari">
                 <?php
                 // 曜日と時間割の初期データ
@@ -99,7 +91,7 @@
                 </table>
             </div>
         </div>
-    <!-- ここまで時間割表示　 -->
+        <!-- ここまで時間割表示　 -->
 
         <footer>
             &copy; 2024 留年プロテクタープロジェクト
@@ -125,4 +117,5 @@
     </script>
 
 </body>
+
 </html>
