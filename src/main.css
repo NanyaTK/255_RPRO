@@ -1,5 +1,3 @@
-
-
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
@@ -92,160 +90,160 @@ header {
 /* スマホ用のスタイル */
 @media screen and (max-width: 1000px) {
   body {
-      font-size: 16px;
+    font-size: 16px;
   }
 
   .header {
-      font-size: 20px;
+    font-size: 20px;
   }
 
   .timetable th,
   .timetable td {
-      font-size: 32px;
-      padding: 8px;
+    font-size: 32px;
+    padding: 8px;
   }
 
   .timetable th {
-      height: 40px;
-      /* 曜日セルの縦幅を小さくする */
+    height: 40px;
+    /* 曜日セルの縦幅を小さくする */
   }
 
   .timetable td {
-      height: 260px;
-      /* その他のセルの縦幅を広くする */
+    height: 260px;
+    /* その他のセルの縦幅を広くする */
   }
 
   .day-column {
-      width: 40px;
-      /* 曜日セルの横幅を小さくする */
+    width: 40px;
+    /* 曜日セルの横幅を小さくする */
   }
 }
 
 #signup-btn {
-    display: block;
-    margin: 20px auto;
-    background-color: rgb(0, 153, 128);
-    color: white;
-    border: 0;
-    padding: 20px 35px;
-  }
-  
-  #popup-wrapper {
-    background-color: rgba(0, 0, 0, .5);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: none;
-  }
-  
-  #popup-inside {
-    text-align: center;
-    width: 80%;
-    /*max-width: px;*/
-    background: white;
-    margin: 10% auto;
-    padding: 20px;
-    position: relative;
-  }
-  
-  #message a {
-    background: purple;
-    color: white;
-    text-decoration: none;
-    padding: 6px 10px;
-  }
-  
-  #close {
-    position: absolute;
-    top: 0;
-    font-size: 80px;
-    right: 20px;
-    cursor: pointer;
-  }
+  display: block;
+  margin: 20px auto;
+  background-color: rgb(0, 153, 128);
+  color: white;
+  border: 0;
+  padding: 20px 35px;
+}
 
-  #finalize-btn {
-    margin: 10px auto;
-    background-color: rgb(0, 155, 116);
-    color: white;
-    border: 0;
-    padding: 18px 36px;
-  }
+#popup-wrapper {
+  background-color: rgba(0, 0, 0, .5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
 
-  .select-subject {
-    position: relative;
+#popup-inside {
+  text-align: center;
+  width: 80%;
+  /*max-width: px;*/
+  background: white;
+  margin: 10% auto;
+  padding: 20px;
+  position: relative;
+}
+
+#message a {
+  background: purple;
+  color: white;
+  text-decoration: none;
+  padding: 6px 10px;
+}
+
+#close {
+  position: absolute;
+  top: 0;
+  font-size: 80px;
+  right: 20px;
+  cursor: pointer;
+}
+
+#finalize-btn {
+  margin: 10px auto;
+  background-color: rgb(0, 155, 116);
+  color: white;
+  border: 0;
+  padding: 18px 36px;
+}
+
+.select-subject {
+  position: relative;
 }
 
 .select-subject::before,
 .select-subject::after {
-    position: absolute;
-    content: '';
-    pointer-events: none;
+  position: absolute;
+  content: '';
+  pointer-events: none;
 }
 
 .select-subject::before {
-    right: 0;
-    display: inline-block;
-    width: 2.8em;
-    height: 2.8em;
-    border-radius: 0 3px 3px 0;
-    background-color: #6acde3;
-    content: '';
+  right: 0;
+  display: inline-block;
+  width: 2.8em;
+  height: 2.8em;
+  border-radius: 0 3px 3px 0;
+  background-color: #6acde3;
+  content: '';
 }
 
 .select-subject::after {
-    position: absolute;
-    top: 50%;
-    right: 1.4em;
-    transform: translate(50%, -50%) rotate(45deg);
-    width: 6px;
-    height: 6px;
-    border-bottom: 3px solid #fff;
-    border-right: 3px solid #fff;
-    content: '';
+  position: absolute;
+  top: 50%;
+  right: 1.4em;
+  transform: translate(50%, -50%) rotate(45deg);
+  width: 6px;
+  height: 6px;
+  border-bottom: 3px solid #fff;
+  border-right: 3px solid #fff;
+  content: '';
 }
 
 .select-subject select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    min-width: 100px;
-    height: 2.8em;
-    padding: .4em 3.6em .4em .8em;
-    border: 2px solid #6acde3;
-    border-radius: 3px;
-    color: #333333;
-    font-size: 1em;
-    cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  min-width: 100px;
+  height: 2.8em;
+  padding: .4em 3.6em .4em .8em;
+  border: 2px solid #6acde3;
+  border-radius: 3px;
+  color: #333333;
+  font-size: 1em;
+  cursor: pointer;
 }
 
 .select-subject select:focus {
-    outline: 1px solid #6acde3;
+  outline: 1px solid #6acde3;
 }
 
-  .timetable-signup {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-  }
-  
-  .timetable-signup th,
-  .timetable-signup td {
-    border: 1.8px solid #3e3e3e;
-    padding: 10px;
-    font-size: 18px;
-    word-wrap: break-word;
-  }
-  
-  .timetable-signup th {
-    background-color: #f2f2f2;
-    height: 50px;
-    /* 曜日セルの縦幅を小さくする */
-  }
-  
-  .timetable-signup td {
-    text-align: center;
-    height: 125px;
-    /* その他のセルの縦幅を広くする */
-  }
+.timetable-signup {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.timetable-signup th,
+.timetable-signup td {
+  border: 1.8px solid #3e3e3e;
+  padding: 10px;
+  font-size: 18px;
+  word-wrap: break-word;
+}
+
+.timetable-signup th {
+  background-color: #f2f2f2;
+  height: 50px;
+  /* 曜日セルの縦幅を小さくする */
+}
+
+.timetable-signup td {
+  text-align: center;
+  height: 125px;
+  /* その他のセルの縦幅を広くする */
+}

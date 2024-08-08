@@ -5,7 +5,6 @@
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
     <link href="main.css" rel="stylesheet">
-    </meta>
     <script>
         var screenWidth = window.screen.width;
         if (screenWidth > 1000) {} else {
@@ -25,7 +24,8 @@
             <h1>Under the development</h1>
 
             <button id="signup-btn">新規登録</button>
-            <div id="popup-wrapper">
+    <!-- ここから新規登録画面 -->
+            <div id="popup-wrapper"> 
                 <div id="popup-inside">
                     <div id="close">x</div>
                     <div id="message">
@@ -70,8 +70,36 @@
                         </div>
                     </div>
                 </div>
+    <!-- ここまで新規登録画面 -->
+    <!-- ここから時間割表示　 -->
+            <div class="jikanwari">
+                <?php
+                // 曜日と時間割の初期データ
+                $days = ['月', '火', '水', '木', '金'];
+                $times = ['1', '2', '3', '4'];
+                ?>
+                <table class="timetable">
+                    <tr>
+                        <th class="day-column">曜日</th>
+                        <?php foreach ($times as $time) : ?>
+                            <th><?php echo $time; ?></th>
+                        <?php endforeach; ?>
+                    </tr>
+                    <?php foreach ($days as $day) : ?>
+                        <tr>
+                            <td class="day-column"><?php echo $day; ?></td>
+                            <?php foreach ($times as $time) : ?>
+                                <td class="time-cell">
+                                    <!-- ここに科目を設定 -->
+                                    <!-- 例: Math, Science, History -->
+                                </td>
+                            <?php endforeach; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
             </div>
         </div>
+    <!-- ここまで時間割表示　 -->
 
         <footer>
             &copy; 2024 留年プロテクタープロジェクト
@@ -94,13 +122,7 @@
                 popupWrapper.style.display = 'none';
             }
         });
-
-        /*
-        import {SignUp} from './signup.js';
-        const finalizeBtn = document.getElementById('finalize-btn');
-        finalizeBtn.addEventListener('click',()=>{
-            SignUp();
-        });
-        */
     </script>
+
 </body>
+</html>
