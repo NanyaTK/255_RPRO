@@ -40,25 +40,47 @@
                                 <?php foreach ($days as $day) : ?>
                                     <tr>
                                         <td class="day-column"><?php echo $day; ?></td>
-                                        <?php foreach ($times as $time) : ?>
+                                        <?php foreach ($times as $timeIndex => $time) : ?>
                                             <td class="time-cell">
                                                 <label class="select-subject">
-                                                    <select>
+                                                    <?php
+                                                    // selectタグのidを動的に生成
+                                                    $selectId = 'mys-' . $day . '-' . $timeIndex;
+                                                    ?>
+                                                    <select id="<?php echo $selectId; ?>" class="subject-select">
                                                         <option>空コマ</option>
-                                                        <option>A</option>
-                                                        <option>B</option>
-                                                        <option>C</option>
+                                                        <option id="A">A</option>
+                                                        <option id="B">B</option>
+                                                        <option id="C">C</option>
                                                     </select>
                                                 </label>
-                                                <!-- ここに科目を設定 -->
-                                                <!-- 例: Math, Science, History -->
                                             </td>
                                         <?php endforeach; ?>
                                     </tr>
                                 <?php endforeach; ?>
                             </table>
                         </div>
-                        <button id="finalize-btn">確定する</button>
+                        <button id="finalize-btn" onclick="getAllSelectedOptionIds()">確定する</button>
+                        <p id="result"></p>
+
+                        <p id="result"></p>
+                        <script>
+                            function getAllSelectedOptionIds() {
+                                // .subject-selectクラスを持つ全てのselect要素を取得
+                                const selectElements = document.querySelectorAll('.subject-select');
+                                const selectedOptionIds = [];
+
+                                // 各select要素をループして選択されたoptionのidを取得
+                                selectElements.forEach(selectElement => {
+                                    const selectedOption = selectElement.options[selectElement.selectedIndex];
+                                    const selectedOptionId = selectedOption.id;
+                                    selectedOptionIds.push(selectedOptionId); // 配列に追加
+                                });
+
+                                // 結果を表示
+                                document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
+                            }
+                        </script>
                     </div>
                 </div>
             </div>
@@ -92,7 +114,6 @@
             </div>
         </div>
         <!-- ここまで時間割表示　 -->
-
         <footer>
             &copy; 2024 留年プロテクタープロジェクト
         </footer>
