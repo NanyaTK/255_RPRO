@@ -12,7 +12,8 @@ if ($mysqli->connect_error) {
 $mysqli->query("use rpro");
 $result = $mysqli->prepare(
 "SELECT
-    `科目ID`
+    'ID'
+    ,`科目ID`
     , `学科ID`
     , `科目名`
     , `講義回数`
