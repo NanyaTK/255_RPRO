@@ -10,7 +10,21 @@ if ($mysqli->connect_error) {
     $mysqli->set_charset("utf8");
 }
 $mysqli->query("use rpro");
-#$result = $mysqli->prepare("");
+$result = $mysqli->prepare(
+"SELECT
+    `科目ID`
+    , `学科ID`
+    , `科目名`
+    , `講義回数`
+    , `最大欠席可能回数`
+    , `特殊欠席条件`
+    , `評価割合`
+    , `科目分類`
+FROM
+    rpro.classtable
+ORDER BY
+    `科目ID`");
+
 ?>
 
 <head>
