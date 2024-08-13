@@ -2,7 +2,7 @@
 <html lang="ja">
 
 <?php
-$mysqli = new mysqli("127.0.0.1","rpro_u","uhe6WTScplbJ","rpro.3306");
+$mysqli = new mysqli("127.0.0.1","rpro_u","uhe6WTScplbJ","rpro",3306);
 if ($mysqli->connect_error) {
     echo $mysqli->connect_error;
     exit();
