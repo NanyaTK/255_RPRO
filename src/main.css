@@ -272,7 +272,7 @@ footer {
 }
 
 .select-class::before {
-  right: 30%;
+  right: 28%;
   display: inline-block;
   width: 2.8em;
   height: 2.8em;
@@ -305,7 +305,7 @@ footer {
   color: #333333;
   font-size: 1em;
   cursor: pointer;
-  width: 40%;
+  width: 45%;
 }
 
 .select-class select:focus {
