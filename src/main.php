@@ -58,7 +58,12 @@ $mysqli->close();
                         <h2>新規登録</h2>
                         <p>時間割を設定してください</p>
                         
-                        
+                        <select class="subject-select">
+                        <option id = 13>電気情報工学科電気電子コース4年</option>
+                        <option id = 14>電気情報工学科情報工学コース4年</option>
+                        <option id = 17>電気情報工学科電気電子コース5年</option>
+                        <option id = 18>電気情報工学科情報工学コース5年</option>
+                        </select>
 
                         <div class="jikanwari">
                             <?php
@@ -86,7 +91,6 @@ $mysqli->close();
                                                     <select id="<?php echo $selectId; ?>" class="subject-select">
                                                         <option>空コマ</option>
                                                         <?php
-                                                        echo '<option>空き</option>';
                                                         for($row_no = $time_schdule->num_rows - 1;$row_no >= 0; $row_no--){
                                                             $time_schdule->data_seek($row_no);
                                                             $row = $time_schdule->fetch_assoc();
