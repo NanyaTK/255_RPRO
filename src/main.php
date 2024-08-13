@@ -30,9 +30,7 @@ $result->execute();
 $time_schdule = $result->get_result();
 
 $row_data = $time_schdule->fetch_array(MYSQLI_NUM);
-#while( $row_data = $userdata->fetch_array(MYSQLI_NUM)){
-#    var_dump($row_data);
-#}
+
 
 $mysqli->close();
 ?>
@@ -91,7 +89,8 @@ $mysqli->close();
                                                         $result->data_seek(0);
                                                         for($row_no = $result->num_rows - 1;$row_no >= 0; $row_no--){
                                                             $row = $result->fetch_row();
-                                                            echo '<option id = '.$row[0].'>'.$row[3].'</option>';
+                                                            //echo "'<option id = '.$row[0].'>'.$row[3].'</option>'";
+                                                            echo '<option>空コマ</option>';
                                                         }
                                                         ?>
                                                     </select>
