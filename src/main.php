@@ -86,10 +86,10 @@ $mysqli->close();
                                                     <select id="<?php echo $selectId; ?>" class="subject-select">
                                                         <option>空コマ</option>
                                                         <?php
-                                                        echo '<option>空きコマ</option>';
+                                                        echo '<option>空き</option>';
                                                         for($row_no = $result->num_rows - 1;$row_no >= 0; $row_no--){
                                                             $result->data_seek($row_no);
-                                                            $row = $result->fetch_row();
+                                                            $row = $result->fetch_assoc();
                                                             //echo "'<option id = '.$row[0].'>'.$row[3].'</option>'";
                                                             echo '<option>空コマ</option>';
                                                         }
