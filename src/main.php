@@ -27,11 +27,12 @@ ORDER BY
     `ID`");
 $result->execute();
 
-$userdata = $result->get_result();
+$time_schdule = $result->get_result();
 
-while( $row_data = $userdata->fetch_array(MYSQLI_NUM)){
-    var_dump($row_data);
-}
+$row_data = $time_schdule->fetch_array(MYSQLI_NUM);
+#while( $row_data = $userdata->fetch_array(MYSQLI_NUM)){
+#    var_dump($row_data);
+#}
 
 $mysqli->close();
 ?>
@@ -58,6 +59,8 @@ $mysqli->close();
                     <div id="message">
                         <h2>新規登録</h2>
                         <p>時間割を設定してください</p>
+                        
+                        
 
                         <div class="jikanwari">
                             <?php
@@ -84,9 +87,12 @@ $mysqli->close();
                                                     ?>
                                                     <select id="<?php echo $selectId; ?>" class="subject-select">
                                                         <option>空コマ</option>
-                                                        <option id="A">A</option>
-                                                        <option id="B">B</option>
-                                                        <option id="C">C</option>
+                                                        <?php
+                                                        $result->data_seek(0);
+                                                        while($row = $result->fetch_row()){
+                                                            echo '<option id= $row[0] > $row[3] </option>';
+                                                        }
+                                                        ?>
                                                     </select>
                                                 </label>
                                             </td>
