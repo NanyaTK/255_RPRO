@@ -9,8 +9,8 @@ if ($mysqli->connect_error) {
 } else {
     $mysqli->set_charset("utf8");
 }
-$result = $mysqli->query("SELECT * FROM rpro");
-echo "rows=" . $result->num_rows;
+$mysqli->query("use rpro");
+#$result = $mysqli->prepare("");
 ?>
 
 <head>
