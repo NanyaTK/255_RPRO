@@ -24,7 +24,15 @@ FROM
     rpro.classtable
 ORDER BY
     `科目ID`");
+$result->execute();
 
+$userdata = $result->get_result();
+
+while( $row_data = $userdata->fetch_array(MYSQLI_NUM)){
+    var_dump($row_data);
+}
+
+$mysqli->close();
 ?>
 
 <head>
