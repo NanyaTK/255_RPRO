@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="ja">
 
+<?php
+$mysqli = new mysqli("127.0.0.1","rpro_u","uhe6WTScplbJ","rpro.3306");
+if ($mysqli->connect_error) {
+    echo $mysqli->connect_error;
+    exit();
+} else {
+    $mysqli->set_charset("utf8");
+}
+$result = $mysqli->query("SELECT * FROM rpro");
+echo "rows=" . $result->num_rows;
+?>
+
 <head>
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
