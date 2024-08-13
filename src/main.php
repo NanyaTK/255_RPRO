@@ -58,7 +58,7 @@ $mysqli->close();
                         <h2>新規登録</h2>
                         <p>時間割を設定してください</p>
                             <label class = "select-class">
-                                <select class = "subject-select">
+                                <select>
                                     <option id = 13>電気情報工学科電気電子コース4年</option>
                                     <option id = 14>電気情報工学科情報工学コース4年</option>
                                     <option id = 17>電気情報工学科電気電子コース5年</option>
