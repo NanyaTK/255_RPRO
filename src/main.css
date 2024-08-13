@@ -227,6 +227,7 @@ footer {
   color: #333333;
   font-size: 1em;
   cursor: pointer;
+  width: 90%;
 }
 
 .select-subject select:focus {
