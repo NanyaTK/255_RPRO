@@ -87,9 +87,9 @@ $mysqli->close();
                                                         <option>空コマ</option>
                                                         <?php
                                                         echo '<option>空き</option>';
-                                                        for($row_no = $result->num_rows - 1;$row_no >= 0; $row_no--){
-                                                            $result->data_seek($row_no);
-                                                            $row = $result->fetch_assoc();
+                                                        for($row_no = $time_schdule->num_rows - 1;$row_no >= 0; $row_no--){
+                                                            $time_schdule->data_seek($row_no);
+                                                            $row = $time_schdule->fetch_assoc();
                                                             //echo "'<option id = '.$row[0].'>'.$row[3].'</option>'";
                                                             echo '<option>空コマ</option>';
                                                         }
