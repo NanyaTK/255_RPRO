@@ -24,7 +24,7 @@ $result = $mysqli->prepare(
 FROM
     rpro.classtable
 ORDER BY
-    `科目ID`");
+    `ID`");
 $result->execute();
 
 $userdata = $result->get_result();
