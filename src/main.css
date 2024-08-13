@@ -272,7 +272,7 @@ footer {
 }
 
 .select-class::before {
-  right: 28.5%;
+  right: 0;
   display: inline-block;
   width: 2.8em;
   height: 2.8em;
