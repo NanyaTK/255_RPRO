@@ -24,7 +24,7 @@ $result = $mysqli->prepare(
 FROM
     rpro.classtable
 ORDER BY
-    `ID`");
+    `ID` DESC");
 $result->execute();
 
 $time_schdule = $result->get_result();
@@ -89,8 +89,9 @@ $mysqli->close();
                                                         <option>空コマ</option>
                                                         <?php
                                                         $result->data_seek(0);
-                                                        while($row = $result->fetch_row()){
-                                                            echo '<option id= $row[0] > $row[3] </option>';
+                                                        for($row_no = $result->num_rows - 1;$row_no >= 0; $row_no--){
+                                                            $row = $result->fetch_row();
+                                                            echo '<option id = '.$row[0].'>'.$row[3].'</option>';
                                                         }
                                                         ?>
                                                     </select>
