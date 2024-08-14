@@ -114,23 +114,24 @@ $mysqli->close();
                                 // .subject-selectクラスを持つ全てのselect要素を取得
                                 const selectElements = document.querySelectorAll('.subject-select');
                                 const selectedOptionIds = [];
-                                const selectedOptions = [];
+                                const selectedOptionids = [];
                                 // 各select要素をループして選択されたoptionのidを取得
                                 selectElements.forEach(selectElement => {
                                     const selectedOption = selectElement.options[selectElement.selectedIndex];
                                     const selectedOptionId = selectedOption.id;
-                                    selectedOptions.push(selectedOption);
+                                    const selectedOptionid = selectedOption["ID"];
+                                    selectedOptionids.push(selectedOptionid);
                                     selectedOptionIds.push(selectedOptionId); // 配列に追加
                                 });
 
                                 // 結果を表示
                                 document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
-                                const registOptions = JSON.stringify(selectedOptions);
-                                localStorage.setItem('key',registOptions);
+                                console.log(selectedOptionids);
+                                const registOptions = JSON.stringify(selectedOptionids);
+                                localStorage.setItem('key',registOptionids);
                                 let getval = localStorage.getItem('key');
                                 let getData = JSON.parse(getval);
                                 console.log(getData);
-                                console.log(selectElements);
                             }
                         </script>
                     </div>
