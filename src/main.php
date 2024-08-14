@@ -126,8 +126,8 @@ $mysqli->close();
                                 console.log(selectedOptionIds);
                                 console.log(selectElements);
                                 const registDatas = [];
-                                for(let i=0;i<selectedOptionIDs.length;i++){
-                                    const registData = [selectElements[i],selectedOptionIDs[i]];
+                                for(let i=0;i<selectedOptionIds.length;i++){
+                                    const registData = [selectElements[i],selectedOptionIds[i]];
                                     registDatas.push(registData);
                                 }
                                 const registJSON = JSON.stringify(registDatas);
