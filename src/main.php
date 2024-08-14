@@ -119,7 +119,7 @@ $mysqli->close();
                                 selectElements.forEach(selectElement => {
                                     const selectedOption = selectElement.options[selectElement.selectedIndex];
                                     const selectedOptionId = selectedOption.id;
-                                    const selectedOptionid = selectElement.$row["ID"];
+                                    const selectedOptionid = selectElement.row["ID"];
                                     selectedOptionids.push(selectedOptionid);
                                     selectedOptionIds.push(selectedOptionId); // 配列に追加
                                 });
