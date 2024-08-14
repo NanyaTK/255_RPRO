@@ -129,9 +129,14 @@ $mysqli->close();
                                     const registData = [selectElements[i],selectedOptionIds[i]];
                                     registDatas.push(registData);
                                 }
-                                console.log(registDatas);
-                                const registJSON = JSON.stringify(registDatas);
-                                console.log(registJSON);
+                                const keys = registDatas[0];
+                                const newregist = registDatas.slice(1).map((item)=> {
+                                    let obj = {};
+                                    keys.forEach((key,i)=>(obj[key] = item[i]));
+                                    return obj;
+                                })
+                                console.log(newregist);
+                                const registJSON = JSON.stringify(newregist);
                                 localStorage.setItem('key',registJSON);
                                 let getval = localStorage.getItem('key');
                                 let getData = JSON.parse(getval);
