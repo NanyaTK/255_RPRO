@@ -131,6 +131,7 @@ $mysqli->close();
                                 }
                                 console.log(registDatas);
                                 const registJSON = JSON.stringify(registDatas);
+                                console.log(registJSON);
                                 localStorage.setItem('key',registJSON);
                                 let getval = localStorage.getItem('key');
                                 let getData = JSON.parse(getval);
