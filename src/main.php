@@ -128,7 +128,7 @@ $mysqli->close();
                                 const registOptions = JSON.stringify(selectedOptions);
                                 localStorage.setItem('key',registOptions);
                                 let getval = localStorage.getItem('key');
-                                let getData = json.parse(getval);
+                                let getData = JSON.parse(getval);
                                 console.log(getData);
                                 console.log(selectElements);
                             }
