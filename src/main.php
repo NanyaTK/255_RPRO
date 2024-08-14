@@ -126,7 +126,7 @@ $mysqli->close();
                                 console.log(selectedOptionIds);
                                 console.log(selectElements);
                                 const registDatas = [];
-                                for($i=0;i<selectedOptionIDs.length;i++){
+                                for(let i=0;i<selectedOptionIDs.length;i++){
                                     const registData = [selectElements[i],selectedOptionIDs[i]];
                                     registDatas.push(registData);
                                 }
