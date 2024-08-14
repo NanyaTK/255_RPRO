@@ -125,10 +125,12 @@ $mysqli->close();
 
                                 // 結果を表示
                                 document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
-                                console.log(selectedOptions);
                                 const registOptions = JSON.stringify(selectedOptions);
                                 localStorage.setItem('key',registOptions);
-                                
+                                let getval = localStorage.getItem('key');
+                                let getData = json.parse(getval);
+                                console.log(getData);
+                                console.log(selectElements);
                             }
                         </script>
                     </div>
