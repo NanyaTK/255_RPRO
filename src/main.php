@@ -114,25 +114,25 @@ $mysqli->close();
                                 // .subject-selectクラスを持つ全てのselect要素を取得
                                 const selectElements = document.querySelectorAll('.subject-select');
                                 const selectedOptionIds = [];
-                                const selectedOptionids = [];
+                                const selectedOptions = [];
                                 // 各select要素をループして選択されたoptionのidを取得
                                 selectElements.forEach(selectElement => {
                                     const selectedOption = selectElement.options[selectElement.selectedIndex];
                                     const selectedOptionId = selectedOption.id;
-                                    const selectedOptionid = selectElement.row["ID"];
-                                    selectedOptionids.push(selectedOptionid);
+                                    selectedOptions.push(selectedOption);
                                     selectedOptionIds.push(selectedOptionId); // 配列に追加
                                 });
 
                                 // 結果を表示
                                 document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
                                 console.log(selectedOptionIds);
-                                console.log(selectedOptionids);
-                                const registOptions = JSON.stringify(selectedOptionids);
-                                localStorage.setItem('key',registOptionids);
-                                let getval = localStorage.getItem('key');
-                                let getData = JSON.parse(getval);
-                                console.log(getData);
+                                console.log(selectedOptions);
+
+                                //const registOptions = JSON.stringify(selectedOption);
+                                //localStorage.setItem('key',registOptionids);
+                                //let getval = localStorage.getItem('key');
+                                //let getData = JSON.parse(getval);
+                                //console.log(getData);
                             }
                         </script>
                     </div>
