@@ -1,6 +1,40 @@
 <!DOCTYPE html>
 <html lang="ja">
 
+<?php
+$mysqli = new mysqli("127.0.0.1","rpro_u","uhe6WTScplbJ","rpro",3306);
+if ($mysqli->connect_error) {
+    echo $mysqli->connect_error;
+    exit();
+} else {
+    $mysqli->set_charset("utf8");
+}
+$mysqli->query("use rpro");
+$result = $mysqli->prepare(
+"SELECT
+    `ID`
+    ,`科目ID`
+    , `学科ID`
+    , `科目名`
+    , `講義回数`
+    , `最大欠席可能回数`
+    , `特殊欠席条件`
+    , `評価割合`
+    , `科目分類`
+FROM
+    rpro.classtable
+ORDER BY
+    `ID` DESC");
+$result->execute();
+
+$time_schdule = $result->get_result();
+
+$row_data = $time_schdule->fetch_array(MYSQLI_NUM);
+
+
+$mysqli->close();
+?>
+
 <head>
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
@@ -23,7 +57,14 @@
                     <div id="message">
                         <h2>新規登録</h2>
                         <p>時間割を設定してください</p>
-
+                            <label class = "select-class">
+                                <select>
+                                    <option id = 13>電気情報工学科電気電子コース4年</option>
+                                    <option id = 14>電気情報工学科情報工学コース4年</option>
+                                    <option id = 17>電気情報工学科電気電子コース5年</option>
+                                    <option id = 18>電気情報工学科情報工学コース5年</option>
+                                </select>
+                            </label>
                         <div class="jikanwari">
                             <?php
                             // 曜日と時間割の初期データ
@@ -40,25 +81,65 @@
                                 <?php foreach ($days as $day) : ?>
                                     <tr>
                                         <td class="day-column"><?php echo $day; ?></td>
-                                        <?php foreach ($times as $time) : ?>
+                                        <?php foreach ($times as $timeIndex => $time) : ?>
                                             <td class="time-cell">
                                                 <label class="select-subject">
-                                                    <select>
+                                                    <?php
+                                                    // selectタグのidを動的に生成
+                                                    $selectId = 'mys-' . $day . '-' . $timeIndex;
+                                                    ?>
+                                                    <select id="<?php echo $selectId; ?>" class="subject-select">
                                                         <option>空コマ</option>
-                                                        <option>A</option>
-                                                        <option>B</option>
-                                                        <option>C</option>
+                                                        <?php
+                                                        for($row_no = $time_schdule->num_rows - 1;$row_no >= 0; $row_no--){
+                                                            $time_schdule->data_seek($row_no);
+                                                            $row = $time_schdule->fetch_assoc();
+                                                            echo '<option id = '.$row["ID"].'>'.$row["科目名"].'</option>';
+                                                        }
+                                                        ?>
                                                     </select>
                                                 </label>
-                                                <!-- ここに科目を設定 -->
-                                                <!-- 例: Math, Science, History -->
                                             </td>
                                         <?php endforeach; ?>
                                     </tr>
                                 <?php endforeach; ?>
                             </table>
                         </div>
-                        <button id="finalize-btn">確定する</button>
+                        <button id="finalize-btn" onclick="getAllSelectedOptionIds()">確定する</button>
+                        <p id="result"></p>
+
+                        <p id="result"></p>
+                        <script>
+                            function getAllSelectedOptionIds() {
+                                // .subject-selectクラスを持つ全てのselect要素を取得
+                                const selectElements = document.querySelectorAll('.subject-select');
+                                const selectedOptionIds = [];
+                                // 各select要素をループして選択されたoptionのidを取得
+                                selectElements.forEach(selectElement => {
+                                    const selectedOption = selectElement.options[selectElement.selectedIndex];
+                                    const selectedOptionId = selectedOption.id;
+                                    selectedOptionIds.push(selectedOptionId); // 配列に追加
+                                });
+
+                                // 結果を表示
+                                document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
+                                console.log(selectedOptionIds);
+                                const registDatas = [];
+                                
+                                for(let i=0;i<selectedOptionIds.length;i++){
+                                    const registData = selectedOptionIds[i];
+                                    registDatas.push(registData);
+                                }
+                                
+
+                                console.log(registDatas);
+                                const registJSON = JSON.stringify(registDatas);
+                                localStorage.setItem('key',registJSON);
+                                let getval = localStorage.getItem('key');
+                                let getData = JSON.parse(getval);
+                                console.log(getData);
+                            }
+                        </script>
                     </div>
                 </div>
             </div>
@@ -92,7 +173,6 @@
             </div>
         </div>
         <!-- ここまで時間割表示　 -->
-
         <footer>
             &copy; 2024 留年プロテクタープロジェクト
         </footer>
