@@ -47,6 +47,13 @@ $mysqli->close();
         </header>
 
         <div class="main">
+            <?php
+                // 時間割ローカル保存用file初期化
+                $fileContent = file_get_contents('subjects.json');
+                if($fileContent === "null" || $fileContent === ''){
+                    file_put_contents('subjects.json', '["","","","","","","","","","","","","","","","","","","",""]');
+                }
+            ?>
             <div class="empty"></div>
             <button id="signup-btn">新規登録</button>
             <!-- ここから新規登録画面 -->
