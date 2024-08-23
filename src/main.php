@@ -31,7 +31,6 @@ $time_schdule = $result->get_result();
 
 $row_data = $time_schdule->fetch_array(MYSQLI_NUM);
 
-
 $mysqli->close();
 ?>
 
@@ -48,6 +47,13 @@ $mysqli->close();
         </header>
 
         <div class="main">
+            <?php
+                // 時間割ローカル保存用file初期化
+                $fileContent = file_get_contents('subjects.json');
+                if($fileContent === "null" || $fileContent === ''){
+                    file_put_contents('subjects.json', '["","","","","","","","","","","","","","","","","","","",""]');
+                }
+            ?>
             <div class="empty"></div>
             <button id="signup-btn">新規登録</button>
             <!-- ここから新規登録画面 -->
@@ -91,7 +97,7 @@ $mysqli->close();
                                                     <select id="<?php echo $selectId; ?>" class="subject-select">
                                                         <option>空コマ</option>
                                                         <?php
-                                                        for($row_no = $time_schdule->num_rows - 1;$row_no >= 0; $row_no--){
+                                                        for($row_no = $time_schdule->num_rows - 1; $row_no >= 0; $row_no--){
                                                             $time_schdule->data_seek($row_no);
                                                             $row = $time_schdule->fetch_assoc();
                                                             echo '<option id = '.$row["ID"].'>'.$row["科目名"].'</option>';
@@ -126,18 +132,36 @@ $mysqli->close();
                                 console.log(selectedOptionIds);
                                 const registDatas = [];
                                 
-                                for(let i=0;i<selectedOptionIds.length;i++){
+                                for(let i = 0; i < selectedOptionIds.length; i++){
                                     const registData = selectedOptionIds[i];
                                     registDatas.push(registData);
                                 }
-                                
-
+                                                           
                                 console.log(registDatas);
                                 const registJSON = JSON.stringify(registDatas);
                                 localStorage.setItem('key',registJSON);
                                 let getval = localStorage.getItem('key');
                                 let getData = JSON.parse(getval);
                                 console.log(getData);
+
+                                // AJAXの送信リクエスト
+                                fetch('index.php', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(getData)// 送信データ
+                                })
+                                .then(response => response.json())
+                                .then(data  => {
+                                  if (data.status === 'success') {
+                                        console.log('Updated Subjects:', data.updatedSubjects);
+                                        location.reload();
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
                             }
                         </script>
                     </div>
@@ -150,6 +174,16 @@ $mysqli->close();
                 // 曜日と時間割の初期データ
                 $days = ['月', '火', '水', '木', '金'];
                 $times = ['1', '2', '3', '4'];
+
+                // POSTリクエストがない場合のデフォルト値を取得
+                include 'index.php';
+                $subjects = handlePostRequest();
+
+                // 1週間の時間割の科目数（曜日数×時間数）
+                $subjectsPerDay = count($subjects) / count($days);
+
+                // 各曜日ごとに科目を分割
+                $subjectsByDay = array_chunk($subjects, $subjectsPerDay);
                 ?>
                 <table class="timetable">
                     <tr>
@@ -158,13 +192,27 @@ $mysqli->close();
                             <th><?php echo $time; ?></th>
                         <?php endforeach; ?>
                     </tr>
-                    <?php foreach ($days as $day) : ?>
+                    <?php foreach ($days as $index =>$day) : ?>
                         <tr>
                             <td class="day-column"><?php echo $day; ?></td>
-                            <?php foreach ($times as $time) : ?>
+                            <?php foreach ($times as $timeIndex) : ?>
                                 <td class="time-cell">
-                                    <!-- ここに科目を設定 -->
-                                    <!-- 例: Math, Science, History -->
+                                    <!-- ここで科目設定 -->
+                                    <?php
+                                    if($subjectsByDay[$index][$timeIndex - 1]){
+                                        if($subjectsByDay[$index][$timeIndex - 1] == 1){
+                                            // 国語IVのid対策用
+                                            $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
+                                        }else{
+                                            $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
+                                        }
+                                        $time_schdule->data_seek($row_no);
+                                        $row = $time_schdule->fetch_assoc();
+                                        echo ($row["科目名"]);
+                                    }else
+                                        echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
+                                    ?>
+                                    <!-- ここまで科目設定 -->
                                 </td>
                             <?php endforeach; ?>
                         </tr>
