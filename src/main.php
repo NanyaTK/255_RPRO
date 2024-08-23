@@ -174,6 +174,16 @@ $mysqli->close();
                 // 曜日と時間割の初期データ
                 $days = ['月', '火', '水', '木', '金'];
                 $times = ['1', '2', '3', '4'];
+
+                // POSTリクエストがない場合のデフォルト値を取得
+                include 'index.php';
+                $subjects = handlePostRequest();
+
+                // 1週間の時間割の科目数（曜日数×時間数）
+                $subjectsPerDay = count($subjects) / count($days);
+
+                // 各曜日ごとに科目を分割
+                $subjectsByDay = array_chunk($subjects, $subjectsPerDay);
                 ?>
                 <table class="timetable">
                     <tr>
@@ -188,6 +198,20 @@ $mysqli->close();
                             <?php foreach ($times as $timeIndex) : ?>
                                 <td class="time-cell">
                                     <!-- ここで科目設定 -->
+                                    <?php
+                                    if($subjectsByDay[$index][$timeIndex - 1]){
+                                        if($subjectsByDay[$index][$timeIndex - 1] == 1){
+                                            // 国語IVのid対策用
+                                            $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
+                                        }else{
+                                            $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
+                                        }
+                                        $time_schdule->data_seek($row_no);
+                                        $row = $time_schdule->fetch_assoc();
+                                        echo ($row["科目名"]);
+                                    }else
+                                        echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
+                                    ?>
                                     <!-- ここまで科目設定 -->
                                 </td>
                             <?php endforeach; ?>
