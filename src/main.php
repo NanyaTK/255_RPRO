@@ -44,7 +44,7 @@ $mysqli->close();
         <header>
             <a class="header" href="/">留年プロテクター</a>
         </header>
-
+        <img src="/icons/192.png">
         <div class="main">
             <div class="empty"></div>
             <button id="signup-btn">新規登録</button>
