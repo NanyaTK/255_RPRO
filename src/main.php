@@ -33,10 +33,10 @@ $mysqli->close();
 ?>
 
 <head>
+    <link rel="manifest" href="main.json" />
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
-    <link rel="stylesheet" href="main.css">
-    <link rel="manifest" href="main.json">
+    <link rel="stylesheet" href="main.css" />
 </head>
 
 <body>
