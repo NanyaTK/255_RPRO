@@ -7,13 +7,13 @@
             "src": "icon-images/192.png",
             "type": "image/png",
             "sizes": "192x192",
-            "purpose": "maskable"
+            "purpose": "any"
         },
         {
             "src": "icon-images/512.png",
             "type": "image/png",
             "sizes": "512x512",
-            "purpose": "maskable"
+            "purpose": "any"
         }
     ],
     "display_override": [
