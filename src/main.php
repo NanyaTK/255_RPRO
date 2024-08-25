@@ -2,16 +2,16 @@
 <html lang="ja">
 
 <?php
-    $mysqli = new mysqli("127.0.0.1", "rpro_u", "uhe6WTScplbJ", "rpro", 3306);
-    if ($mysqli->connect_error) {
-        echo $mysqli->connect_error;
-        exit();
-    } else {
-        $mysqli->set_charset("utf8");
-    }
-    $mysqli->query("use rpro");
-    $result = $mysqli->prepare(
-        "SELECT
+$mysqli = new mysqli("127.0.0.1", "rpro_u", "uhe6WTScplbJ", "rpro", 3306);
+if ($mysqli->connect_error) {
+    echo $mysqli->connect_error;
+    exit();
+} else {
+    $mysqli->set_charset("utf8");
+}
+$mysqli->query("use rpro");
+$result = $mysqli->prepare(
+    "SELECT
             `ID`
             ,`科目ID`
             , `学科ID`
@@ -25,17 +25,18 @@
             rpro.classtable
         ORDER BY
             `ID` DESC"
-    );
-    $result->execute();
-    $time_schdule = $result->get_result();
-    $row_data = $time_schdule->fetch_array(MYSQLI_NUM);
-    $mysqli->close();
+);
+$result->execute();
+$time_schdule = $result->get_result();
+$row_data = $time_schdule->fetch_array(MYSQLI_NUM);
+$mysqli->close();
 ?>
 
 <head>
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
-    <link href="main.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <link rel="manifest" href="main.webmanifest">
 </head>
 
 <body>
