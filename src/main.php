@@ -2,37 +2,34 @@
 <html lang="ja">
 
 <?php
-$mysqli = new mysqli("127.0.0.1","rpro_u","uhe6WTScplbJ","rpro",3306);
-if ($mysqli->connect_error) {
-    echo $mysqli->connect_error;
-    exit();
-} else {
-    $mysqli->set_charset("utf8");
-}
-$mysqli->query("use rpro");
-$result = $mysqli->prepare(
-"SELECT
-    `ID`
-    ,`科目ID`
-    , `学科ID`
-    , `科目名`
-    , `講義回数`
-    , `最大欠席可能回数`
-    , `特殊欠席条件`
-    , `評価割合`
-    , `科目分類`
-FROM
-    rpro.classtable
-ORDER BY
-    `ID` DESC");
-$result->execute();
-
-$time_schdule = $result->get_result();
-
-$row_data = $time_schdule->fetch_array(MYSQLI_NUM);
-
-
-$mysqli->close();
+    $mysqli = new mysqli("127.0.0.1", "rpro_u", "uhe6WTScplbJ", "rpro", 3306);
+    if ($mysqli->connect_error) {
+        echo $mysqli->connect_error;
+        exit();
+    } else {
+        $mysqli->set_charset("utf8");
+    }
+    $mysqli->query("use rpro");
+    $result = $mysqli->prepare(
+        "SELECT
+            `ID`
+            ,`科目ID`
+            , `学科ID`
+            , `科目名`
+            , `講義回数`
+            , `最大欠席可能回数`
+            , `特殊欠席条件`
+            , `評価割合`
+            , `科目分類`
+        FROM
+            rpro.classtable
+        ORDER BY
+            `ID` DESC"
+    );
+    $result->execute();
+    $time_schdule = $result->get_result();
+    $row_data = $time_schdule->fetch_array(MYSQLI_NUM);
+    $mysqli->close();
 ?>
 
 <head>
@@ -57,14 +54,14 @@ $mysqli->close();
                     <div id="message">
                         <h2>新規登録</h2>
                         <p>時間割を設定してください</p>
-                            <label class = "select-class">
-                                <select>
-                                    <option id = 13>電気情報工学科電気電子コース4年</option>
-                                    <option id = 14>電気情報工学科情報工学コース4年</option>
-                                    <option id = 17>電気情報工学科電気電子コース5年</option>
-                                    <option id = 18>電気情報工学科情報工学コース5年</option>
-                                </select>
-                            </label>
+                        <label class="select-class">
+                            <select>
+                                <option id=13>電気情報工学科電気電子コース4年</option>
+                                <option id=14>電気情報工学科情報工学コース4年</option>
+                                <option id=17>電気情報工学科電気電子コース5年</option>
+                                <option id=18>電気情報工学科情報工学コース5年</option>
+                            </select>
+                        </label>
                         <div class="jikanwari">
                             <?php
                             // 曜日と時間割の初期データ
@@ -91,10 +88,10 @@ $mysqli->close();
                                                     <select id="<?php echo $selectId; ?>" class="subject-select">
                                                         <option>空コマ</option>
                                                         <?php
-                                                        for($row_no = $time_schdule->num_rows - 1;$row_no >= 0; $row_no--){
+                                                        for ($row_no = $time_schdule->num_rows - 1; $row_no >= 0; $row_no--) {
                                                             $time_schdule->data_seek($row_no);
                                                             $row = $time_schdule->fetch_assoc();
-                                                            echo '<option id = '.$row["ID"].'>'.$row["科目名"].'</option>';
+                                                            echo '<option id = ' . $row["ID"] . '>' . $row["科目名"] . '</option>';
                                                         }
                                                         ?>
                                                     </select>
@@ -125,16 +122,16 @@ $mysqli->close();
                                 document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
                                 console.log(selectedOptionIds);
                                 const registDatas = [];
-                                
-                                for(let i=0;i<selectedOptionIds.length;i++){
+
+                                for (let i = 0; i < selectedOptionIds.length; i++) {
                                     const registData = selectedOptionIds[i];
                                     registDatas.push(registData);
                                 }
-                                
+
 
                                 console.log(registDatas);
                                 const registJSON = JSON.stringify(registDatas);
-                                localStorage.setItem('key',registJSON);
+                                localStorage.setItem('key', registJSON);
                                 let getval = localStorage.getItem('key');
                                 let getData = JSON.parse(getval);
                                 console.log(getData);
