@@ -39,7 +39,7 @@ $mysqli->close();
     <link rel="stylesheet" href="./main.css" />
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('https://test.rpro.nanyatk.com/')
+            navigator.serviceWorker.register('./main.json')
             .then(registration=>{
                 alert('registration was succusessfully finished');
             }).catch(err=>{
