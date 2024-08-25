@@ -16,7 +16,3 @@ const registerServiceWorker = async () => {
         }
     }
 }
-
-self.addEventListener('fetch', function (event) {
-
-});
