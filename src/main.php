@@ -33,21 +33,13 @@ $mysqli->close();
 ?>
 
 <head>
-    <link rel="manifest" href="./main.json" />
+    <link rel="manifest" href="./mainManifest.json" />
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
     <link rel="stylesheet" href="./main.css" />
+    <script type="text/javascript" src="./sw.js"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./main.json')
-            .then(registration=>{
-                alert('registration was succusessfully finished');
-            }).catch(err=>{
-                alert('registration was failed');
-            });
-        }else{
-            alert('serviceWorker does not be enabled');
-        }
+        registerServiceWorker();
     </script>
 </head>
 
