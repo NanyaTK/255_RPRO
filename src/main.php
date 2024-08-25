@@ -36,7 +36,7 @@ $mysqli->close();
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
     <link rel="stylesheet" href="main.css">
-    <link rel="manifest" href="main.webmanifest">
+    <link rel="manifest" href="main.json">
 </head>
 
 <body>
