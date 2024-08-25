@@ -37,6 +37,18 @@ $mysqli->close();
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
     <link rel="stylesheet" href="main.css" />
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('https://test.rpro.nanyatk.com/')
+            .then(registration=>{
+                alert('registration was succusessfully finished');
+            }).catch(err=>{
+                alert('registration was failed');
+            });
+        }else{
+            alert('serviceWorker does not be enabled');
+        }
+    </script>
 </head>
 
 <body>
