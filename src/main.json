@@ -4,12 +4,12 @@
     "start_url": "https://test.rpro.nanyatk.com/",
     "icons": [
         {
-            "src": "icons/512.png",
+            "src": "icon-images/512.png",
             "type": "image/png",
             "sizes": "512x512"
         },
         {
-            "src": "icons/192.png",
+            "src": "icon-images/192.png",
             "type": "image/png",
             "sizes": "192x192"
         }
