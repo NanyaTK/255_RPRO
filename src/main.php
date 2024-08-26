@@ -163,8 +163,14 @@ $mysqli->close();
                             <td class="day-column"><?php echo $day; ?></td>
                             <?php foreach ($times as $time) : ?>
                                 <td class="time-cell">
-                                    <!-- ここに科目を設定 -->
-                                    <!-- 例: Math, Science, History -->
+                                    <?php echo "<br/>"; ?>
+                                    <?php echo "欠席回数"."/"."最大欠席回数"; ?>
+                                    <div id="popup-wrapper">
+                                        <div id="popup-inside">
+                                            <div id="close">x</div>
+                                        </div>
+                                    </div>
+                                    <!-- <?php echo $absense."<br/>".$max_absense; ?> -->
                                 </td>
                             <?php endforeach; ?>
                         </tr>
