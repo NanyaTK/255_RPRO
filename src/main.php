@@ -37,7 +37,6 @@ $mysqli->close();
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
     <link rel="stylesheet" href="main.css" />
-    <script type="text/javascript" src="main.js"></script>
     <script type="text/javascript" src="sw.js"></script>
 </head>
 
@@ -179,25 +178,7 @@ $mysqli->close();
             &copy; 2024 留年プロテクタープロジェクト
         </footer>
     </div>
-
-    <script>
-        const signUpBtn = document.getElementById('signup-btn');
-        const popupWrapper = document.getElementById('popup-wrapper');
-        const close = document.getElementById('close');
-
-        // ボタンをクリックしたときにポップアップを表示させる
-        signUpBtn.addEventListener('click', () => {
-            popupWrapper.style.display = "block";
-        });
-
-        // ポップアップの外側又は「x」のマークをクリックしたときポップアップを閉じる
-        popupWrapper.addEventListener('click', e => {
-            if (e.target.id === popupWrapper.id || e.target.id === close.id) {
-                popupWrapper.style.display = 'none';
-            }
-        });
-    </script>
-
+    <script type="text/javascript" src="main.js"></script>
 </body>
 
 </html>
