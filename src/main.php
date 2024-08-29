@@ -109,39 +109,6 @@ $mysqli->close();
                         </div>
                         <button id="finalize-btn" onclick="getAllSelectedOptionIds()">確定する</button>
                         <p id="result"></p>
-
-                        <p id="result"></p>
-                        <script>
-                            function getAllSelectedOptionIds() {
-                                // .subject-selectクラスを持つ全てのselect要素を取得
-                                const selectElements = document.querySelectorAll('.subject-select');
-                                const selectedOptionIds = [];
-                                // 各select要素をループして選択されたoptionのidを取得
-                                selectElements.forEach(selectElement => {
-                                    const selectedOption = selectElement.options[selectElement.selectedIndex];
-                                    const selectedOptionId = selectedOption.id;
-                                    selectedOptionIds.push(selectedOptionId); // 配列に追加
-                                });
-
-                                // 結果を表示
-                                document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
-                                console.log(selectedOptionIds);
-                                const registDatas = [];
-
-                                for (let i = 0; i < selectedOptionIds.length; i++) {
-                                    const registData = selectedOptionIds[i];
-                                    registDatas.push(registData);
-                                }
-
-
-                                console.log(registDatas);
-                                const registJSON = JSON.stringify(registDatas);
-                                localStorage.setItem('key', registJSON);
-                                let getval = localStorage.getItem('key');
-                                let getData = JSON.parse(getval);
-                                console.log(getData);
-                            }
-                        </script>
                     </div>
                 </div>
             </div>
