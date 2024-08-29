@@ -172,13 +172,13 @@ $mysqli->close();
                     <?php endforeach; ?>
                 </table>
             </div>
+            <!-- ここまで時間割表示　 -->
         </div>
-        <!-- ここまで時間割表示　 -->
         <footer>
             &copy; 2024 留年プロテクタープロジェクト
         </footer>
+        <script type="text/javascript" src="main.js"></script>
     </div>
-    <script type="text/javascript" src="main.js"></script>
 </body>
 
 </html>
