@@ -41,10 +41,11 @@ $mysqli->close();
 </head>
 
 <body>
+    <header>
+        <a class="header" href="/">留年プロテクター</a>
+    </header>
     <div class="content">
-        <header>
-            <a class="header" href="/">留年プロテクター</a>
-        </header>
+
         <div class="main">
             <div class="empty"></div>
             <div class="flex-byForce">
@@ -174,11 +175,11 @@ $mysqli->close();
             </div>
             <!-- ここまで時間割表示　 -->
         </div>
-        <footer>
-            &copy; 2024 留年プロテクタープロジェクト
-        </footer>
         <script type="text/javascript" src="main.js"></script>
     </div>
+    <footer>
+        &copy; 2024 留年プロテクタープロジェクト
+    </footer>
 </body>
 
 </html>
