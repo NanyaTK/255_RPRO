@@ -50,7 +50,10 @@ $mysqli->close();
         </header>
         <div class="main">
             <div class="empty"></div>
-            <button id="signup-btn">新規登録</button>
+            <div class="flex-byForce">
+                <button id="signup-btn">新規登録</button>
+                <button id="install-btn">インストール</button>
+            </div>
             <!-- ここから新規登録画面 -->
             <div id="popup-wrapper">
                 <div id="popup-inside">

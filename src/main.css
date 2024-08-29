@@ -130,8 +130,20 @@ footer {
   }
 }
 
+.flex-byForce {
+  display: flex;
+  margin: auto 20%;
+}
+
 #signup-btn {
-  display: block;
+  margin: 20px auto;
+  background-color: rgb(0, 153, 128);
+  color: white;
+  border: 0;
+  padding: 20px 35px;
+}
+
+#install-btn {
   margin: 20px auto;
   background-color: rgb(0, 153, 128);
   color: white;
