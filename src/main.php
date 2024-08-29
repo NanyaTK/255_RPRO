@@ -33,14 +33,12 @@ $mysqli->close();
 ?>
 
 <head>
-    <link rel="manifest" href="./mainManifest.json" />
+    <link rel="manifest" href="mainManifest.json" />
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
-    <link rel="stylesheet" href="./main.css" />
-    <script type="text/javascript" src="./sw.js"></script>
-    <script>
-        registerServiceWorker();
-    </script>
+    <link rel="stylesheet" href="main.css" />
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="sw.js"></script>
 </head>
 
 <body>
