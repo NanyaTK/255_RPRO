@@ -98,38 +98,6 @@ footer {
   /* 曜日セルの横幅を小さくする */
 }
 
-/* スマホ用のスタイル */
-@media screen and (max-width: 1000px) {
-  body {
-    font-size: 16px;
-  }
-
-  .header {
-    font-size: 20px;
-  }
-
-  .timetable th,
-  .timetable td {
-    font-size: 32px;
-    padding: 8px;
-  }
-
-  .timetable th {
-    height: 40px;
-    /* 曜日セルの縦幅を小さくする */
-  }
-
-  .timetable td {
-    height: 260px;
-    /* その他のセルの縦幅を広くする */
-  }
-
-  .day-column {
-    width: 40px;
-    /* 曜日セルの横幅を小さくする */
-  }
-}
-
 .flex-byForce {
   display: flex;
   margin: auto 20%;
@@ -322,4 +290,50 @@ footer {
 
 .select-class select:focus {
   outline: 1px solid #6acde3;
+}
+
+/* スマホ用のスタイル */
+@media screen and (max-width: 1000px) {
+  body {
+    font-size: 16px;
+  }
+
+  .header {
+    font-size: xxx-large;
+  }
+
+  .timetable th,
+  .timetable td {
+    font-size: 32px;
+    padding: 8px;
+  }
+
+  .timetable th {
+    height: 40px;
+    /* 曜日セルの縦幅を小さくする */
+  }
+
+  .timetable td {
+    height: 260px;
+    /* その他のセルの縦幅を広くする */
+  }
+
+  .day-column {
+    width: 40px;
+    /* 曜日セルの横幅を小さくする */
+  }
+
+  .flex-byForce{
+    margin: auto 15%;
+  }
+
+  #signup-btn {
+    font-size: xx-large;
+    padding: 30px 40px;
+  }
+
+  #install-btn {
+    font-size: xx-large;
+    padding: 30px 40px;
+  }
 }
