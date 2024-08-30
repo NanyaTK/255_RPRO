@@ -25,7 +25,6 @@ self.addEventListener("install", (event) => {
             "/icon-images/old_512.png",
         ]),
     );
-    alert("cache installed");
 });
 
 addEventListener("fetch", (event) => {
