@@ -45,9 +45,22 @@ addEventListener("fetch", (event) => {
     );
 });
 
+function deleteAllCaches() {
+    return caches.keys().then((cacheNames) => {
+        return Promise.all(
+            cacheNames.map((cacheName) => {
+                return caches.delete(cacheName);
+            })
+        );
+    });
+}
+
 self.addEventListener("activate", (event) => {
-    event.waitUntil(caches.delete("v2"));
-    console.log("[process: SW] old caches deleted");
+    event.waitUntil(
+        deleteAllCaches().then(() => {
+            console.log("[process: SW] old caches deleted");
+        })
+    );
     console.log("[process: SW] new caches installing...");
     event.waitUntil(installSW());
 });
