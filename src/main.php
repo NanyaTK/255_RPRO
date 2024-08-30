@@ -33,11 +33,12 @@ $mysqli->close();
 ?>
 
 <head>
-    <link rel="manifest" href="mainManifest.json" />
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
+    <link rel="icon" href="/icon-images/favicon.ico">
     <link rel="stylesheet" href="main.css" />
     <script type="text/javascript" src="sw.js"></script>
+    <link rel="manifest" href="mainManifest.json" />
 </head>
 
 <body>
