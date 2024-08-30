@@ -1,3 +1,30 @@
+<?php
+// POSTリクエスト処理を分ける
+function handlePostRequest() {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        // データをファイルに保存
+        file_put_contents('subjects.json', '$data',FILE_APPEND);
+        file_put_contents('subjects.json', json_encode($data),FILE_APPEND);
+
+        // データを返す
+        return $data;
+    }
+
+    file_put_contents('subjects.json', 'aaaa',FILE_APPEND);
+    // POSTデータがない場合はデフォルトのデータを返す
+    return json_decode('["","","","","","","","","","","","","","","","","","","",""]', true);
+}
+
+// このスクリプトが直接リクエストされた場合にのみPOSTリクエストを処理
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = handlePostRequest();
+    echo json_encode(['status' => 'success', 'message' => 'Data received', 'updatedSubjects' => $data]);
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -47,13 +74,47 @@ $mysqli->close();
         </header>
 
         <div class="main">
-            <script>
+        <script>
+    // 非同期関数を作成
+    async function sendData() {
+        // LocalStorageからデータを取得
+        let getval = localStorage.getItem('key');
+        let getData = JSON.parse(getval);
+        console.log(getData);
+
+        try {
+            // fetchをawaitで待機
+            let response = await fetch('main.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(getData) // 送信データ
+            });
+
+            // レスポンスのJSONをawaitで待機
+            let data = await response.json();
+
+            // サーバーからのレスポンスを確認
+            if (data.status === 'success') {
+                console.log('Updated Subjects:', data.updatedSubjects);
+            }
+            
+            // ここにAJAX完了後に実行したい処理を追加
+            console.log('AJAXが完了した後に実行される処理');
+
+        } catch (error) {
+            // エラー処理
+            console.error('Error:', error);
+        }
+        /*
+        <script>
                 let getval = localStorage.getItem('key');
                 let getData = JSON.parse(getval);
                 console.log(getData);
 
                 // AJAXの送信リクエスト
-                fetch('index.php', {
+                fetch('main.php', {
                     method: 'POST',
                     headers: {
                        'Content-Type': 'application/json'
@@ -70,6 +131,12 @@ $mysqli->close();
                     console.error('Error:', error);
                 });              
             </script>
+        */
+    }
+
+    // 関数を呼び出す
+    sendData();
+</script>
             
             <!--
             php
@@ -208,13 +275,10 @@ $mysqli->close();
                 $times = ['1', '2', '3', '4'];
 
                 // POSTリクエストがない場合のデフォルト値を取得
-                include 'index.php';
+                //include 'index.php';
                 $subjects = handlePostRequest();
 
                 file_put_contents('subjects.json', '$subjects',FILE_APPEND);
-                file_put_contents('subjects.json', json_encode($subjects),FILE_APPEND);
-                $subjects = handlePostRequest();
-                file_put_contents('subjects.json', '$subjects2',FILE_APPEND);
                 file_put_contents('subjects.json', json_encode($subjects),FILE_APPEND);
 
                 // 1週間の時間割の科目数（曜日数×時間数）
@@ -223,6 +287,9 @@ $mysqli->close();
                 // 各曜日ごとに科目を分割
                 $subjectsByDay = array_chunk($subjects, $subjectsPerDay);
                 ?>
+                <script>
+                    console.log('subjects finish');
+                </script>
                 <table class="timetable">
                     <tr>
                         <th class="day-column">曜日</th>
