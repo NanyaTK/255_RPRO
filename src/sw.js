@@ -3,30 +3,32 @@ const addResourcesToCache = async (resources) => {
     await cache.addAll(resources);
 }
 
-self.addEventListener("install", (event) => {
+function installSW() {
     console.log("[process: SW] Caching data...");
-    event.waitUntil(
-        addResourcesToCache([
-            "/",
-            "/main.php",
-            "/main.js",
-            "/sw.js",
-            "/main.css",
-            "/mainManifest.json",
-            "/screenshots/ss1.webp",
-            "/icon-images/48.png",
-            "/icon-images/72.png",
-            "/icon-images/96.png",
-            "/icon-images/128.png",
-            "/icon-images/192.png",
-            "/icon-images/384.png",
-            "/icon-images/512.png",
-            "/icon-images/old_192.png",
-            "/icon-images/old_512.png",
-            "/icon-images/favicon.ico",
-        ]),
-    );
-    console.log("[process: SW] Cache complete")
+    addResourcesToCache([
+        "/",
+        "/main.php",
+        "/main.js",
+        "/sw.js",
+        "/main.css",
+        "/mainManifest.json",
+        "/screenshots/ss1.webp",
+        "/icon-images/48.png",
+        "/icon-images/72.png",
+        "/icon-images/96.png",
+        "/icon-images/128.png",
+        "/icon-images/192.png",
+        "/icon-images/384.png",
+        "/icon-images/512.png",
+        "/icon-images/old_192.png",
+        "/icon-images/old_512.png",
+        "/icon-images/favicon.ico",
+    ]);
+    console.log("[process: SW] Cache complete");
+}
+
+self.addEventListener("install", (event) => {
+    event.waitUntil(installSW());
 });
 
 addEventListener("fetch", (event) => {
@@ -46,4 +48,6 @@ addEventListener("fetch", (event) => {
 self.addEventListener("activate", (event) => {
     event.waitUntil(caches.delete("v2"));
     console.log("[process: SW] old caches deleted");
+    console.log("[process: SW] new caches installing...");
+    event.waitUntil(installSW());
 });
