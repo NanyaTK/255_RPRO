@@ -6,14 +6,14 @@ const registerServiceWorker = async () => {
                 scope: "/",
             });
             if (registration.installing) {
-                console.log("Service worker installing");
+                console.log("[process: main] Service worker installing");
             } else if (registration.waiting) {
-                console.log("Service worker installed");
+                console.log("[process: main] Service worker installed");
             } else if (registration.active) {
-                console.log("Service worker active");
+                console.log("[process: main] Service worker active");
             }
         } catch (error) {
-            console.error(`Registration failed with ${error}`);
+            console.error(`[process: main] Registration failed with ${error}`);
             alert("Cookieをブロックしていると正常動作しません．");
         }
     }

@@ -36,6 +36,7 @@ addEventListener("fetch", (event) => {
                 console.log("[process: SW] respond from cache");
                 return cachedResponse;
             };
+            console.log("[process: SW] respond from network");
             return fetch(event.request);
         })(),
     );
