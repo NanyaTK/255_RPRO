@@ -14,6 +14,7 @@ const registerServiceWorker = async () => {
             }
         } catch (error) {
             console.error(`Registration failed with ${error}`);
+            alert("Cookieをブロックしていると正常動作しません．");
         }
     }
 }
@@ -25,16 +26,16 @@ registerInstallAppEvent(document.getElementById("install-btn"));
 function registerInstallAppEvent(element) {
     window.addEventListener('beforeinstallprompt', function (event) {
         event.preventDefault();
-        element.promptEvent = event; 
+        element.promptEvent = event;
         element.style.display = "flex";
         return false;
     });
     function installApp() {
         if (element.promptEvent) {
-            element.promptEvent.prompt(); 
+            element.promptEvent.prompt();
             element.promptEvent.userChoice.then(function (choice) {
                 element.style.display = "none"
-                element.promptEvent = null; 
+                element.promptEvent = null;
             });
         } else {
             alert('Error: PWA installation event not detected.\nお使いのデバイスにインストールできません．おま環であると考えられます．\n　　　　　 .┌┐\n　　　　　／ /\n　　　.／　/ i\n　　　|　( ﾟДﾟ) ＜そんなバナナ\n　　　|（ﾉi　　|）\n　　　|　 i　　i\n　　　＼_ヽ＿,ゝ\n　　　　 U" U');
