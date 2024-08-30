@@ -330,12 +330,10 @@ footer {
 
   #signup-btn {
     font-size: xx-large;
-    padding: 30px 40px;
   }
 
   #install-btn {
     font-size: xx-large;
-    padding: 30px 40px;
     display: none;
   }
 }
