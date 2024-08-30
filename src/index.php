@@ -5,6 +5,7 @@ function handlePostRequest() {
         $input = file_get_contents('php://input');
         $data = json_decode($input, true);
         // データをファイルに保存
+        
         file_put_contents('subjects.json', json_encode($data));
 
         // データを返す

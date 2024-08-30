@@ -47,6 +47,29 @@ $mysqli->close();
         </header>
 
         <div class="main">
+            <script>
+                let getval = localStorage.getItem('key');
+                let getData = JSON.parse(getval);
+                console.log(getData);
+
+                // AJAXの送信リクエスト
+                fetch('index.php', {
+                    method: 'POST',
+                    headers: {
+                       'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(getData)// 送信データ
+                })
+                .then(response => response.json())
+                .then(data  => {
+                    if (data.status === 'success') {
+                        console.log('Updated Subjects:', data.updatedSubjects);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });                
+            </script>
             <?php
                 // 時間割ローカル保存用file初期化
                 $fileContent = file_get_contents('subjects.json');
@@ -140,10 +163,14 @@ $mysqli->close();
                                 console.log(registDatas);
                                 const registJSON = JSON.stringify(registDatas);
                                 localStorage.setItem('key',registJSON);
+                                location.reload();
+                                /*
                                 let getval = localStorage.getItem('key');
                                 let getData = JSON.parse(getval);
                                 console.log(getData);
+                                */
 
+                                /*
                                 // AJAXの送信リクエスト
                                 fetch('index.php', {
                                     method: 'POST',
@@ -162,6 +189,7 @@ $mysqli->close();
                                 .catch(error => {
                                     console.error('Error:', error);
                                 });
+                                */
                             }
                         </script>
                     </div>
