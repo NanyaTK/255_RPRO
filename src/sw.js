@@ -23,6 +23,7 @@ self.addEventListener("install", (event) => {
             "/icon-images/512.png",
             "/icon-images/old_192.png",
             "/icon-images/old_512.png",
+            "/icon-images/favicon.ico",
         ]),
     );
     console.log("[process: SW] Cache complete")
@@ -43,6 +44,11 @@ addEventListener("fetch", (event) => {
 });
 
 self.addEventListener("activate", (event) => {
-    event.waitUntil(caches.delete("v1"));
+    const cacheAllowlist = ["v3"];
+    event.waitUntil(caches.forEach((cache, cacheName) => {
+        if (!cacheAllowlist.includes(cacheName)) {
+            return caches.delete(cacheName);
+        }
+    }),);
     console.log("[process: SW] old caches deleted");
 });
