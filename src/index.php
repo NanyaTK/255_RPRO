@@ -5,15 +5,16 @@ function handlePostRequest() {
         $input = file_get_contents('php://input');
         $data = json_decode($input, true);
         // データをファイルに保存
-        
-        file_put_contents('subjects.json', json_encode($data));
+        file_put_contents('subjects.json', '$data',FILE_APPEND);
+        file_put_contents('subjects.json', json_encode($data),FILE_APPEND);
 
         // データを返す
         return $data;
     }
 
+    file_put_contents('subjects.json', 'aaaa',FILE_APPEND);
     // POSTデータがない場合はデフォルトのデータを返す
-    return json_decode(file_get_contents('subjects.json'), true);
+    return json_decode('["","","","","","","","","","","","","","","","","","","",""]', true);
 }
 
 // このスクリプトが直接リクエストされた場合にのみPOSTリクエストを処理

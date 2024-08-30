@@ -68,15 +68,19 @@ $mysqli->close();
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                });                
+                });              
             </script>
-            <?php
+            
+            <!--
+            php
                 // 時間割ローカル保存用file初期化
                 $fileContent = file_get_contents('subjects.json');
                 if($fileContent === "null" || $fileContent === ''){
                     file_put_contents('subjects.json', '["","","","","","","","","","","","","","","","","","","",""]');
                 }
-            ?>
+            -->
+            
+
             <div class="empty"></div>
             <button id="signup-btn">新規登録</button>
             <!-- ここから新規登録画面 -->
@@ -206,6 +210,12 @@ $mysqli->close();
                 // POSTリクエストがない場合のデフォルト値を取得
                 include 'index.php';
                 $subjects = handlePostRequest();
+
+                file_put_contents('subjects.json', '$subjects',FILE_APPEND);
+                file_put_contents('subjects.json', json_encode($subjects),FILE_APPEND);
+                $subjects = handlePostRequest();
+                file_put_contents('subjects.json', '$subjects2',FILE_APPEND);
+                file_put_contents('subjects.json', json_encode($subjects),FILE_APPEND);
 
                 // 1週間の時間割の科目数（曜日数×時間数）
                 $subjectsPerDay = count($subjects) / count($days);
