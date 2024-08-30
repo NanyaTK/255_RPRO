@@ -4,7 +4,7 @@ const addResourcesToCache = async (resources) => {
 }
 
 self.addEventListener("install", (event) => {
-    console.log("[Service Worker] Install");
+    console.log("[process: SW] Caching data...");
     event.waitUntil(
         addResourcesToCache([
             "/",
@@ -25,13 +25,17 @@ self.addEventListener("install", (event) => {
             "/icon-images/old_512.png",
         ]),
     );
+    console.log("[process: SW] Cache complete")
 });
 
 addEventListener("fetch", (event) => {
     event.respondWith(
         (async () => {
             const cachedResponse = await caches.match(event.request);
-            if (cachedResponse) return cachedResponse;
+            if (cachedResponse) {
+                console.log("[process: SW] respond from cache");
+                return cachedResponse;
+            };
             return fetch(event.request);
         })(),
     );
