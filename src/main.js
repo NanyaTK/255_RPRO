@@ -19,25 +19,22 @@ const registerServiceWorker = async () => {
 }
 /* ============================================================== */
 
-//バナーの代わりに表示するボタンを登録する
-registerInstallAppEvent(document.getElementById("install-btn"));
 
-//バナー表示をキャンセルし、代わりに表示するDOM要素を登録する関数
-//引数１：イベントを登録するHTMLElement
+/* ==================== インストールボタン関連 ==================== */
+registerInstallAppEvent(document.getElementById("install-btn"));
 function registerInstallAppEvent(element) {
     window.addEventListener('beforeinstallprompt', function (event) {
-        event.preventDefault(); //バナー表示をキャンセル
-        element.promptEvent = event; //eventを保持しておく
+        event.preventDefault();
+        element.promptEvent = event; 
         element.style.display = "flex";
         return false;
     });
-    //インストールダイアログの表示処理
     function installApp() {
         if (element.promptEvent) {
-            element.promptEvent.prompt(); //ダイアログ表示
+            element.promptEvent.prompt(); 
             element.promptEvent.userChoice.then(function (choice) {
                 element.style.display = "none"
-                element.promptEvent = null; //一度しか使えないため後始末
+                element.promptEvent = null; 
             });
         } else {
             alert('Error: PWA installation event not detected.\nお使いのデバイスにインストールできません．おま環であると考えられます．\n　　　　　 .┌┐\n　　　　　／ /\n　　　.／　/ i\n　　　|　( ﾟДﾟ) ＜そんなバナナ\n　　　|（ﾉi　　|）\n　　　|　 i　　i\n　　　＼_ヽ＿,ゝ\n　　　　 U" U');
@@ -45,6 +42,8 @@ function registerInstallAppEvent(element) {
     }
     element.addEventListener("click", installApp);
 }
+/* ============================================================== */
+
 
 /* ==================== 新規登録ボタンイベント ==================== */
 const signUpBtn = document.getElementById('signup-btn');
