@@ -28,6 +28,7 @@ function registerInstallAppEvent(element) {
     window.addEventListener('beforeinstallprompt', function (event) {
         event.preventDefault(); //バナー表示をキャンセル
         element.promptEvent = event; //eventを保持しておく
+        element.style.display = "flex";
         return false;
     });
     //インストールダイアログの表示処理
@@ -35,6 +36,7 @@ function registerInstallAppEvent(element) {
         if (element.promptEvent) {
             element.promptEvent.prompt(); //ダイアログ表示
             element.promptEvent.userChoice.then(function (choice) {
+                element.style.display = "none"
                 element.promptEvent = null; //一度しか使えないため後始末
             });
         } else {

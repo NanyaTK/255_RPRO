@@ -117,6 +117,7 @@ footer {
   color: white;
   border: 0;
   padding: 20px 35px;
+  display: none;
 }
 
 #popup-wrapper {
@@ -335,5 +336,6 @@ footer {
   #install-btn {
     font-size: xx-large;
     padding: 30px 40px;
+    display: none;
   }
 }
