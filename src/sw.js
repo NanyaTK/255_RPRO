@@ -59,8 +59,9 @@ self.addEventListener("activate", (event) => {
     event.waitUntil(
         deleteAllCaches().then(() => {
             console.log("[process: SW] old caches deleted");
-        })
+        }),
+        console.log("[process: SW] new caches installing..."),
+        event.waitUntil(installSW()),
     );
-    console.log("[process: SW] new caches installing...");
-    event.waitUntil(installSW());
+
 });
