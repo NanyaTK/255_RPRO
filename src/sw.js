@@ -4,6 +4,7 @@ const addResourcesToCache = async (resources) => {
 }
 
 self.addEventListener("install", (event) => {
+    console.log("[Service Worker] Install");
     event.waitUntil(
         addResourcesToCache([
             "/",
@@ -24,6 +25,7 @@ self.addEventListener("install", (event) => {
             "/icon-images/old_512.png",
         ]),
     );
+    alert("cache installed");
 });
 
 addEventListener("fetch", (event) => {
