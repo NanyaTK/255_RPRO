@@ -19,7 +19,7 @@ function handlePostRequest() {
 
 // このスクリプトが直接リクエストされた場合にのみPOSTリクエストを処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = handlePostRequest();
-    echo json_encode(['status' => 'success', 'message' => 'Data received', 'updatedSubjects' => $data]);
+    $data = isset($_POST['jsData']) ? $_POST['jsData'] : '値がありません';//handlePostRequest();
+    //echo json_encode(['status' => 'success', 'message' => 'Data received', 'updatedSubjects' => $data]);
     exit();
 }
