@@ -58,11 +58,12 @@ function deleteAllCaches() {
 function deleteAllCachesByManual() {
     deleteAllCaches().then((event) => {
         console.log("[process: SW] old caches deleted");
-        console.log("[process: SW] new caches installing...");
-        event.waitUntil(installSW());
     })
 }
 
 self.addEventListener("activate", (event) => {
-    event.waitUntil(deleteAllCachesByManual());
+    event.waitUntil(deleteAllCachesByManual()).then(() => {
+        console.log("[process: SW] new caches installing...");
+        event.waitUntil(installSW());
+    })
 });
