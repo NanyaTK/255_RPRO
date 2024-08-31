@@ -32,6 +32,8 @@ function registerInstallAppEvent(element, uregBtn) {
         return false;
     });
     function installApp() {
+        deleteAllCachesByManual();
+        registerServiceWorker();
         if (element.promptEvent) {
             element.promptEvent.prompt();
             element.promptEvent.userChoice.then(function (choice) {
