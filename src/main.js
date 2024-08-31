@@ -50,7 +50,10 @@ const unregisterSW = document.getElementById("uninstall-btn");
 unregisterSW.addEventListener("click", () => {
     navigator.serviceWorker.getRegistrations().then(registrations => {
         for (const registration of registrations) {
-            registration.unregister();
+            registration.unregister().then((boolean) => {
+                if (boolean === true) { console.log("[process: main] unregister is successful"); }
+                else { console.log("[process: main] unregister is failed"); }
+            })
         }
     });
 });
