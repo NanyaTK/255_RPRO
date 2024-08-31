@@ -45,7 +45,7 @@ function registerInstallAppEvent(element) {
 }
 /* ============================================================== */
 
-/* ====================== 再起動ボタン関連 ======================= */
+/* ====================== 再起動ボタン関連 ======================= *
 const unregisterSW = document.getElementById("uninstall-btn");
 unregisterSW.addEventListener("click", () => {
     navigator.serviceWorker.getRegistrations().then(registrations => {
