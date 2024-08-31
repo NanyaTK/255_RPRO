@@ -1,36 +1,9 @@
 <?php
-/*
-// POSTリクエスト処理を分ける
-function handlePostRequest() {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $input = file_get_contents('php://input');
-        $data = json_decode($input, true);
-        // データをファイルに保存
-        file_put_contents('subjects.json', '$data',FILE_APPEND);
-        file_put_contents('subjects.json', json_encode($data),FILE_APPEND);
-
-        // データを返す
-        return $data;
-    }
-
-    file_put_contents('subjects.json', 'aaaa',FILE_APPEND);
-    // POSTデータがない場合はデフォルトのデータを返す
-    return json_decode('["","","","","","","","","","","","","","","","","","","",""]', true);
-}
-
-// このスクリプトが直接リクエストされた場合にのみPOSTリクエストを処理
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = handlePostRequest();
-    echo json_encode(['status' => 'success', 'message' => 'Data received', 'updatedSubjects' => $data]);
-    exit();
-}*/
 // POSTされたデータを取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // JavaScriptから渡された値を取得
     $data_subjects = isset($_POST['jsData']) ? $_POST['jsData'] : '値がありません';
     $subjects = json_decode($data_subjects, true);
-    file_put_contents('subjects.json', 'POSTされた値',FILE_APPEND);
-    file_put_contents('subjects.json', json_encode($subjects),FILE_APPEND);
 }
 ?>
 
@@ -83,94 +56,6 @@ $mysqli->close();
         </header>
 
         <div class="main">
-
-    <script>
-        window.onload = function() {
-            // LocalStorageからデータを取得
-            let getval = localStorage.getItem('key');
-            let getData = JSON.parse(getval);
-
-            // JSONデータを文字列にして隠しフィールドにセット
-            document.getElementById('jsData').value = JSON.stringify(getData);
-
-            // 必要に応じてフォームを自動送信する
-            // document.getElementById('hiddenForm').submit();
-        };
-    </script>
-
-    <script>
-    /*
-    // 非同期関数を作成
-    async function sendData() {
-        // LocalStorageからデータを取得
-        let getval = localStorage.getItem('key');
-        let getData = JSON.parse(getval);
-        console.log(getData);
-
-        try {
-            // fetchをawaitで待機
-            let response = await fetch('main.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(getData) // 送信データ
-            });
-
-            // レスポンスのJSONをawaitで待機
-            let data = await response.json();
-
-            // サーバーからのレスポンスを確認
-            if (data.status === 'success') {
-                console.log('Updated Subjects:', data.updatedSubjects);
-            }
-            
-            // ここにAJAX完了後に実行したい処理を追加
-            console.log('AJAXが完了した後に実行される処理');
-
-        } catch (error) {
-            // エラー処理
-            console.error('Error:', error);
-        }
-    }
-
-    // 関数を呼び出す
-    sendData();
-    */
-/*
-        let getval = localStorage.getItem('key');
-        let getData = JSON.parse(getval);
-        console.log(getData);
-
-         // AJAXの送信リクエスト
-        fetch('main.php', {
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(getData)// 送信データ
-        })
-        .then(response => response.json())
-        .then(data  => {
-            if (data.status === 'success') {
-                console.log('Updated Subjects:', data.updatedSubjects);
-            }
-        })
-            .catch(error => {
-            console.error('Error:', error);
-        });  */  
-    </script>
-            
-            <!--
-            php
-                // 時間割ローカル保存用file初期化
-                $fileContent = file_get_contents('subjects.json');
-                if($fileContent === "null" || $fileContent === ''){
-                    file_put_contents('subjects.json', '["","","","","","","","","","","","","","","","","","","",""]');
-                }
-            -->
-            
-
             <div class="empty"></div>
             <button id="signup-btn">新規登録</button>
             <!-- ここから新規登録画面 -->
@@ -261,37 +146,15 @@ $mysqli->close();
                                 console.log(registDatas);
                                 const registJSON = JSON.stringify(registDatas);
                                 localStorage.setItem('key',registJSON);
-            let getval = localStorage.getItem('key');
-            let getData = JSON.parse(getval);
-
-                                document.getElementById('jsData').value = JSON.stringify(getData);
-                                location.reload();
-                                /*
                                 let getval = localStorage.getItem('key');
                                 let getData = JSON.parse(getval);
                                 console.log(getData);
-                                */
 
-                                /*
-                                // AJAXの送信リクエスト
-                                fetch('index.php', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify(getData)// 送信データ
-                                })
-                                .then(response => response.json())
-                                .then(data  => {
-                                  if (data.status === 'success') {
-                                        console.log('Updated Subjects:', data.updatedSubjects);
-                                        location.reload();
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error:', error);
-                                });
-                                */
+                                // JSONデータを文字列にして隠しフィールドにセット
+                                document.getElementById('jsData').value = JSON.stringify(getData);
+                                // 必要に応じてフォームを自動送信する
+                                // document.getElementById('hiddenForm').submit();
+                                location.reload();
                             }
                         </script>
                     </div>
@@ -307,13 +170,6 @@ $mysqli->close();
                 // 曜日と時間割の初期データ
                 $days = ['月', '火', '水', '木', '金'];
                 $times = ['1', '2', '3', '4'];
-
-                // POSTリクエストがない場合のデフォルト値を取得
-                // include 'index.php';
-                // $subjects = $data;
-
-                file_put_contents('subjects.json', '$subjects',FILE_APPEND);
-                file_put_contents('subjects.json', json_encode($subjects),FILE_APPEND);
 
                 // 1週間の時間割の科目数（曜日数×時間数）
                 $subjectsPerDay = count($subjects) / count($days);
