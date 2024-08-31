@@ -126,7 +126,7 @@ footer {
   color: white;
   border: 0;
   padding: 20px 35px;
-  display: none;
+  display: flex;
 }
 
 #popup-wrapper {
@@ -348,6 +348,6 @@ footer {
 
     #uninstall-btn {
       font-size: xx-large;
-      display: none;
+      display: flex;
     }
 }

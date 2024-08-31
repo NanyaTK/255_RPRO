@@ -22,20 +22,22 @@ const registerServiceWorker = async () => {
 
 
 /* ==================== インストールボタン関連 ==================== */
-registerInstallAppEvent(document.getElementById("install-btn"));
-function registerInstallAppEvent(element) {
+registerInstallAppEvent(document.getElementById("install-btn"), document.getElementById("uninstall-btn"));
+function registerInstallAppEvent(element, uregBtn) {
     registerServiceWorker();
     window.addEventListener('beforeinstallprompt', function (event) {
         event.preventDefault();
         element.promptEvent = event;
         element.style.display = "flex";
+        uregBtn.style.display = "none";
         return false;
     });
     function installApp() {
         if (element.promptEvent) {
             element.promptEvent.prompt();
             element.promptEvent.userChoice.then(function (choice) {
-                element.style.display = "none"
+                element.style.display = "none";
+                uregBtn.style.display = "flex";
                 element.promptEvent = null;
             });
         } else {
