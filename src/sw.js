@@ -62,7 +62,7 @@ function deleteAllCachesByManual() {
         //installSW();
     })
 }
-
+/*
 self.addEventListener("activate", (event) => {
     event.waitUntil(deleteAllCaches().then(() => {
         console.log("[process: SW] old caches deleted");
@@ -70,3 +70,4 @@ self.addEventListener("activate", (event) => {
         event.waitUntil(installSW());
     }));
 });
+*/
