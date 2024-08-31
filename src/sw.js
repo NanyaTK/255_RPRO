@@ -58,8 +58,8 @@ function deleteAllCaches() {
 function deleteAllCachesByManual() {
     deleteAllCaches().then(() => {
         console.log("[process: SW] old caches deleted");
-        console.log("[process: SW] new caches installing...");
-        installSW();
+        //console.log("[process: SW] new caches installing...");
+        //installSW();
     })
 }
 
