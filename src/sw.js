@@ -37,6 +37,7 @@ addEventListener("fetch", (event) => {
             const cachedResponse = await caches.match(event.request);
             if (cachedResponse) {
                 console.log("[process: SW] respond from cache");
+                alert("[process: SW] respond from cache");
                 return cachedResponse;
             };
             console.log("[process: SW] respond from network");
