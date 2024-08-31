@@ -51,7 +51,10 @@ unregisterSW.addEventListener("click", () => {
     navigator.serviceWorker.getRegistrations().then(registrations => {
         for (const registration of registrations) {
             registration.unregister().then((boolean) => {
-                if (boolean === true) { console.log("[process: main] unregister is successful"); }
+                if (boolean === true) {
+                    console.log("[process: main] unregister is successful");
+                    console.log("[process: main] Service worker uninstalled");
+                }
                 else { console.log("[process: main] unregister is failed"); }
             })
         }
