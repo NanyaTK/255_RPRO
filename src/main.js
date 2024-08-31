@@ -22,8 +22,8 @@ const registerServiceWorker = async () => {
 
 
 /* ==================== インストールボタン関連 ==================== */
-registerInstallAppEvent(document.getElementById("install-btn"), document.getElementById("uninstall-btn"));
-function registerInstallAppEvent(element, uregBtn) {
+registerInstallAppEvent(document.getElementById("install-btn"));
+function registerInstallAppEvent(element) {
     registerServiceWorker();
     window.addEventListener('beforeinstallprompt', function (event) {
         event.preventDefault();
@@ -32,8 +32,6 @@ function registerInstallAppEvent(element, uregBtn) {
         return false;
     });
     function installApp() {
-        deleteAllCachesByManual();
-        registerServiceWorker();
         if (element.promptEvent) {
             element.promptEvent.prompt();
             element.promptEvent.userChoice.then(function (choice) {
