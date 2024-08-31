@@ -55,12 +55,18 @@ function deleteAllCaches() {
     });
 }
 
+function deleteAllCachesByManual() {
+    deleteAllCaches().then(() => {
+        console.log("[process: SW] old caches deleted");
+        console.log("[process: SW] new caches installing...");
+        event.waitUntil(installSW());
+    })
+}
+
 self.addEventListener("activate", (event) => {
-    event.waitUntil(
-        deleteAllCaches().then(() => {
-            console.log("[process: SW] old caches deleted");
-            console.log("[process: SW] new caches installing...");
-            event.waitUntil(installSW());
-        })
-    );
+    event.waitUntil(deleteAllCachesByManual());
+});
+
+unregisterSW.addEventListener("click", (event) => {
+    event.waitUntil(deleteAllCachesByManual());
 });

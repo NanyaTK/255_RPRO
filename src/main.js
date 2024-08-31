@@ -36,7 +36,6 @@ function registerInstallAppEvent(element, uregBtn) {
             element.promptEvent.prompt();
             element.promptEvent.userChoice.then(function (choice) {
                 element.style.display = "none";
-                uregBtn.style.display = "flex";
                 element.promptEvent = null;
             });
         } else {
