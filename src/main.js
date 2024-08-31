@@ -24,6 +24,7 @@ const registerServiceWorker = async () => {
 /* ==================== インストールボタン関連 ==================== */
 registerInstallAppEvent(document.getElementById("install-btn"));
 function registerInstallAppEvent(element) {
+    registerServiceWorker();
     window.addEventListener('beforeinstallprompt', function (event) {
         event.preventDefault();
         element.promptEvent = event;
