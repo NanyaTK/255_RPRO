@@ -46,6 +46,16 @@ function registerInstallAppEvent(element) {
 }
 /* ============================================================== */
 
+const unregisterSW = document.getElementById("uninstall-btn");
+unregisterSW.addEventListener("click", () => {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (const registration of registrations) {
+            registration.unregister();
+        }
+    });
+});
+
+
 
 /* ==================== 新規登録ボタンイベント ==================== */
 const signUpBtn = document.getElementById('signup-btn');

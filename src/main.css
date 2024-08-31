@@ -120,6 +120,15 @@ footer {
   display: none;
 }
 
+#uninstall-btn {
+  margin: 20px auto;
+  background-color: rgb(0, 153, 128);
+  color: white;
+  border: 0;
+  padding: 20px 35px;
+  display: none;
+}
+
 #popup-wrapper {
   background-color: rgba(0, 0, 0, .5);
   position: absolute;
@@ -336,4 +345,9 @@ footer {
     font-size: xx-large;
     display: none;
   }
+
+    #uninstall-btn {
+      font-size: xx-large;
+      display: none;
+    }
 }

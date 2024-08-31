@@ -52,6 +52,7 @@ $mysqli->close();
             <div class="flex-byForce">
                 <button id="signup-btn">新規登録</button>
                 <button id="install-btn">インストール</button>
+                <button id="uninstall-btn">アンインストール</button>
             </div>
             <!-- ここから新規登録画面 -->
             <div id="popup-wrapper">
