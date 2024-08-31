@@ -159,6 +159,35 @@ footer {
   position: relative;
 }
 
+#absent-btn {
+  display: block;
+  margin: 20px auto;
+  background-color: rgb(155, 15, 128);
+  color: white;
+  border: 0;
+  padding: 20px 35px;
+}
+
+#popup-wrapper-absent {
+  background-color: rgba(0, 0, 0, .5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  display: none;
+}
+
+#popup-inside-absent {
+  text-align: center;
+  width: 80%;
+  /*max-width: px;*/
+  background: white;
+  margin: 10% auto;
+  padding: 20px;
+  position: relative;
+}
+
 #message a {
   background: purple;
   color: white;
@@ -311,3 +340,4 @@ footer {
 .select-class select:focus {
   outline: 1px solid #6acde3;
 }
+  

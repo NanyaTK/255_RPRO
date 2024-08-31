@@ -163,13 +163,17 @@ $mysqli->close();
                             <td class="day-column"><?php echo $day; ?></td>
                             <?php foreach ($times as $time) : ?>
                                 <td class="time-cell">
-                                    <?php echo "<br/>"; ?>
-                                    <?php echo "欠席回数"."/"."最大欠席回数"; ?>
-                                    <div id="popup-wrapper">
-                                        <div id="popup-inside">
+                                <button id="absent-btn">欠席</button>
+                                    <div id="popup-wrapper-absent">
+                                        <div id="popup-inside-absent">
                                             <div id="close">x</div>
+                                            <div id="message">
+                                            <h2>本当に欠席する？</h2>
+                                            <p>する</p>
+                                            </div>
                                         </div>
                                     </div>
+                                    <?php echo "欠席回数"."/"."最大欠席回数"; ?>
                                     <!-- <?php echo $absense."<br/>".$max_absense; ?> -->
                                 </td>
                             <?php endforeach; ?>
@@ -186,7 +190,9 @@ $mysqli->close();
 
     <script>
         const signUpBtn = document.getElementById('signup-btn');
+        const absentBtn = document.getElementById('absent-btn');
         const popupWrapper = document.getElementById('popup-wrapper');
+        const absentpopup = document.getElementById('popup-wrapper-absent');
         const close = document.getElementById('close');
 
         // ボタンをクリックしたときにポップアップを表示させる
@@ -194,10 +200,20 @@ $mysqli->close();
             popupWrapper.style.display = "block";
         });
 
+        absentBtn.addEventListener('click', () => {
+            absentpopup.style.display = "block";
+        });
+
         // ポップアップの外側又は「x」のマークをクリックしたときポップアップを閉じる
         popupWrapper.addEventListener('click', e => {
             if (e.target.id === popupWrapper.id || e.target.id === close.id) {
                 popupWrapper.style.display = 'none';
+            }
+        });
+
+        absentpopup.addEventListener('click', e => {
+            if (e.target.id === absentpopup.id || e.target.id === close.id) {
+                absentpopup.style.display = 'none';
             }
         });
     </script>
