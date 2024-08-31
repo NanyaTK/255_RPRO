@@ -66,7 +66,3 @@ function deleteAllCachesByManual() {
 self.addEventListener("activate", (event) => {
     event.waitUntil(deleteAllCachesByManual());
 });
-
-unregisterSW.addEventListener("click", (event) => {
-    event.waitUntil(deleteAllCachesByManual());
-});

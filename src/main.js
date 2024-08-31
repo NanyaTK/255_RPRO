@@ -56,6 +56,7 @@ unregisterSW.addEventListener("click", () => {
             })
         }
     });
+    deleteAllCachesByManual();
 });
 
 
