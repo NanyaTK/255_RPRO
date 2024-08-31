@@ -59,11 +59,10 @@ unregisterSW.addEventListener("click", () => {
                     else { console.log("[process: main] unregister is failed"); }
                 })
             }
-        } else {
-            console.log("[process: main] Service worker not found");
         }
     });
     deleteAllCachesByManual();
+    window.location.reload();
 });
 
 
