@@ -83,11 +83,6 @@ $mysqli->close();
         </header>
 
         <div class="main">
-        <form method="POST" action="main.php" id="hiddenForm">
-        <!-- JSで値を設定する隠しフィールド -->
-        <input type="hidden" name="jsData" id="jsData">
-        <button type="submit">送信</button>
-    </form>
 
     <script>
         window.onload = function() {
@@ -233,7 +228,11 @@ $mysqli->close();
                                 <?php endforeach; ?>
                             </table>
                         </div>
-                        <button id="finalize-btn" onclick="getAllSelectedOptionIds()">確定する</button>
+                        <form method="POST" action="main.php" id="hiddenForm">
+                        <!-- JSで値を設定する隠しフィールド -->
+                        <input type="hidden" name="jsData" id="jsData">
+                        <button id="finalize-btn" onclick="getAllSelectedOptionIds()" type = "submit">確定する</button>
+                        </form>
                         <p id="result"></p>
 
                         <p id="result"></p>
@@ -262,6 +261,10 @@ $mysqli->close();
                                 console.log(registDatas);
                                 const registJSON = JSON.stringify(registDatas);
                                 localStorage.setItem('key',registJSON);
+            let getval = localStorage.getItem('key');
+            let getData = JSON.parse(getval);
+
+                                document.getElementById('jsData').value = JSON.stringify(getData);
                                 location.reload();
                                 /*
                                 let getval = localStorage.getItem('key');
@@ -298,6 +301,9 @@ $mysqli->close();
             <!-- ここから時間割表示　 -->
             <div class="jikanwari">
                 <?php
+                if(!$subjects){
+                    $subjects = ["","","","","","","","","","","","","","","","","","","",""];
+                }
                 // 曜日と時間割の初期データ
                 $days = ['月', '火', '水', '木', '金'];
                 $times = ['1', '2', '3', '4'];
