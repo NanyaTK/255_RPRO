@@ -163,16 +163,7 @@ $mysqli->close();
                             <td class="day-column"><?php echo $day; ?></td>
                             <?php foreach ($times as $time) : ?>
                                 <td class="time-cell">
-                                <button id="absent-btn">欠席</button>
-                                    <div id="popup-wrapper-absent">
-                                        <div id="popup-inside-absent">
-                                            <div id="close">x</div>
-                                            <div id="message">
-                                            <h2>本当に欠席する？</h2>
-                                            <p>する</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <button class ="open-popup-btn">教科の名前</button>
                                     <?php echo "欠席回数"."/"."最大欠席回数"; ?>
                                     <!-- <?php echo $absense."<br/>".$max_absense; ?> -->
                                 </td>
@@ -182,6 +173,13 @@ $mysqli->close();
                 </table>
             </div>
         </div>
+
+        <div class="overlay-absent" id="overlay-absent"></div>
+        <div class="popup-absent" id="popup-absent">
+            <span class="close-absent" id="close-absent">&times;</span>
+            本当に欠席しますか？
+            <button class = "absent-btn">欠席する</button>
+        </div>
         <!-- ここまで時間割表示　 -->
         <footer>
             &copy; 2024 留年プロテクタープロジェクト
@@ -190,18 +188,12 @@ $mysqli->close();
 
     <script>
         const signUpBtn = document.getElementById('signup-btn');
-        const absentBtn = document.getElementById('absent-btn');
         const popupWrapper = document.getElementById('popup-wrapper');
-        const absentpopup = document.getElementById('popup-wrapper-absent');
         const close = document.getElementById('close');
 
         // ボタンをクリックしたときにポップアップを表示させる
         signUpBtn.addEventListener('click', () => {
             popupWrapper.style.display = "block";
-        });
-
-        absentBtn.addEventListener('click', () => {
-            absentpopup.style.display = "block";
         });
 
         // ポップアップの外側又は「x」のマークをクリックしたときポップアップを閉じる
@@ -211,10 +203,35 @@ $mysqli->close();
             }
         });
 
-        absentpopup.addEventListener('click', e => {
-            if (e.target.id === absentpopup.id || e.target.id === close.id) {
-                absentpopup.style.display = 'none';
+        document.addEventListener('DOMContentLoaded', () => {
+            const openButtons = document.querySelectorAll('.open-popup-btn');
+            const overlay = document.getElementById('overlay-absent');
+            const popup = document.getElementById('popup-absent');
+            const closeButton = document.getElementById('close-absent');
+            const absentButton = document.querySelectorAll('.absent-btn');
+
+            // ポップアップを表示する関数
+            function showPopup() {
+                overlay.style.display = 'block';
+                popup.style.display = 'block';
             }
+
+            // ポップアップを閉じる関数
+            function hidePopup() {
+                overlay.style.display = 'none';
+                popup.style.display = 'none';
+            }
+
+            // 各ボタンにクリックイベントを追加
+            openButtons.forEach(button => {
+                button.addEventListener('click', showPopup);
+            });
+
+            // 閉じるボタンにクリックイベントを追加
+            closeButton.addEventListener('click', hidePopup);
+
+            // オーバーレイをクリックしたときにもポップアップを閉じる
+            overlay.addEventListener('click', hidePopup);
         });
     </script>
 
