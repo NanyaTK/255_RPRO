@@ -1,8 +1,23 @@
+/*
+ * sw.js
+ * 
+ * sw.js is the abbreviation for ServiceWorker.js
+ * This file includes function of PWA.
+ */
+
+/**
+ * The file path to be cached passed in the resource
+ * argument is added to the cache.
+ * @param {*} resources File paths to be cached
+ */
 const addResourcesToCache = async (resources) => {
     const cache = await caches.open("v3");
     await cache.addAll(resources);
 }
 
+/**
+ * Function of saving caches
+ */
 function installSW() {
     console.log("[process: SW] Caching data...");
     addResourcesToCache([
@@ -27,10 +42,19 @@ function installSW() {
     console.log("[process: SW] Cache complete");
 }
 
+/**
+ * Detects SW installation events and executes cache functions
+ */
 self.addEventListener("install", (event) => {
     event.waitUntil(installSW());
 });
 
+/**
+ * It detects requests from the browser, hijacks them, 
+ * and returns data stored in the cache. If there is 
+ * no match, it retrieves the data from the network 
+ * and returns it.
+ */
 addEventListener("fetch", (event) => {
     event.respondWith(
         (async () => {
@@ -45,6 +69,10 @@ addEventListener("fetch", (event) => {
     );
 });
 
+/**
+ * Delete all caches
+ * @returns 
+ */
 function deleteAllCaches() {
     return caches.keys().then((cacheNames) => {
         return Promise.all(
@@ -55,6 +83,10 @@ function deleteAllCaches() {
     });
 }
 
+/**
+ * Call this when you want to manually delete a cache.
+ * It just wraps deleteAllCaches().
+ */
 function deleteAllCachesByManual() {
     deleteAllCaches().then(() => {
         console.log("[process: SW] old caches deleted");
@@ -63,6 +95,9 @@ function deleteAllCachesByManual() {
     })
 }
 
+/**
+ * This will be executed automatically to Re-caching when the SW is updated.
+ */
 self.addEventListener("activate", (event) => {
     event.waitUntil(deleteAllCaches().then(() => {
         console.log("[process: SW] old caches deleted");
