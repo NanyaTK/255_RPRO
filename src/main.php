@@ -152,13 +152,9 @@ $mysqli->close();
 
                                 // JSONデータを文字列にして隠しフィールドにセット
                                 document.getElementById('jsData').value = JSON.stringify(getData);
-                                // 必要に応じてフォームを自動送信する
-                                // document.getElementById('hiddenForm').submit();
 
                                 // フラグを設定して、次回ロード時にフォームが自動送信されるようにする
                                 localStorage.setItem('flag', 1);
-                                // submitCountを初期化する（再度getAllSelectedOptionIdsが実行されたときに再送信を許可）
-                                //localStorage.setItem('submitCount', 1);
                                 location.reload();
                             }
                         </script>
@@ -245,66 +241,38 @@ $mysqli->close();
         });
     </script>
 
-    <!-- ここからJS-phpデータ渡しについて -->
+    <!-- ここからブラウザ更新時のJS-phpデータ渡しについて -->
     <script>
+        // 保存された日時がある場合
         const savedTime = localStorage.getItem('savedTime');
         const savedTimestamp = parseInt(savedTime, 10); // 文字列を数値に変換
-            
-        // 保存された日時がある場合
-        const currentTime = new Date().getTime(); // 現在のタイムスタンプを取得
-        localStorage.setItem('savedTime', currentTime); // タイムスタンプを localStorage に保存
+
+        // 現在のタイムスタンプを取得
+        const currentTime = new Date().getTime(); 
+        const currentTimestamp = parseInt(currentTime, 10); // 文字列を数値に変換
+        localStorage.setItem('savedTime', currentTimestamp); // savedTime を更新
 
         // 時間の差をミリ秒で計算
-        const timeDifference = currentTime - savedTimestamp;
+        const timeDifference = currentTimestamp - savedTimestamp;
 
         // ミリ秒を秒、分、時間、日に変換
         const seconds = Math.floor(timeDifference / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
+        //const minutes = Math.floor(seconds / 60);
+        //const hours = Math.floor(minutes / 60);
+        //const days = Math.floor(hours / 24);
             
-        // 現在の時刻が保存された時刻より進んでいるかチェック
-        if (seconds >= 1) {
-            // フォーム送信回数のカウンターをlocalStorageで管理
-            //const submitCount = localStorage.getItem('submitCount') ? parseInt(localStorage.getItem('submitCount')) : 0;
-            // 現在の日時を取得
-            const now = new Date();
+        // 現在の時刻が保存された時刻より進んでいて、時間割のデータフラグが立っている場合のみフォーム送信
+        if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
+            let getval1 = localStorage.getItem('key');
+            let getData2 = JSON.parse(getval1);
 
-            // フラグが立っていて、送信回数が1回未満の場合のみフォームを送信
-            if (parseInt(localStorage.getItem('flag'))/* && submitCount < 1*/) {
-                let getval1 = localStorage.getItem('key');
-                let getData2 = JSON.parse(getval1);
-                console.log(getData2);
-
-                // JSONデータを文字列にして隠しフィールドにセット
-                document.getElementById('jsData').value = JSON.stringify(getData2);
-
-                // フォームを自動送信する
-                document.getElementById('hiddenForm').submit();
-
-                // 送信回数を1増やしてlocalStorageに保存
-                //localStorage.setItem('submitCount', submitCount + 1);
-            }
+            // JSONデータを文字列にして隠しフィールドにセット
+            document.getElementById('jsData').value = JSON.stringify(getData2);
+            // フォームを自動送信する
+            document.getElementById('hiddenForm').submit();
         }else {
             console.log('現在の時刻は保存された時刻と同じか、それ以前です。');
         }
-
-            
-
-                
-            //window.onload = function() {
-            //};
-            /*
-            window.onload = function(){
-                let getval = localStorage.getItem('key');
-                let getData = JSON.parse(getval);
-                console.log(getData);
-
-                // JSONデータを文字列にして隠しフィールドにセット
-                document.getElementById('jsData').value = JSON.stringify(getData);
-                // 必要に応じてフォームを自動送信する
-                // document.getElementById('hiddenForm').submit();
-            };*/
     </script>
 </body>
 
