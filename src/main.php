@@ -197,6 +197,7 @@ $mysqli->close();
                                 <td class="time-cell">
                                     <!-- ここで科目設定 -->
                                     <?php
+                                    echo ('<button class ="open-popup-btn">');
                                     if ($subjectsByDay[$index][$timeIndex - 1]) {
                                         if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
                                             // 国語IVのid対策用
@@ -206,10 +207,12 @@ $mysqli->close();
                                         }
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
-                                        echo ('<button class="open-popup-btn">' + $row["科目名"] + '</button>');
-                                        // echo "欠席回数" . "/" . "最大欠席回数"; 
-                                    } else
+                                        echo ($row["科目名"]);
+                                    } else {
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
+                                    }
+                                    echo ('</button>');
+                                    echo "欠席回数" . "/" . "最大欠席回数";
                                     ?>
                                     <!-- ここまで科目設定 -->
                                 </td>
