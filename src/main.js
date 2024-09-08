@@ -3,7 +3,7 @@ const registerServiceWorker = async () => {
     if ("serviceWorker" in navigator) {
         try {
             const registration = await navigator.serviceWorker.register("./sw.js", {
-                scope: "/",
+                scope: "/src/",
             });
             if (registration.installing) {
                 console.log("[process: main] Service worker installing");
@@ -14,7 +14,7 @@ const registerServiceWorker = async () => {
             }
         } catch (error) {
             console.error(`[process: main] Registration failed with ${error}`);
-            alert("Cookieをブロックしていると正常動作しません．");
+            alert("[process: main -> SW] Registration failed");
         }
     }
 }

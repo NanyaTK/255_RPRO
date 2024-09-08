@@ -21,7 +21,6 @@ const addResourcesToCache = async (resources) => {
 function installSW() {
     console.log("[process: SW] Caching data...");
     addResourcesToCache([
-        "/",
         "/main.php",
         "/main.js",
         "/sw.js",

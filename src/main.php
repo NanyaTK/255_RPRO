@@ -21,20 +21,19 @@ if ($mysqli->connect_error) {
 $mysqli->query("use rpro");
 $result = $mysqli->prepare(
     "SELECT
-            `ID`
-            ,`科目ID`
-            , `学科ID`
-            , `科目名`
-            , `講義回数`
-            , `最大欠席可能回数`
-            , `特殊欠席条件`
-            , `評価割合`
-            , `科目分類`
-        FROM
-            rpro.classtable
-        ORDER BY
-            `ID` DESC"
-
+    `ID`
+    ,`科目ID`
+    , `学科ID`
+    , `科目名`
+    , `講義回数`
+    , `最大欠席可能回数`
+    , `特殊欠席条件`
+    , `評価割合`
+    , `科目分類`
+FROM
+    rpro.classtable
+ORDER BY
+    `ID` DESC"
 );
 $result->execute();
 $time_schdule = $result->get_result();
@@ -150,6 +149,9 @@ $mysqli->close();
                 // 各曜日ごとに科目を分割
                 $subjectsByDay = array_chunk($subjects, $subjectsPerDay);
                 ?>
+                <script>
+                    console.log('[process: main] subjects finish');
+                </script>
                 <table class="timetable">
                     <tr>
                         <th class="day-column">曜日</th>
@@ -162,8 +164,9 @@ $mysqli->close();
                             <td class="day-column"><?php echo $day; ?></td>
                             <?php foreach ($times as $timeIndex) : ?>
                                 <td class="time-cell">
+                                    <!-- ここで科目設定 -->
                                     <?php
-                                    // ここで科目設定
+                                    echo ('<button class ="open-popup-btn">');
                                     if ($subjectsByDay[$index][$timeIndex - 1]) {
                                         if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
                                             // 国語IVのid対策用
@@ -173,13 +176,14 @@ $mysqli->close();
                                         }
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
-                                        echo ('<button class ="open-popup-btn">' + $row["科目名"] + '</button>');
-                                        echo "欠席回数" . "/" . "最大欠席回数";
-                                    } else
+                                        echo ($row["科目名"]);
+                                    } else {
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
-
-                                    // ここまで科目設定
+                                    }
+                                    echo ('</button>');
+                                    echo "欠席回数" . "/" . "最大欠席回数";
                                     ?>
+                                    <!-- ここまで科目設定 -->
                                 </td>
                             <?php endforeach; ?>
                         </tr>
@@ -196,10 +200,11 @@ $mysqli->close();
             ?>
             <script type="text/javascript" src="main.js"></script>
         </div>
-        <footer>
-            &copy; 2024 留年プロテクタープロジェクト
-        </footer>
+
     </div>
+    <footer>
+        &copy; 2024 留年プロテクタープロジェクト
+    </footer>
 </body>
 
 </html>
