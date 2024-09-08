@@ -206,7 +206,8 @@ $mysqli->close();
                                         }
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
-                                        echo ($row["科目名"]);
+                                        echo ('<button class ="open-popup-btn">' + $row["科目名"] + '</button>');
+                                        echo "欠席回数" . "/" . "最大欠席回数";
                                     } else
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                     ?>
@@ -217,6 +218,13 @@ $mysqli->close();
                     <?php endforeach; ?>
                 </table>
             </div>
+        </div>
+
+        <div class="overlay-absent" id="overlay-absent"></div>
+        <div class="popup-absent" id="popup-absent">
+            <span class="close-absent" id="close-absent">&times;</span>
+            本当に欠席しますか？
+            <button class="absent-btn">欠席する</button>
         </div>
         <!-- ここまで時間割表示　 -->
         <footer>
@@ -239,6 +247,37 @@ $mysqli->close();
             if (e.target.id === popupWrapper.id || e.target.id === close.id) {
                 popupWrapper.style.display = 'none';
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const openButtons = document.querySelectorAll('.open-popup-btn');
+            const overlay = document.getElementById('overlay-absent');
+            const popup = document.getElementById('popup-absent');
+            const closeButton = document.getElementById('close-absent');
+            const absentButton = document.querySelectorAll('.absent-btn');
+
+            // ポップアップを表示する関数
+            function showPopup() {
+                overlay.style.display = 'block';
+                popup.style.display = 'block';
+            }
+
+            // ポップアップを閉じる関数
+            function hidePopup() {
+                overlay.style.display = 'none';
+                popup.style.display = 'none';
+            }
+
+            // 各ボタンにクリックイベントを追加
+            openButtons.forEach(button => {
+                button.addEventListener('click', showPopup);
+            });
+
+            // 閉じるボタンにクリックイベントを追加
+            closeButton.addEventListener('click', hidePopup);
+
+            // オーバーレイをクリックしたときにもポップアップを閉じる
+            overlay.addEventListener('click', hidePopup);
         });
     </script>
 
