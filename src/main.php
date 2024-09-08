@@ -255,6 +255,7 @@ $mysqli->close();
 
         // 時間の差をミリ秒で計算
         const timeDifference = currentTimestamp - savedTimestamp;
+        console.log("[process: main]" + timeDifference);
 
         // ミリ秒を秒、分、時間、日に変換
         const seconds = Math.floor(timeDifference / 1000);
