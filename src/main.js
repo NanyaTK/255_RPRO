@@ -111,11 +111,49 @@ function getAllSelectedOptionIds() {
         registDatas.push(registData);
     }
 
-    console.log(registDatas);
+    console.log("[process: main] " + registDatas);
     const registJSON = JSON.stringify(registDatas);
     localStorage.setItem('key', registJSON);
     let getval = localStorage.getItem('key');
     let getData = JSON.parse(getval);
-    console.log(getData);
+    console.log("[process: main] " + getData);
+
+    // JSONデータを文字列にして隠しフィールドにセット
+    document.getElementById('jsData').value = JSON.stringify(getData);
+
+    // フラグを設定して、次回ロード時にフォームが自動送信されるようにする
+    localStorage.setItem('flag', 1);
+    location.reload();
+}
+/* ============================================================== */
+
+/* ======================= JS-phpデータ渡し ====================== */
+// 保存された日時がある場合
+const savedTime = localStorage.getItem('savedTime');
+const savedTimestamp = parseInt(savedTime, 10); // 文字列を数値に変換
+
+// 現在のタイムスタンプを取得
+const currentTime = new Date().getTime();
+const currentTimestamp = parseInt(currentTime, 10); // 文字列を数値に変換
+localStorage.setItem('savedTime', currentTimestamp); // savedTime を更新
+
+// 時間の差をミリ秒で計算
+const timeDifference = currentTimestamp - savedTimestamp;
+console.log("[process: main] " + timeDifference);
+
+// 時間差を1秒で切り捨て（1秒未満だと0となる）
+const seconds = Math.floor(timeDifference / 1000);
+
+// 現在の時刻が保存された時刻より進んでいて、時間割のデータフラグが立っている場合のみフォーム送信
+if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
+    let getval1 = localStorage.getItem('key');
+    let getData2 = JSON.parse(getval1);
+
+    // JSONデータを文字列にして隠しフィールドにセット
+    document.getElementById('jsData').value = JSON.stringify(getData2);
+    // フォームを自動送信する
+    document.getElementById('hiddenForm').submit();
+} else {
+    console.log('[process: main] The current time is earlier than or equal to the saved time.');
 }
 /* ============================================================== */
