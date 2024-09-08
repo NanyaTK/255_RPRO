@@ -1,3 +1,12 @@
+<?php
+// POSTされたデータを取得
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // JavaScriptから渡された値を取得
+    $data_subjects = isset($_POST['jsData']) ? $_POST['jsData'] : '値がありません';
+    $subjects = json_decode($data_subjects, true);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -25,10 +34,12 @@ $result = $mysqli->prepare(
             rpro.classtable
         ORDER BY
             `ID` DESC"
+
 );
 $result->execute();
 $time_schdule = $result->get_result();
 $row_data = $time_schdule->fetch_array(MYSQLI_NUM);
+
 $mysqli->close();
 ?>
 
@@ -109,8 +120,49 @@ $mysqli->close();
                                 <?php endforeach; ?>
                             </table>
                         </div>
-                        <button id="finalize-btn" onclick="getAllSelectedOptionIds()">確定する</button>
+                        <form method="POST" action="main.php" id="hiddenForm">
+                            <!-- JSで値を設定する隠しフィールド -->
+                            <input type="hidden" name="jsData" id="jsData">
+                            <button id="finalize-btn" onclick="getAllSelectedOptionIds()" type="submit">確定する</button>
+                        </form>
                         <p id="result"></p>
+                        <script>
+                            function getAllSelectedOptionIds() {
+                                // .subject-selectクラスを持つ全てのselect要素を取得
+                                const selectElements = document.querySelectorAll('.subject-select');
+                                const selectedOptionIds = [];
+                                // 各select要素をループして選択されたoptionのidを取得
+                                selectElements.forEach(selectElement => {
+                                    const selectedOption = selectElement.options[selectElement.selectedIndex];
+                                    const selectedOptionId = selectedOption.id;
+                                    selectedOptionIds.push(selectedOptionId); // 配列に追加
+                                });
+
+                                // 結果を表示
+                                document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
+                                console.log("[process: main] " + selectedOptionIds);
+                                const registDatas = [];
+
+                                for (let i = 0; i < selectedOptionIds.length; i++) {
+                                    const registData = selectedOptionIds[i];
+                                    registDatas.push(registData);
+                                }
+
+                                console.log("[process: main] " + registDatas);
+                                const registJSON = JSON.stringify(registDatas);
+                                localStorage.setItem('key', registJSON);
+                                let getval = localStorage.getItem('key');
+                                let getData = JSON.parse(getval);
+                                console.log("[process: main] " + getData);
+
+                                // JSONデータを文字列にして隠しフィールドにセット
+                                document.getElementById('jsData').value = JSON.stringify(getData);
+
+                                // フラグを設定して、次回ロード時にフォームが自動送信されるようにする
+                                localStorage.setItem('flag', 1);
+                                location.reload();
+                            }
+                        </script>
                     </div>
                 </div>
             </div>
@@ -118,10 +170,23 @@ $mysqli->close();
             <!-- ここから時間割表示　 -->
             <div class="jikanwari">
                 <?php
+                if (!$subjects) {
+                    // POSTデータが無い時の時間割データの初期値
+                    $subjects = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+                }
                 // 曜日と時間割の初期データ
                 $days = ['月', '火', '水', '木', '金'];
                 $times = ['1', '2', '3', '4'];
+
+                // 1週間の時間割の科目数（曜日数×時間数）
+                $subjectsPerDay = count($subjects) / count($days);
+
+                // 各曜日ごとに科目を分割
+                $subjectsByDay = array_chunk($subjects, $subjectsPerDay);
                 ?>
+                <script>
+                    console.log('[process: main] subjects finish');
+                </script>
                 <table class="timetable">
                     <tr>
                         <th class="day-column">曜日</th>
@@ -129,13 +194,27 @@ $mysqli->close();
                             <th><?php echo $time; ?></th>
                         <?php endforeach; ?>
                     </tr>
-                    <?php foreach ($days as $day) : ?>
+                    <?php foreach ($days as $index => $day) : ?>
                         <tr>
                             <td class="day-column"><?php echo $day; ?></td>
-                            <?php foreach ($times as $time) : ?>
+                            <?php foreach ($times as $timeIndex) : ?>
                                 <td class="time-cell">
-                                    <!-- ここに科目を設定 -->
-                                    <!-- 例: Math, Science, History -->
+                                    <!-- ここで科目設定 -->
+                                    <?php
+                                    if ($subjectsByDay[$index][$timeIndex - 1]) {
+                                        if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
+                                            // 国語IVのid対策用
+                                            $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
+                                        } else {
+                                            $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
+                                        }
+                                        $time_schdule->data_seek($row_no);
+                                        $row = $time_schdule->fetch_assoc();
+                                        echo ($row["科目名"]);
+                                    } else
+                                        echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
+                                    ?>
+                                    <!-- ここまで科目設定 -->
                                 </td>
                             <?php endforeach; ?>
                         </tr>
@@ -149,6 +228,58 @@ $mysqli->close();
     <footer>
         &copy; 2024 留年プロテクタープロジェクト
     </footer>
+    <script>
+        const signUpBtn = document.getElementById('signup-btn');
+        const popupWrapper = document.getElementById('popup-wrapper');
+        const close = document.getElementById('close');
+
+        // ボタンをクリックしたときにポップアップを表示させる
+        signUpBtn.addEventListener('click', () => {
+            popupWrapper.style.display = "block";
+        });
+
+        // ポップアップの外側又は「x」のマークをクリックしたときポップアップを閉じる
+        popupWrapper.addEventListener('click', e => {
+            if (e.target.id === popupWrapper.id || e.target.id === close.id) {
+                popupWrapper.style.display = 'none';
+            }
+        });
+    </script>
+
+    <!-- ここからブラウザ更新時のJS-phpデータ渡しについて -->
+    <script>
+        // 保存された日時がある場合
+        const savedTime = localStorage.getItem('savedTime');
+        const savedTimestamp = parseInt(savedTime, 10); // 文字列を数値に変換
+
+        // 現在のタイムスタンプを取得
+        const currentTime = new Date().getTime();
+        const currentTimestamp = parseInt(currentTime, 10); // 文字列を数値に変換
+        localStorage.setItem('savedTime', currentTimestamp); // savedTime を更新
+
+        // 時間の差をミリ秒で計算
+        const timeDifference = currentTimestamp - savedTimestamp;
+        console.log("[process: main] " + timeDifference);
+
+        // ミリ秒を秒、分、時間、日に変換
+        const seconds = Math.floor(timeDifference / 1000);
+        //const minutes = Math.floor(seconds / 60);
+        //const hours = Math.floor(minutes / 60);
+        //const days = Math.floor(hours / 24);
+
+        // 現在の時刻が保存された時刻より進んでいて、時間割のデータフラグが立っている場合のみフォーム送信
+        if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
+            let getval1 = localStorage.getItem('key');
+            let getData2 = JSON.parse(getval1);
+
+            // JSONデータを文字列にして隠しフィールドにセット
+            document.getElementById('jsData').value = JSON.stringify(getData2);
+            // フォームを自動送信する
+            document.getElementById('hiddenForm').submit();
+        } else {
+            console.log('[process: main] The current time is earlier than or equal to the saved time.');
+        }
+    </script>
 </body>
 
 </html>
