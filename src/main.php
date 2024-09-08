@@ -136,7 +136,7 @@ $mysqli->close();
 
                                 // 結果を表示
                                 document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
-                                console.log("[process: main]" + selectedOptionIds);
+                                console.log("[process: main] " + selectedOptionIds);
                                 const registDatas = [];
 
                                 for (let i = 0; i < selectedOptionIds.length; i++) {
@@ -144,12 +144,12 @@ $mysqli->close();
                                     registDatas.push(registData);
                                 }
 
-                                console.log("[process: main]" + registDatas);
+                                console.log("[process: main] " + registDatas);
                                 const registJSON = JSON.stringify(registDatas);
                                 localStorage.setItem('key', registJSON);
                                 let getval = localStorage.getItem('key');
                                 let getData = JSON.parse(getval);
-                                console.log("[process: main]" + getData);
+                                console.log("[process: main] " + getData);
 
                                 // JSONデータを文字列にして隠しフィールドにセット
                                 document.getElementById('jsData').value = JSON.stringify(getData);
@@ -255,7 +255,7 @@ $mysqli->close();
 
         // 時間の差をミリ秒で計算
         const timeDifference = currentTimestamp - savedTimestamp;
-        console.log("[process: main]" + timeDifference);
+        console.log("[process: main] " + timeDifference);
 
         // ミリ秒を秒、分、時間、日に変換
         const seconds = Math.floor(timeDifference / 1000);
