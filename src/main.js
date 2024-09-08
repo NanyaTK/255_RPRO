@@ -14,7 +14,7 @@ const registerServiceWorker = async () => {
             }
         } catch (error) {
             console.error(`[process: main] Registration failed with ${error}`);
-            alert("Cookieをブロックしていると正常動作しません．");
+            alert("[process: main -> SW] Registration failed");
         }
     }
 }
