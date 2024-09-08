@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="ja">
 
 <?php
-$mysqli = new mysqli("127.0.0.1","rpro_u","uhe6WTScplbJ","rpro",3306);
+$mysqli = new mysqli("127.0.0.1", "rpro_u", "uhe6WTScplbJ", "rpro", 3306);
 if ($mysqli->connect_error) {
     echo $mysqli->connect_error;
     exit();
@@ -20,7 +20,7 @@ if ($mysqli->connect_error) {
 }
 $mysqli->query("use rpro");
 $result = $mysqli->prepare(
-"SELECT
+    "SELECT
     `ID`
     ,`科目ID`
     , `学科ID`
@@ -33,7 +33,8 @@ $result = $mysqli->prepare(
 FROM
     rpro.classtable
 ORDER BY
-    `ID` DESC");
+    `ID` DESC"
+);
 $result->execute();
 
 $time_schdule = $result->get_result();
@@ -65,14 +66,14 @@ $mysqli->close();
                     <div id="message">
                         <h2>新規登録</h2>
                         <p>時間割を設定してください</p>
-                            <label class = "select-class">
-                                <select>
-                                    <option id = 13>電気情報工学科電気電子コース4年</option>
-                                    <option id = 14>電気情報工学科情報工学コース4年</option>
-                                    <option id = 17>電気情報工学科電気電子コース5年</option>
-                                    <option id = 18>電気情報工学科情報工学コース5年</option>
-                                </select>
-                            </label>
+                        <label class="select-class">
+                            <select>
+                                <option id=13>電気情報工学科電気電子コース4年</option>
+                                <option id=14>電気情報工学科情報工学コース4年</option>
+                                <option id=17>電気情報工学科電気電子コース5年</option>
+                                <option id=18>電気情報工学科情報工学コース5年</option>
+                            </select>
+                        </label>
                         <div class="jikanwari">
                             <?php
                             // 曜日と時間割の初期データ
@@ -99,10 +100,10 @@ $mysqli->close();
                                                     <select id="<?php echo $selectId; ?>" class="subject-select">
                                                         <option>空コマ</option>
                                                         <?php
-                                                        for($row_no = $time_schdule->num_rows - 1; $row_no >= 0; $row_no--){
+                                                        for ($row_no = $time_schdule->num_rows - 1; $row_no >= 0; $row_no--) {
                                                             $time_schdule->data_seek($row_no);
                                                             $row = $time_schdule->fetch_assoc();
-                                                            echo '<option id = '.$row["ID"].'>'.$row["科目名"].'</option>';
+                                                            echo '<option id = ' . $row["ID"] . '>' . $row["科目名"] . '</option>';
                                                         }
                                                         ?>
                                                     </select>
@@ -114,9 +115,9 @@ $mysqli->close();
                             </table>
                         </div>
                         <form method="POST" action="main.php" id="hiddenForm">
-                        <!-- JSで値を設定する隠しフィールド -->
-                        <input type="hidden" name="jsData" id="jsData">
-                        <button id="finalize-btn" onclick="getAllSelectedOptionIds()" type = "submit">確定する</button>
+                            <!-- JSで値を設定する隠しフィールド -->
+                            <input type="hidden" name="jsData" id="jsData">
+                            <button id="finalize-btn" onclick="getAllSelectedOptionIds()" type="submit">確定する</button>
                         </form>
                         <p id="result"></p>
 
@@ -135,20 +136,20 @@ $mysqli->close();
 
                                 // 結果を表示
                                 document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
-                                console.log(selectedOptionIds);
+                                console.log("[process: main]" + selectedOptionIds);
                                 const registDatas = [];
-                                
-                                for(let i = 0; i < selectedOptionIds.length; i++){
+
+                                for (let i = 0; i < selectedOptionIds.length; i++) {
                                     const registData = selectedOptionIds[i];
                                     registDatas.push(registData);
                                 }
-                                                           
-                                console.log(registDatas);
+
+                                console.log("[process: main]" + registDatas);
                                 const registJSON = JSON.stringify(registDatas);
-                                localStorage.setItem('key',registJSON);
+                                localStorage.setItem('key', registJSON);
                                 let getval = localStorage.getItem('key');
                                 let getData = JSON.parse(getval);
-                                console.log(getData);
+                                console.log("[process: main]" + getData);
 
                                 // JSONデータを文字列にして隠しフィールドにセット
                                 document.getElementById('jsData').value = JSON.stringify(getData);
@@ -165,9 +166,9 @@ $mysqli->close();
             <!-- ここから時間割表示　 -->
             <div class="jikanwari">
                 <?php
-                if(!$subjects){
+                if (!$subjects) {
                     // POSTデータが無い時の時間割データの初期値
-                    $subjects = ["","","","","","","","","","","","","","","","","","","",""];
+                    $subjects = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
                 }
                 // 曜日と時間割の初期データ
                 $days = ['月', '火', '水', '木', '金'];
@@ -180,7 +181,7 @@ $mysqli->close();
                 $subjectsByDay = array_chunk($subjects, $subjectsPerDay);
                 ?>
                 <script>
-                    console.log('subjects finish');
+                    console.log('[process: main] subjects finish');
                 </script>
                 <table class="timetable">
                     <tr>
@@ -189,24 +190,24 @@ $mysqli->close();
                             <th><?php echo $time; ?></th>
                         <?php endforeach; ?>
                     </tr>
-                    <?php foreach ($days as $index =>$day) : ?>
+                    <?php foreach ($days as $index => $day) : ?>
                         <tr>
                             <td class="day-column"><?php echo $day; ?></td>
                             <?php foreach ($times as $timeIndex) : ?>
                                 <td class="time-cell">
                                     <!-- ここで科目設定 -->
                                     <?php
-                                    if($subjectsByDay[$index][$timeIndex - 1]){
-                                        if($subjectsByDay[$index][$timeIndex - 1] == 1){
+                                    if ($subjectsByDay[$index][$timeIndex - 1]) {
+                                        if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
                                             // 国語IVのid対策用
                                             $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
-                                        }else{
+                                        } else {
                                             $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
                                         }
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
                                         echo ($row["科目名"]);
-                                    }else
+                                    } else
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                     ?>
                                     <!-- ここまで科目設定 -->
@@ -248,7 +249,7 @@ $mysqli->close();
         const savedTimestamp = parseInt(savedTime, 10); // 文字列を数値に変換
 
         // 現在のタイムスタンプを取得
-        const currentTime = new Date().getTime(); 
+        const currentTime = new Date().getTime();
         const currentTimestamp = parseInt(currentTime, 10); // 文字列を数値に変換
         localStorage.setItem('savedTime', currentTimestamp); // savedTime を更新
 
@@ -260,7 +261,7 @@ $mysqli->close();
         //const minutes = Math.floor(seconds / 60);
         //const hours = Math.floor(minutes / 60);
         //const days = Math.floor(hours / 24);
-            
+
         // 現在の時刻が保存された時刻より進んでいて、時間割のデータフラグが立っている場合のみフォーム送信
         if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
             let getval1 = localStorage.getItem('key');
@@ -270,8 +271,8 @@ $mysqli->close();
             document.getElementById('jsData').value = JSON.stringify(getData2);
             // フォームを自動送信する
             document.getElementById('hiddenForm').submit();
-        }else {
-            console.log('現在の時刻は保存された時刻と同じか、それ以前です。');
+        } else {
+            console.log('[process: main] The current time is earlier than or equal to the saved time.');
         }
     </script>
 </body>
