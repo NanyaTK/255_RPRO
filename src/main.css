@@ -427,6 +427,13 @@ footer {
 .rating-subjects tr:hover {
   background-color: #f1f1f1;
 }
+/*
+// 評価割合の点数で色分けしたい場合に実装する
+.rating-subjects th:nth-child(2) {
+  background-color: red;
+  color: white;
+}
+*/
 
 
 /* スマホ用のスタイル */
