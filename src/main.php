@@ -201,7 +201,7 @@ $mysqli->close();
                         } else {
                             echo '<p class = "absent-condition">特殊欠席条件はありません</p>';
                         }
-                        echo '<table class="rating-subjects">' . $row["評価割合"] . '</table>';
+                        echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
                         ?>
                         <p class="absent-msg">本当に欠席しますか？</p>
                         <button class="absent-btn">欠席する</button>

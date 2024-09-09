@@ -500,7 +500,7 @@ footer {
   }
 
   .popup-absent {
-    height: 50%;
+    height: auto;
     font-size: 32px;
   }
 
@@ -519,5 +519,9 @@ footer {
 
   #popup-inside {
     font-size: 32px;
+  }
+
+  .scroll {
+    overflow-x: scroll;
   }
 }
