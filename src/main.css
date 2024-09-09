@@ -512,4 +512,8 @@ footer {
     height: 40%;
     width: 100%;
   }
+
+  .absent-btn {
+    font-size: 32px;
+  }
 }
