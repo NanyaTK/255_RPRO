@@ -366,6 +366,7 @@ footer {
   position: absolute;
   transform: translate(-50%, -50%);
   font-size: 30px; */
+  margin: auto;
 }
 
 .name-subjects {
@@ -379,7 +380,6 @@ footer {
   text-align: center;
   margin: 20px auto;
   display: block;
-  */
 }
 
 .teacher-subjects {
@@ -393,6 +393,7 @@ footer {
   text-align: center;
   margin: 20px auto;
   display: block; */
+  margin: auto;
 }
 
 .rating-subjects {
@@ -407,7 +408,6 @@ footer {
   font-weight: bold;
   text-align: center;
   margin: 20px auto;
-
   border-collapse: collapse;
 }
 
@@ -444,6 +444,7 @@ footer {
   position: absolute;
   transform: translate(-50%, -50%);
   font-size: 33px; */
+  margin: auto;
 }
 
 /* スマホ用のスタイル */
@@ -497,5 +498,18 @@ footer {
   #uninstall-btn {
     font-size: xx-large;
     display: flex;
+  }
+
+  .popup-absent {
+    height: 50%;
+  }
+
+  .sm-w {
+    height: 100%;
+  }
+
+  .rating-subjects {
+    height: 40%;
+    width: 100%;
   }
 }

@@ -192,7 +192,7 @@ $mysqli->close();
             <div class="overlay-absent" id="overlay-absent">
                 <div class="popup-absent" id="popup-absent">
                     <p class="close-absent" id="close-absent">&times;</p>
-                    <div>
+                    <div class="sm-w">
                         <p class="name-subjects"><?php echo $row["科目名"]; ?></p>
                         <p class="teacher-subjects"><?php echo ("担当教員" . "：" . $row["学科ID"]); ?></p>
                         <?php
