@@ -524,4 +524,9 @@ footer {
   .scroll {
     overflow-x: scroll;
   }
+
+  .open-popup-btn {
+    font-size: 100%;
+    padding: 20px 10px;
+  }
 }
