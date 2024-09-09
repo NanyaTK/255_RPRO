@@ -481,6 +481,10 @@ footer {
     margin: auto 5%;
   }
 
+  #popup-wrapper {
+    height: 100%;
+  }
+
   #signup-btn {
     font-size: xx-large;
   }
