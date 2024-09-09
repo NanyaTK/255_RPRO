@@ -193,10 +193,12 @@ $mysqli->close();
             <div class="overlay-absent" id="overlay-absent"></div>
             <div class="popup-absent" id="popup-absent">
                 <span class="close-absent" id="close-absent">&times;</span>
-                科目名<br>
-                担当教員：明石太郎<br>
-                評価割合特殊欠席条件<br>
-                本当に欠席しますか？
+                <span class="name-subjects"><?php echo $row["科目名"]; ?></span>
+                <span class="teacher-subjects"><?php echo("担当教員"."：".$row["学科ID"]); ?></span>
+                <?php
+                    echo '<table class="rating-subjects">'.$row["評価割合"].'</table>'; 
+                ?>
+                <span class="absent-msg">本当に欠席しますか？</span>
                 <button class="absent-btn">欠席する</button>
             </div>
             <?php // ここまで時間割表示   
