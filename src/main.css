@@ -516,4 +516,8 @@ footer {
   .absent-btn {
     font-size: 32px;
   }
+
+  #popup-inside {
+    font-size: 32px;
+  }
 }
