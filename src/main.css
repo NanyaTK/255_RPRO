@@ -350,11 +350,14 @@ footer {
 .absent-btn {
   display: block;
   margin: 20px auto;
-  background-color: rgb(66, 0, 153);
+  background-color: rgb(126, 72, 213);
   color: white;
   border: 0;
   padding: 20px 130px;
-  font-size: 10px;
+  font-size: xx-large;
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  white-space: nowrap;
 }
 
 /* スマホ用のスタイル */
