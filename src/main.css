@@ -234,7 +234,7 @@ footer {
 .timetable-signup td {
   border: 1.8px solid #3e3e3e;
   padding: 10px;
-  font-size: 18px;
+  /* font-size: 18px; */
   word-wrap: break-word;
 }
 
