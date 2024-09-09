@@ -169,13 +169,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ポップアップを表示する関数
     function showPopup() {
         overlay.style.display = 'block';
-        popup.style.display = 'block';
+        //popup.style.display = 'block';
     }
 
     // ポップアップを閉じる関数
     function hidePopup() {
         overlay.style.display = 'none';
-        popup.style.display = 'none';
+        //popup.style.display = 'none';
     }
 
     // 各ボタンにクリックイベントを追加
