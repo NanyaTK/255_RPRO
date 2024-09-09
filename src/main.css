@@ -526,6 +526,8 @@ footer {
   }
 
   .open-popup-btn {
+    width: 90%;
+    height: 50%;
     font-size: 100%;
     padding: 20px 10px;
   }
