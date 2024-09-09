@@ -343,46 +343,47 @@ footer {
 }
 
 .absent-btn {
-  display: block;
+  /* display: block;
   left: 50%;
   top: 90%;
   position: absolute;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
   margin: 20px auto;
-  background-color: rgb(126, 72, 213);
+  background-color: rgb(0, 153, 128);
   color: white;
   border: 0;
   padding: 20px 130px;
-  font-size: xx-large;
+  /* font-size: xx-large; */
   writing-mode: horizontal-tb;
   text-orientation: mixed;
   white-space: nowrap;
 }
 
 .absent-msg {
-  display: block;
+  /* display: block;
   left: 50%;
   top: 85%;
   position: absolute;
   transform: translate(-50%, -50%);
-  font-size: 30px;
+  font-size: 30px; */
 }
 
 .name-subjects {
-  left: 50%;
+  /* left: 50%;
   top: 10%;
   position: absolute;
   transform: translate(-50%, -50%);
   color: black; /*popu-btnのbackgroundcolorと同様の色が良いです*/
   font-size: 40px;
-  font-weight: bold; 
+  font-weight: bold;
   text-align: center;
   margin: 20px auto;
   display: block;
+  */
 }
 
 .teacher-subjects {
-  left: 50%;
+  /* left: 50%;
   top: 20%;
   position: absolute;
   transform: translate(-50%, -50%);
@@ -391,38 +392,45 @@ footer {
   font-weight: bold; 
   text-align: center;
   margin: 20px auto;
-  display: block;
+  display: block; */
 }
 
 .rating-subjects {
-  left: 50%;
+  /* left: 50%;
   top: 50%;
   position: absolute;
   transform: translate(-50%, -50%);
-  color: black;
   font-size: 33px;
-  font-weight: bold; 
+  display: block;
+  width: 80%; */
+  color: black;
+  font-weight: bold;
   text-align: center;
   margin: 20px auto;
-  display: block;
-  width: 80%;
+
   border-collapse: collapse;
 }
-.rating-subjects th, .rating-subjects td {
+
+.rating-subjects th,
+.rating-subjects td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
 }
+
 .rating-subjects th {
   background-color: #f4f4f4;
   color: #333;
 }
+
 .rating-subjects td {
   background-color: #fff;
 }
+
 .rating-subjects tr:hover {
   background-color: #f1f1f1;
 }
+
 /*
 // 評価割合の点数で色分けしたい場合に実装する
 .rating-subjects th:nth-child(2) {
@@ -431,11 +439,11 @@ footer {
 }
 */
 .absent-condition {
-  left: 50%;
+  /* left: 50%;
   top: 30%;
   position: absolute;
   transform: translate(-50%, -50%);
-  font-size: 33px;
+  font-size: 33px; */
 }
 
 /* スマホ用のスタイル */
