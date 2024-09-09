@@ -307,8 +307,9 @@ footer {
   position: fixed;
   left: 50%;
   top: 50%;
+  font-size: 25px;
   transform: translate(-50%, -50%);
-  padding: 40px;
+  padding: 300px;
   background-color: white;
   border: 1px solid #ccc;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -330,11 +331,11 @@ footer {
   cursor: pointer;
   position: absolute;
   /* 絶対位置で配置 */
-  top: 10px;
-  /* ポップアップの上から10px */
-  right: 10px;
-  /* ポップアップの右から10px */
-  font-size: 24px;
+  top: 20px;
+  /* ポップアップの上から20px */
+  right: 20px;
+  /* ポップアップの右から20px */
+  font-size: 80px;
 }
 
 .open-popup-btn {
@@ -352,7 +353,8 @@ footer {
   background-color: rgb(66, 0, 153);
   color: white;
   border: 0;
-  padding: 20px 35px;
+  padding: 20px 130px;
+  font-size: 10px;
 }
 
 /* スマホ用のスタイル */

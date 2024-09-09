@@ -193,6 +193,9 @@ $mysqli->close();
             <div class="overlay-absent" id="overlay-absent"></div>
             <div class="popup-absent" id="popup-absent">
                 <span class="close-absent" id="close-absent">&times;</span>
+                科目名<br>
+                担当教員：明石太郎<br>
+                評価割合特殊欠席条件<br>
                 本当に欠席しますか？
                 <button class="absent-btn">欠席する</button>
             </div>
