@@ -58,7 +58,6 @@ $mysqli->close();
     <div class="content">
 
         <div class="main">
-            <div class="empty"></div>
             <div class="flex-byForce">
                 <button id="signup-btn">新規登録</button>
                 <button id="install-btn">インストール</button>
@@ -68,7 +67,7 @@ $mysqli->close();
             ?>
             <div id="popup-wrapper">
                 <div id="popup-inside">
-                    <div id="close">x</div>
+                    <div id="close">&times;</div>
                     <div id="message">
                         <h2>新規登録</h2>
                         <p>時間割を設定してください</p>
@@ -190,21 +189,24 @@ $mysqli->close();
                     <?php endforeach; ?>
                 </table>
             </div>
-            <div class="overlay-absent" id="overlay-absent"></div>
-            <div class="popup-absent" id="popup-absent">
-                <span class="close-absent" id="close-absent">&times;</span>
-                <span class="name-subjects"><?php echo $row["科目名"]; ?></span>
-                <span class="teacher-subjects"><?php echo("担当教員"."：".$row["学科ID"]); ?></span>
-                <?php
-                    if(!empty($row["特殊欠席条件"])){
-                        echo '<p class = "absent-condition">.$row["特殊欠席条件"].</p>';
-                    } else {
-                        echo '<p class = "absent-condition">特殊欠席条件はありません</p>';
-                    }
-                    echo '<table class="rating-subjects">'.$row["評価割合"]; 
-                ?>
-                <span class="absent-msg">本当に欠席しますか？</span>
-                <button class="absent-btn">欠席する</button>
+            <div class="overlay-absent" id="overlay-absent">
+                <div class="popup-absent" id="popup-absent">
+                    <p class="close-absent" id="close-absent">&times;</p>
+                    <div class="sm-w">
+                        <p class="name-subjects"><?php echo $row["科目名"]; ?></p>
+                        <p class="teacher-subjects"><?php echo ("担当教員" . "：" . $row["学科ID"]); ?></p>
+                        <?php
+                        if (!empty($row["特殊欠席条件"])) {
+                            echo '<p class = "absent-condition">.$row["特殊欠席条件"].</p>';
+                        } else {
+                            echo '<p class = "absent-condition">特殊欠席条件はありません</p>';
+                        }
+                        echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
+                        ?>
+                        <p class="absent-msg">本当に欠席しますか？</p>
+                        <button class="absent-btn">欠席する</button>
+                    </div>
+                </div>
             </div>
             <?php // ここまで時間割表示   
             ?>

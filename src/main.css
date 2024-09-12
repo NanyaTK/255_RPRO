@@ -71,7 +71,7 @@ footer {
 .timetable th,
 .timetable td {
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 0 10px;
   font-size: 18px;
   word-wrap: break-word;
 }
@@ -84,7 +84,7 @@ footer {
 
 .timetable td {
   text-align: center;
-  height: 120px;
+  height: 115px;
   /* その他のセルの縦幅を広くする */
 }
 
@@ -135,7 +135,7 @@ footer {
   top: 0;
   left: 0;
   width: 100%;
-  height: auto;
+  /* height: 100%; */
   display: none;
 }
 
@@ -234,7 +234,7 @@ footer {
 .timetable-signup td {
   border: 1.8px solid #3e3e3e;
   padding: 10px;
-  font-size: 18px;
+  /* font-size: 18px; */
   word-wrap: break-word;
 }
 
@@ -303,13 +303,10 @@ footer {
 }
 
 .popup-absent {
-  display: none;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  font-size: 25px;
-  transform: translate(-50%, -50%);
-  padding: 450px 400px;
+  position: relative;
+  width: 80%;
+  margin: 10% auto;
+  padding: 40px;
   background-color: white;
   border: 1px solid #ccc;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -328,14 +325,12 @@ footer {
 }
 
 .close-absent {
-  cursor: pointer;
   position: absolute;
-  /* 絶対位置で配置 */
-  top: 20px;
-  /* ポップアップの上から20px */
+  top: 0;
+  font-size: xxx-large;
   right: 20px;
-  /* ポップアップの右から20px */
-  font-size: 80px;
+  cursor: pointer;
+  margin: 0;
 }
 
 .open-popup-btn {
@@ -348,46 +343,46 @@ footer {
 }
 
 .absent-btn {
-  display: block;
+  /* display: block;
   left: 50%;
   top: 90%;
   position: absolute;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
   margin: 20px auto;
-  background-color: rgb(126, 72, 213);
+  background-color: rgb(0, 153, 128);
   color: white;
   border: 0;
   padding: 20px 130px;
-  font-size: xx-large;
   writing-mode: horizontal-tb;
   text-orientation: mixed;
   white-space: nowrap;
 }
 
 .absent-msg {
-  display: block;
+  /* display: block;
   left: 50%;
   top: 85%;
   position: absolute;
   transform: translate(-50%, -50%);
-  font-size: 30px;
+  font-size: 30px; */
+  margin: auto;
 }
 
 .name-subjects {
-  left: 50%;
+  /* left: 50%;
   top: 10%;
   position: absolute;
   transform: translate(-50%, -50%);
   color: black; /*popu-btnのbackgroundcolorと同様の色が良いです*/
   font-size: 40px;
-  font-weight: bold; 
+  font-weight: bold;
   text-align: center;
   margin: 20px auto;
   display: block;
 }
 
 .teacher-subjects {
-  left: 50%;
+  /* left: 50%;
   top: 20%;
   position: absolute;
   transform: translate(-50%, -50%);
@@ -396,38 +391,45 @@ footer {
   font-weight: bold; 
   text-align: center;
   margin: 20px auto;
-  display: block;
+  display: block; */
+  margin: auto;
 }
 
 .rating-subjects {
-  left: 50%;
+  /* left: 50%;
   top: 50%;
   position: absolute;
   transform: translate(-50%, -50%);
-  color: black;
   font-size: 33px;
-  font-weight: bold; 
+  display: block;
+  width: 80%; */
+  color: black;
+  font-weight: bold;
   text-align: center;
   margin: 20px auto;
-  display: block;
-  width: 80%;
   border-collapse: collapse;
 }
-.rating-subjects th, .rating-subjects td {
+
+.rating-subjects th,
+.rating-subjects td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
 }
+
 .rating-subjects th {
   background-color: #f4f4f4;
   color: #333;
 }
+
 .rating-subjects td {
   background-color: #fff;
 }
+
 .rating-subjects tr:hover {
   background-color: #f1f1f1;
 }
+
 /*
 // 評価割合の点数で色分けしたい場合に実装する
 .rating-subjects th:nth-child(2) {
@@ -436,11 +438,12 @@ footer {
 }
 */
 .absent-condition {
-  left: 50%;
+  /* left: 50%;
   top: 30%;
   position: absolute;
   transform: translate(-50%, -50%);
-  font-size: 33px;
+  font-size: 33px; */
+  margin: auto;
 }
 
 /* スマホ用のスタイル */
@@ -478,6 +481,10 @@ footer {
     margin: auto 5%;
   }
 
+  #popup-wrapper {
+    height: 100%;
+  }
+
   #signup-btn {
     font-size: xx-large;
   }
@@ -490,5 +497,42 @@ footer {
   #uninstall-btn {
     font-size: xx-large;
     display: flex;
+  }
+
+  .popup-absent {
+    height: auto;
+    font-size: 32px;
+  }
+
+  .sm-w {
+    height: 100%;
+  }
+
+  .rating-subjects {
+    height: 40%;
+    width: 100%;
+  }
+
+  .absent-btn {
+    font-size: 32px;
+  }
+
+  #popup-inside {
+    font-size: 32px;
+  }
+
+  .scroll {
+    overflow-x: scroll;
+  }
+
+  .open-popup-btn {
+    width: 90%;
+    height: 50%;
+    font-size: 100%;
+    padding: 20px 10px;
+  }
+
+  #finalize-btn {
+    font-size: 32px;
   }
 }
