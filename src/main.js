@@ -88,6 +88,24 @@ popupWrapper.addEventListener('click', e => {
 });
 /* ============================================================== */
 
+/* ==================== 時間割自動入力関連 ======================== */
+function AutoCompleteClasses() {
+    // 学科・コースのセレクタを取得
+    const selectedClass = document.querySelector('.auto-complete');
+    const selectedClassOpt = selectedClass.options[selectedClass.selectedIndex];
+    const selectedClassId = selectedClassOpt.id;
+    // 学期のセレクタを取得
+    const selectedTerm = document.querySelector('.term-sel');
+    const selectedTermOpt = selectedTerm.options[selectedTerm.selectedIndex];
+    const selectedTermId = selectedTermOpt.id;
+    console.log("[process: main] " + selectedClassId + "," + selectedTermId);
+}
+
+const cltempBtn = document.getElementById("cltemp-btn");
+cltempBtn.addEventListener("click", () => { AutoCompleteClasses(); });
+
+/* ============================================================== */
+
 
 /* ================== 新規登録確定ボタンイベント ================== */
 function getAllSelectedOptionIds() {
