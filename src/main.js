@@ -98,12 +98,13 @@ function FilterClasses(selectedClassId) {
         const AllFilterOptions = filterSelectElement.querySelectorAll("option");
         if (!tempOptions[index]) tempOptions[index] = [];
         AllFilterOptions.forEach(filterOption => {
+            tempOptions[index].push(filterOption);
             if (!filterOption.classList.contains("c-" + selectedClassId)) {
-                tempOptions[index].push(filterOption);
+                //tempOptions[index].push(filterOption);
                 filterOption.remove();
             }
-        })
-    })
+        });
+    });
 }
 /**
  * 時間割の自動入力関数
@@ -128,13 +129,19 @@ function AutoCompleteClasses() {
 function ResetFilter() {
     const filterSelectElements = document.querySelectorAll(".subject-select");
     filterSelectElements.forEach((filterSelectElement, index) => {
+        const AllFilterOptions = filterSelectElement.querySelectorAll("option");
+        AllFilterOptions.forEach(filterOption => {
+            filterOption.remove();
+        });
         if (tempOptions[index]) {
             tempOptions[index].forEach(option => {
                 filterSelectElement.appendChild(option);
             });
         }
+        filterSelectElement.options[0].selected = true;
         tempOptions[index] = [];
-    })
+    });
+    console.log("[process: main] filtering reseted.");
 }
 
 let tempOptions = {};
