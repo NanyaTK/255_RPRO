@@ -121,9 +121,9 @@ footer {
 
 
 
-.term-sel-label {
+/* .term-sel-label {
   margin: auto 5%;
-}
+} */
 
 .term-sel {
   width: 120px;
@@ -292,48 +292,19 @@ footer {
   position: relative;
 }
 
-.select-class::before,
-.select-class::after {
-  position: absolute;
-  content: '';
-  pointer-events: none;
-}
-
-.select-class::before {
-  right: 0;
-  display: inline-block;
-  width: 2.8em;
-  height: 2.8em;
-  border-radius: 0 3px 3px 0;
-  background-color: #6acde3;
-  content: '';
-}
-
-.select-class::after {
-  position: absolute;
-  top: 50%;
-  right: 1.4em;
-  transform: translate(50%, -50%) rotate(45deg);
-  width: 6px;
-  height: 6px;
-  border-bottom: 3px solid #fff;
-  border-right: 3px solid #fff;
-  content: '';
-}
-
 .select-class select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   min-width: 100px;
   height: 2.8em;
-  padding: .4em 3.6em .4em .8em;
   border: 2px solid #6acde3;
   border-radius: 3px;
   color: #333333;
   font-size: 1em;
   cursor: pointer;
-  width: 45%;
+  width: 80%;
+  padding: 0 10px;
 }
 
 .select-class select:focus {
@@ -516,6 +487,7 @@ footer {
   }
 
   .flex-byForce {
+    justify-content: center;
     margin: auto 5%;
   }
 
@@ -572,5 +544,9 @@ footer {
 
   #finalize-btn {
     font-size: 32px;
+  }
+
+  .select-class {
+    position: relative;
   }
 }
