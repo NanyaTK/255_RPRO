@@ -1,4 +1,4 @@
-/* =========== service Worker 新規インストールイベント ============ */
+﻿/* =========== service Worker 新規インストールイベント ============ */
 const registerServiceWorker = async () => {
     if ("serviceWorker" in navigator) {
         try {

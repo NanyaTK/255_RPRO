@@ -220,9 +220,8 @@ $mysqli->close();
             </div>
             <?php // ここまで時間割表示   
             ?>
-            <script type="text/javascript" src="main.js"></script>
         </div>
-
+        <script type="text/javascript" src="main.js"></script>
     </div>
     <footer>
         &copy; 2024 留年プロテクタープロジェクト
