@@ -313,7 +313,7 @@ footer {
   z-index: 1000;
 }
 
-[class^="overlay-absent-"] {
+.overlay-absent {
   display: none;
   position: fixed;
   left: 0;
