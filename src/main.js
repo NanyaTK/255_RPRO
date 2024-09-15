@@ -89,6 +89,25 @@ popupWrapper.addEventListener('click', e => {
 /* ============================================================== */
 
 /* ==================== 時間割自動入力関連 ======================== */
+/**
+ * 時間割の学科絞り込み関数
+ */
+function FilterClasses(selectedClassId) {
+    const filterSelectElements = document.querySelectorAll(".subject-select");
+    filterSelectElements.forEach((filterSelectElement, index) => {
+        const AllFilterOptions = filterSelectElement.querySelectorAll("option");
+        if (!tempOptions[index]) tempOptions[index] = [];
+        AllFilterOptions.forEach(filterOption => {
+            if (!filterOption.classList.contains("c-" + selectedClassId)) {
+                tempOptions[index].push(filterOption);
+                filterOption.remove();
+            }
+        })
+    })
+}
+/**
+ * 時間割の自動入力関数
+ */
 function AutoCompleteClasses() {
     // 学科・コースのセレクタを取得
     const selectedClass = document.querySelector('.auto-complete');
@@ -99,10 +118,30 @@ function AutoCompleteClasses() {
     const selectedTermOpt = selectedTerm.options[selectedTerm.selectedIndex];
     const selectedTermId = selectedTermOpt.id;
     console.log("[process: main] " + selectedClassId + "," + selectedTermId);
+    FilterClasses(selectedClassId);
+    console.log("[process: main] filtering finished.");
 }
 
+/**
+ * フィルターのリセット関数
+ */
+function ResetFilter() {
+    const filterSelectElements = document.querySelectorAll(".subject-select");
+    filterSelectElements.forEach((filterSelectElement, index) => {
+        if (tempOptions[index]) {
+            tempOptions[index].forEach(option => {
+                filterSelectElement.appendChild(option);
+            });
+        }
+        tempOptions[index] = [];
+    })
+}
+
+let tempOptions = {};
 const cltempBtn = document.getElementById("cltemp-btn");
 cltempBtn.addEventListener("click", () => { AutoCompleteClasses(); });
+const rstFilterBtn = document.getElementById("rstFilter-btn");
+rstFilterBtn.addEventListener("click", () => { ResetFilter(); });
 
 /* ============================================================== */
 

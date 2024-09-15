@@ -86,7 +86,8 @@ $mysqli->close();
                                     <option id=2>後期</option>
                                 </select>
                             </label>
-                            <button id="cltemp-btn" onclick="">自動入力</button>
+                            <button id="cltemp-btn" class="clt-fil-btn" onclick="">絞り込み</button>
+                            <button id="rstFilter-btn" class="clt-fil-btn" onclick="">リセット</button>
                         </div>
                         <div class="jikanwari">
                             <?php
@@ -117,7 +118,7 @@ $mysqli->close();
                                                         for ($row_no = $time_schdule->num_rows - 1; $row_no >= 0; $row_no--) {
                                                             $time_schdule->data_seek($row_no);
                                                             $row = $time_schdule->fetch_assoc();
-                                                            echo '<option id = ' . $row["ID"] . '>' . $row["科目名"] . '</option>';
+                                                            echo '<option id ="' . $row["ID"] . '" class="c-' . $row["学科ID"] . '">' . $row["科目名"] . '</option>';
                                                         }
                                                         ?>
                                                     </select>
