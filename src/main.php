@@ -154,7 +154,10 @@ $mysqli->close();
                 <table class="timetable">
                     <tr>
                         <th class="day-column">曜日</th>
-                        <?php foreach ($times as $time) : ?>
+                        <?php
+                        $howmanyA = 0;
+                        $howmanyB = 0;
+                        foreach ($times as $time) : ?>
                             <th><?php echo $time; ?></th>
                         <?php endforeach; ?>
                     </tr>
@@ -165,7 +168,8 @@ $mysqli->close();
                                 <td class="time-cell">
                                     <!-- ここで科目設定 -->
                                     <?php
-                                    echo ('<button class ="open-popup-btn">');
+                                    echo ('<button class ="open-popup-btn-' . $howmanyA . '">');
+                                    $howmanyA += 1;
                                     if ($subjectsByDay[$index][$timeIndex - 1]) {
                                         if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
                                             // 国語IVのid対策用
@@ -189,29 +193,61 @@ $mysqli->close();
                     <?php endforeach; ?>
                 </table>
             </div>
-            <div class="overlay-absent" id="overlay-absent">
-                <div class="popup-absent" id="popup-absent">
+            <div>
+                <?php
+               
+                foreach ($days as $index => $day) :
+                    foreach ($times as $timeIndex) :
+                        echo ('<div class="overlay-absent-' . $howmanyB . '" id="overlay-absent">');
+                        $howmanyB += 1;
+                            echo (' <div class="popup-absent" id="popup-absent">
                     <p class="close-absent" id="close-absent">&times;</p>
                     <div class="sm-w">
-                        <p class="name-subjects"><?php echo $row["科目名"]; ?></p>
-                        <p class="teacher-subjects"><?php echo ("担当教員" . "：" . $row["学科ID"]); ?></p>
-                        <?php
-                        if (!empty($row["特殊欠席条件"])) {
-                            echo '<p class = "absent-condition">.$row["特殊欠席条件"].</p>';
+                        <p class="name-subjects">');
+
+                        //各要素に適するRowを設定
+                        if ($subjectsByDay[$index][$timeIndex - 1]) {
+                            if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
+                                // 国語IVのid対策用
+                                $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
+                            } else {
+                                $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
+                            }
+                            $time_schdule->data_seek($row_no);
+                            $row = $time_schdule->fetch_assoc();
+
+                                echo $row["科目名"];
+                                echo ('</p>
+                                    <p class="teacher-subjects">');
+                                echo ("担当教員" . "：" . $row["学科ID"]);
+                                echo("</p>");
+                                if (!empty($row["特殊欠席条件"])) {
+                                    echo '<p class = "absent-condition">'.$row["特殊欠席条件"].'</p>';
+                                } else {
+                                    echo '<p class = "absent-condition">特殊欠席条件はありません</p>';
+                                }
+                                echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
+                                echo ("</p>");
+                                echo('<p class="absent-msg">本当に欠席しますか？</p>');
+                                echo('<button class="absent-btn">欠席する</button>');
+
                         } else {
-                            echo '<p class = "absent-condition">特殊欠席条件はありません</p>';
+                                echo '<p class="name-subjects">開きコマです</p>';
+                                echo '<p class="name-subjects">ゆっくりお休みください</p>';
                         }
-                        echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
-                        ?>
-                        <p class="absent-msg">本当に欠席しますか？</p>
-                        <button class="absent-btn">欠席する</button>
-                    </div>
-                </div>
+                        
+                        echo ('</div>');
+                        echo ('</div>');
+                        echo ('</div>');
+                    endforeach;
+                endforeach;
+                ?>
             </div>
-            <?php // ここまで時間割表示   
-            ?>
-            <script type="text/javascript" src="main.js"></script>
         </div>
+    </div>
+    </div>
+    <script type="text/javascript" src="main.js"></script>
+    </div>
 
     </div>
     <footer>
