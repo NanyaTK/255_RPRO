@@ -120,6 +120,7 @@ function AutoCompleteClasses() {
     const selectedTermId = selectedTermOpt.id;
     console.log("[process: main] " + selectedClassId + "," + selectedTermId);
     FilterClasses(selectedClassId);
+    ableRstFlag = true;
     console.log("[process: main] filtering finished.");
 }
 
@@ -127,24 +128,31 @@ function AutoCompleteClasses() {
  * フィルターのリセット関数
  */
 function ResetFilter() {
-    const filterSelectElements = document.querySelectorAll(".subject-select");
-    filterSelectElements.forEach((filterSelectElement, index) => {
-        const AllFilterOptions = filterSelectElement.querySelectorAll("option");
-        AllFilterOptions.forEach(filterOption => {
-            filterOption.remove();
-        });
-        if (tempOptions[index]) {
-            tempOptions[index].forEach(option => {
-                filterSelectElement.appendChild(option);
+    if (ableRstFlag) {
+        const filterSelectElements = document.querySelectorAll(".subject-select");
+        filterSelectElements.forEach((filterSelectElement, index) => {
+            const AllFilterOptions = filterSelectElement.querySelectorAll("option");
+            AllFilterOptions.forEach(filterOption => {
+                filterOption.remove();
             });
-        }
-        filterSelectElement.options[0].selected = true;
-        tempOptions[index] = [];
-    });
-    console.log("[process: main] filtering reseted.");
+            if (tempOptions[index]) {
+                tempOptions[index].forEach(option => {
+                    filterSelectElement.appendChild(option);
+                });
+            }
+            filterSelectElement.options[0].selected = true;
+            tempOptions[index] = [];
+        });
+        ableRstFlag = false;
+        console.log("[process: main] filtering reseted.");
+    } else {
+        ableRstFlag = false;
+        console.log("[process: main] filtering was not reseted.");
+    }
 }
 
 let tempOptions = {};
+let ableRstFlag = false;
 const cltempBtn = document.getElementById("cltemp-btn");
 cltempBtn.addEventListener("click", () => { AutoCompleteClasses(); });
 const rstFilterBtn = document.getElementById("rstFilter-btn");
