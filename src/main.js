@@ -160,39 +160,33 @@ if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
 
 /* ======================= 時間割ポップアップ関連 ====================== */
 document.addEventListener('DOMContentLoaded', () => {
-    const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
-    const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
+    const openButtons = document.querySelectorAll('.open-popup-btn');
+    const overlay = document.getElementById('overlay-absent');
     const popup = document.getElementById('popup-absent');
-    const closeButtons = document.querySelectorAll('close-absent');
+    const closeButton = document.getElementById('close-absent');
     const absentButton = document.querySelectorAll('.absent-btn');
 
     // ポップアップを表示する関数
     function showPopup() {
-        overlays[this.num].style.display = 'block';
+        overlay.style.display = 'block';
         //popup.style.display = 'block';
     }
 
     // ポップアップを閉じる関数
     function hidePopup() {
-        overlays.forEach(overlay =>{
-            overlay.style.display = 'none';
-        });
+        overlay.style.display = 'none';
         //popup.style.display = 'none';
     }
 
     // 各ボタンにクリックイベントを追加
-    let i = 0;
     openButtons.forEach(button => {
-        button.addEventListener('click', {num: i++, handleEvent: showPopup});
+        button.addEventListener('click', showPopup);
     });
 
     // 閉じるボタンにクリックイベントを追加
-    closeButtons.forEach(closeButton =>{
-        closeButton.addEventListener('click', hidePopup);
-    });
+    closeButton.addEventListener('click', hidePopup);
 
     // オーバーレイをクリックしたときにもポップアップを閉じる
-    overlays.forEach(overlay =>{
-        overlay.addEventListener('click', hidePopup);
-    });
+    overlay.addEventListener('click', hidePopup);
 });
+/* ============================================================== */
