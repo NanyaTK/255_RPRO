@@ -98,11 +98,6 @@ footer {
   /* 曜日セルの横幅を小さくする */
 }
 
-.flex-byForce {
-  display: flex;
-  margin: auto 15%;
-}
-
 .term-sel-label {
   margin: auto 10px;
 }
