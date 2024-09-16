@@ -134,6 +134,7 @@ footer {
 .flex-byForce {
   display: flex;
   margin: auto 20%;
+  justify-content: center;
 }
 
 #signup-btn {
@@ -298,7 +299,7 @@ footer {
   color: #333333;
   font-size: 1em;
   cursor: pointer;
-  width: 80%;
+  width: 100%;
   padding: 0 10px;
 }
 
@@ -543,5 +544,22 @@ footer {
 
   .select-class {
     position: relative;
+    width: 50%;
+  }
+
+  .term-sel-label {
+    width: 20%;
+  }
+
+  .select-subject select {
+    padding: 0 10px;
+  }
+
+  .select-subject::before {
+    display: none;
+  }
+
+  .select-subject::after {
+    display: none;
   }
 }
