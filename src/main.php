@@ -86,8 +86,8 @@ $mysqli->close();
                                     <option id=2>後期</option>
                                 </select>
                             </label>
-                            <button id="cltemp-btn" class="clt-fil-btn" onclick="">絞り込み</button>
-                            <button id="rstFilter-btn" class="clt-fil-btn" onclick="">リセット</button>
+                            <button id="cltemp-btn" class="clt-fil-btn filDB">絞り込み</button>
+                            <button id="rstFilter-btn" class="clt-fil-btn">リセット</button>
                         </div>
                         <div class="jikanwari">
                             <?php
@@ -113,7 +113,7 @@ $mysqli->close();
                                                     $selectId = 'mys-' . $day . '-' . $timeIndex;
                                                     ?>
                                                     <select id="<?php echo $selectId; ?>" class="subject-select">
-                                                        <option>空コマ</option>
+                                                        <option class="empty">空コマ</option>
                                                         <?php
                                                         for ($row_no = $time_schdule->num_rows - 1; $row_no >= 0; $row_no--) {
                                                             $time_schdule->data_seek($row_no);

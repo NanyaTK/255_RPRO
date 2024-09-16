@@ -99,7 +99,7 @@ function FilterClasses(selectedClassId) {
         if (!tempOptions[index]) tempOptions[index] = [];
         AllFilterOptions.forEach(filterOption => {
             tempOptions[index].push(filterOption);
-            if (!filterOption.classList.contains("c-" + selectedClassId)) {
+            if ((!filterOption.classList.contains("c-" + selectedClassId)) && (!filterOption.classList.contains("empty"))) {
                 //tempOptions[index].push(filterOption);
                 filterOption.remove();
             }
@@ -107,7 +107,7 @@ function FilterClasses(selectedClassId) {
     });
 }
 /**
- * 時間割の自動入力関数
+ * 時間割のフィルタリング関数
  */
 function AutoCompleteClasses() {
     // 学科・コースのセレクタを取得
@@ -118,10 +118,12 @@ function AutoCompleteClasses() {
     const selectedTerm = document.querySelector('.term-sel');
     const selectedTermOpt = selectedTerm.options[selectedTerm.selectedIndex];
     const selectedTermId = selectedTermOpt.id;
-    console.log("[process: main] " + selectedClassId + "," + selectedTermId);
+    const CTData = selectedClassId + "," + selectedTermId;
+    console.log("[process: main] " + CTData);
     FilterClasses(selectedClassId);
     ableRstFlag = true;
     console.log("[process: main] filtering finished.");
+    return CTData;
 }
 
 /**
@@ -152,9 +154,41 @@ function ResetFilter() {
 }
 
 let tempOptions = {};
+let temp = {};
 let ableRstFlag = false;
 const cltempBtn = document.getElementById("cltemp-btn");
-cltempBtn.addEventListener("click", () => { AutoCompleteClasses(); });
+cltempBtn.addEventListener("click", () => {
+    const CTData = AutoCompleteClasses();
+    fetch('/src/asyncSW.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(CTData) // 必要なデータを送信
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('[process: asyncSW] ', data);
+            if (data) {
+                let clID = data.split(',');
+                console.log('[process: asyncSW] ', clID);
+                const classElements = document.querySelectorAll(".subject-select");
+                classElements.forEach((classElement) => {
+                    console.log(clID[0]);
+                    if (clID[0] != 0) {
+                        classElement.options[clID[0] - 1].selected = true;
+
+                    } else {
+                        classElement.options[0].selected = true;
+                    }
+                    clID.splice(0, 1);
+                })
+            }
+        })
+        .catch(error => {
+            console.error('[process: asyncSW] ', error);
+        });
+});
 const rstFilterBtn = document.getElementById("rstFilter-btn");
 rstFilterBtn.addEventListener("click", () => { ResetFilter(); });
 
