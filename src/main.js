@@ -174,7 +174,7 @@ cltempBtn.addEventListener("click", () => {
                 console.log('[process: asyncSW] ', clID);
                 const classElements = document.querySelectorAll(".subject-select");
                 classElements.forEach((classElement) => {
-                    console.log(clID[0]);
+                    //console.log(clID[0]);
                     if (clID[0] != 0) {
                         classElement.options[clID[0] - 1].selected = true;
 
