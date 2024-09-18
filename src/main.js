@@ -3,7 +3,7 @@ const registerServiceWorker = async () => {
     if ("serviceWorker" in navigator) {
         try {
             const registration = await navigator.serviceWorker.register("./sw.js", {
-                scope: "/src/",
+                scope: "/",
             });
             if (registration.installing) {
                 console.log("[process: main] Service worker installing");
@@ -159,7 +159,7 @@ let ableRstFlag = false;
 const cltempBtn = document.getElementById("cltemp-btn");
 cltempBtn.addEventListener("click", () => {
     const CTData = AutoCompleteClasses();
-    fetch('/src/asyncSW.php', {
+    fetch('/asyncSW.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
