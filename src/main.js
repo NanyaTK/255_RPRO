@@ -190,3 +190,52 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.addEventListener('click', hidePopup);
 });
 /* ============================================================== */
+
+/* ======================= 出欠回数管理 ====================== */
+// 初期化またはlocalStorageから教科ごとの欠席回数を取得
+function initializeAbsenceCount(subjectId) {
+    let key = 'absenceCount_' + subjectId;  // 科目ごとのキーを設定
+    let absenceCount = localStorage.getItem(key);
+
+    // 欠席回数が存在しない場合は初期化
+    if (absenceCount === null) {
+        absenceCount = 0;
+        localStorage.setItem(key, absenceCount);
+    }
+
+    // 欠席回数を画面に反映
+    document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+}
+
+// 欠席ボタンが押された時の処理
+function incrementAbsence(subjectId) {
+    let key = 'absenceCount_' + subjectId;
+    let absenceCount = parseInt(localStorage.getItem(key));
+
+    // 欠席回数を1増やす
+    absenceCount += 1;
+
+    // localStorageに保存
+    localStorage.setItem(key, absenceCount);
+
+    // 画面の表示を更新
+    document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+}
+
+// ページ読み込み時に各教科の初期化
+window.onload = function () {
+    let subjectElements = document.querySelectorAll('.subject');
+
+    subjectElements.forEach(function (subjectElement) {
+        let subjectId = subjectElement.dataset.subjectId;
+
+        // 初期化
+        initializeAbsenceCount(subjectId);
+
+        // 欠席ボタンのイベントリスナーを設定
+        document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
+            incrementAbsence(subjectId);
+        });
+    });
+};
+/* ========================================================== */

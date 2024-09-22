@@ -158,31 +158,35 @@ $mysqli->close();
                             <th><?php echo $time; ?></th>
                         <?php endforeach; ?>
                     </tr>
-                    <?php foreach ($days as $index => $day) : ?>
+                    <?php
+                    foreach ($days as $index => $day) : ?>
                         <tr>
                             <td class="day-column"><?php echo $day; ?></td>
                             <?php foreach ($times as $timeIndex) : ?>
                                 <td class="time-cell">
-                                    <!-- ここで科目設定 -->
                                     <?php
-                                    echo ('<button class ="open-popup-btn">');
+                                    // 科目名を取得
                                     if ($subjectsByDay[$index][$timeIndex - 1]) {
                                         if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
-                                            // 国語IVのid対策用
                                             $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
                                         } else {
                                             $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
                                         }
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
-                                        echo ($row["科目名"]);
+                                        $subjectName = $row["科目名"];
+                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
                                     } else {
-                                        echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
+                                        $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
+                                        $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
                                     }
-                                    echo ('</button>');
-                                    echo "欠席回数" . "/" . "最大欠席回数";
                                     ?>
-                                    <!-- ここまで科目設定 -->
+
+                                    <!-- 欠席ボタンと欠席回数の表示 -->
+                                    <button id="absenceButton_<?php echo $subjectId; ?>" class="open-popup-btn subject" data-subject-id="<?php echo $subjectId; ?>">
+                                        <?php echo $subjectName; ?>
+                                    </button>
+                                    <p>欠席回数 <span id="absenceCount_<?php echo $subjectId; ?>">0</span> / 最大欠席回数</p>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
@@ -204,7 +208,7 @@ $mysqli->close();
                         echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
                         ?>
                         <p class="absent-msg">本当に欠席しますか？</p>
-                        <button class="absent-btn">欠席する</button>
+                        <button class="absent-btn" id="absenceButton">欠席する</button>
                     </div>
                 </div>
             </div>
