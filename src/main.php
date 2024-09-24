@@ -247,7 +247,7 @@ $mysqli->close();
                             echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
                             echo ("</p>");
                             echo ('<p class="absent-msg">本当に欠席しますか？</p>');
-                            echo ('<button class="absenceButton_' . $howmanyB . ' absent-btn" data-subject-id=' . $howmanyB . '>欠席する</button>');
+                            echo ('<button id="absenceButton_' . $howmanyB . '" class="absent-btn" data-subject-id=' . $howmanyB . '>欠席する</button>');
                         } else {
                             echo '<p class="name-subjects">開きコマです</p>';
                             echo '<p class="name-subjects">ゆっくりお休みください</p>';
