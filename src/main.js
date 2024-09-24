@@ -274,26 +274,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ポップアップを表示する関数
     function showPopup() {
-        overlay.style.display = 'block';
+        overlays[this.num].style.display = 'block';
         //popup.style.display = 'block';
     }
 
     // ポップアップを閉じる関数
     function hidePopup() {
-        overlay.style.display = 'none';
+        overlays.forEach(overlay => {
+            overlay.style.display = 'none';
+        });
         //popup.style.display = 'none';
     }
 
     // 各ボタンにクリックイベントを追加
+    let i = 0;
     openButtons.forEach(button => {
-        button.addEventListener('click', showPopup);
+        button.addEventListener('click', { num: i++, handleEvent: showPopup });
     });
 
     // 閉じるボタンにクリックイベントを追加
-    closeButton.addEventListener('click', hidePopup);
+    closeButtons.forEach(closeButton => {
+        closeButton.addEventListener('click', hidePopup);
+    });
 
     // オーバーレイをクリックしたときにもポップアップを閉じる
-    overlay.addEventListener('click', hidePopup);
+    overlays.forEach(overlay => {
+        overlay.addEventListener('click', hidePopup);
+    });
 });
 /* ============================================================== */
 
