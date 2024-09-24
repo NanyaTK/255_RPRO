@@ -337,7 +337,7 @@ function incrementAbsence(subjectId) {
 
 // ページ読み込み時に各教科の初期化
 window.onload = function () {
-    let subjectElements = document.querySelectorAll('[class ^="open-popup-btn"]');
+    let subjectElements = document.querySelectorAll('.subject');
 
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
@@ -348,7 +348,7 @@ window.onload = function () {
         // 欠席ボタンのイベントリスナーを設定
         document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
             incrementAbsence(subjectId);
-            console.log("[process: main] " + subjectId + " was registered.");
+            console.log("[process: main] " + subjectId+" was registered.");
         });
     });
 };
