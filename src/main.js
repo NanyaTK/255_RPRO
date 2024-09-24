@@ -337,7 +337,7 @@ function incrementAbsence(subjectId) {
 
 // ページ読み込み時に各教科の初期化
 window.onload = function () {
-    let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
+    let subjectElements = document.querySelectorAll('[class ^="open-popup-btn"]');
 
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
