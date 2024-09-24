@@ -190,13 +190,13 @@ $mysqli->close();
                                         $row = $time_schdule->fetch_assoc();
                                         $subjectName = $row["科目名"];
                                         $subjectId = $row["科目ID"]; // 科目ごとのIDを使う  
-                                        echo ('<button class ="open-popup-btn-' . $howmanyA . '>');
+                                        echo ('<button class ="open-popup-btn-' . $howmanyA . '">');
                                         $howmanyA += 1;
                                         echo ($row["科目名"]);
                                         $subjectName = $row["科目名"];
                                         $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
                                     } else {
-                                        echo ('<button class ="open-popup-btn-' . $howmanyA .'>');
+                                        echo ('<button class ="open-popup-btn-' . $howmanyA . '">');
                                         $howmanyA += 1;
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
