@@ -193,10 +193,14 @@ $mysqli->close();
                                         echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' data-subject-id=' . $subjectId . '">');
                                         $howmanyA += 1;
                                         echo ($row["科目名"]);
+                                        $subjectName = $row["科目名"];
+                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
                                     } else {
                                         echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' data-subject-id=' . $subjectId . '">');
                                         $howmanyA += 1;
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
+                                        $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
+                                        $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
                                     }
                                     ?>
                                     </button>
@@ -243,7 +247,7 @@ $mysqli->close();
                             echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
                             echo ("</p>");
                             echo ('<p class="absent-msg">本当に欠席しますか？</p>');
-                            echo ('<button class="absent-btn">欠席する</button>');
+                            echo ('<button class="absent-btn" id="absenceButton">欠席する</button>');
                         } else {
                             echo '<p class="name-subjects">開きコマです</p>';
                             echo '<p class="name-subjects">ゆっくりお休みください</p>';
