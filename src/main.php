@@ -71,14 +71,24 @@ $mysqli->close();
                     <div id="message">
                         <h2>新規登録</h2>
                         <p>時間割を設定してください</p>
-                        <label class="select-class">
-                            <select>
-                                <option id=13>電気情報工学科電気電子コース4年</option>
-                                <option id=14>電気情報工学科情報工学コース4年</option>
-                                <option id=17>電気情報工学科電気電子コース5年</option>
-                                <option id=18>電気情報工学科情報工学コース5年</option>
-                            </select>
-                        </label>
+                        <div class="flex-byForce">
+                            <label class="select-class">
+                                <select class="auto-complete">
+                                    <option id=13>電気情報工学科電気電子コース4年</option>
+                                    <option id=14>電気情報工学科情報工学コース4年</option>
+                                    <option id=17>電気情報工学科電気電子コース5年</option>
+                                    <option id=18>電気情報工学科情報工学コース5年</option>
+                                </select>
+                            </label>
+                            <label class="select-class term-sel-label">
+                                <select class="term-sel">
+                                    <option id=1>前期</option>
+                                    <option id=2>後期</option>
+                                </select>
+                            </label>
+                            <button id="cltemp-btn" class="clt-fil-btn filDB">絞り込み</button>
+                            <button id="rstFilter-btn" class="clt-fil-btn">リセット</button>
+                        </div>
                         <div class="jikanwari">
                             <?php
                             // 曜日と時間割の初期データ
@@ -103,12 +113,12 @@ $mysqli->close();
                                                     $selectId = 'mys-' . $day . '-' . $timeIndex;
                                                     ?>
                                                     <select id="<?php echo $selectId; ?>" class="subject-select">
-                                                        <option>空コマ</option>
+                                                        <option class="empty">空コマ</option>
                                                         <?php
                                                         for ($row_no = $time_schdule->num_rows - 1; $row_no >= 0; $row_no--) {
                                                             $time_schdule->data_seek($row_no);
                                                             $row = $time_schdule->fetch_assoc();
-                                                            echo '<option id = ' . $row["ID"] . '>' . $row["科目名"] . '</option>';
+                                                            echo '<option id ="' . $row["ID"] . '" class="c-' . $row["学科ID"] . '">' . $row["科目名"] . '</option>';
                                                         }
                                                         ?>
                                                     </select>
@@ -161,32 +171,33 @@ $mysqli->close();
                             <th><?php echo $time; ?></th>
                         <?php endforeach; ?>
                     </tr>
-                    <?php foreach ($days as $index => $day) : ?>
+                    <?php
+                    foreach ($days as $index => $day) : ?>
                         <tr>
                             <td class="day-column"><?php echo $day; ?></td>
                             <?php foreach ($times as $timeIndex) : ?>
                                 <td class="time-cell">
-                                    <!-- ここで科目設定 -->
                                     <?php
-                                    echo ('<button class ="open-popup-btn-' . $howmanyA . '">');
+                                    echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' data-subject-id=' . $subjectId . '">');
                                     $howmanyA += 1;
+                                    // 科目名を取得
                                     if ($subjectsByDay[$index][$timeIndex - 1]) {
                                         if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
-                                            // 国語IVのid対策用
                                             $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
                                         } else {
                                             $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
                                         }
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
+                                        $subjectName = $row["科目名"];
+                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
                                         echo ($row["科目名"]);
                                     } else {
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                     }
-                                    echo ('</button>');
-                                    echo "欠席回数" . "/" . "最大欠席回数";
                                     ?>
-                                    <!-- ここまで科目設定 -->
+                                    </button>
+                                    <p>欠席回数 <span id="absenceCount_<?php echo $subjectId; ?>">0</span> / 最大欠席回数</p>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
@@ -200,7 +211,7 @@ $mysqli->close();
                     foreach ($times as $timeIndex) :
                         echo ('<div class="overlay-absent-' . $howmanyB . '" id="overlay-absent">');
                         $howmanyB += 1;
-                            echo (' <div class="popup-absent" id="popup-absent">
+                        echo (' <div class="popup-absent" id="popup-absent">
                     <p class="close-absent" id="close-absent">&times;</p>
                     <div class="sm-w">
                         <p class="name-subjects">');
@@ -216,26 +227,25 @@ $mysqli->close();
                             $time_schdule->data_seek($row_no);
                             $row = $time_schdule->fetch_assoc();
 
-                                echo $row["科目名"];
-                                echo ('</p>
+                            echo $row["科目名"];
+                            echo ('</p>
                                     <p class="teacher-subjects">');
-                                echo ("担当教員" . "：" . $row["学科ID"]);
-                                echo("</p>");
-                                if (!empty($row["特殊欠席条件"])) {
-                                    echo '<p class = "absent-condition">'.$row["特殊欠席条件"].'</p>';
-                                } else {
-                                    echo '<p class = "absent-condition">特殊欠席条件はありません</p>';
-                                }
-                                echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
-                                echo ("</p>");
-                                echo('<p class="absent-msg">本当に欠席しますか？</p>');
-                                echo('<button class="absent-btn">欠席する</button>');
-
+                            echo ("担当教員" . "：" . $row["学科ID"]);
+                            echo ("</p>");
+                            if (!empty($row["特殊欠席条件"])) {
+                                echo '<p class = "absent-condition">' . $row["特殊欠席条件"] . '</p>';
+                            } else {
+                                echo '<p class = "absent-condition">特殊欠席条件はありません</p>';
+                            }
+                            echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
+                            echo ("</p>");
+                            echo ('<p class="absent-msg">本当に欠席しますか？</p>');
+                            echo ('<button class="absent-btn">欠席する</button>');
                         } else {
-                                echo '<p class="name-subjects">開きコマです</p>';
-                                echo '<p class="name-subjects">ゆっくりお休みください</p>';
+                            echo '<p class="name-subjects">開きコマです</p>';
+                            echo '<p class="name-subjects">ゆっくりお休みください</p>';
                         }
-                        
+
                         echo ('</div>');
                         echo ('</div>');
                         echo ('</div>');
@@ -244,11 +254,10 @@ $mysqli->close();
                 ?>
             </div>
         </div>
-    </div>
+        <?php // ここまで時間割表示   
+        ?>
     </div>
     <script type="text/javascript" src="main.js"></script>
-    </div>
-
     </div>
     <footer>
         &copy; 2024 留年プロテクタープロジェクト
