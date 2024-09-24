@@ -348,6 +348,7 @@ window.onload = function () {
         // 欠席ボタンのイベントリスナーを設定
         document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
             incrementAbsence(subjectId);
+            console.log("[process: main] " + subjectId + " was registered.");
         });
     });
 };
