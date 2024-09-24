@@ -266,10 +266,10 @@ if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
 
 /* ======================= 時間割ポップアップ関連 ====================== */
 document.addEventListener('DOMContentLoaded', () => {
-    const openButtons = document.querySelectorAll('.open-popup-btn');
-    const overlay = document.getElementById('overlay-absent');
+    const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
+    const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
     const popup = document.getElementById('popup-absent');
-    const closeButton = document.getElementById('close-absent');
+    const closeButtons = document.querySelectorAll('close-absent');
     const absentButton = document.querySelectorAll('.absent-btn');
 
     // ポップアップを表示する関数
