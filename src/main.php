@@ -197,14 +197,15 @@ $mysqli->close();
                                         $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
                                     } else {
                                         echo ('<button class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
-                                        $howmanyA += 1;
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
                                     }
                                     ?>
                                     </button>
-                                    <p>欠席回数 <span id="absenceCount_<?php echo $howmanyA; ?>">0</span> / 最大欠席回数</p>
+                                    <p>欠席回数 <span id="absenceCount_<?php echo $howmanyA;
+                                                                    $howmanyA += 1;
+                                                                    ?>">0</span> / 最大欠席回数</p>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
