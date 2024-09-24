@@ -178,8 +178,7 @@ $mysqli->close();
                             <?php foreach ($times as $timeIndex) : ?>
                                 <td class="time-cell">
                                     <?php
-                                    echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' data-subject-id=' . $subjectId . '">');
-                                    $howmanyA += 1;
+                              
                                     // 科目名を取得
                                     if ($subjectsByDay[$index][$timeIndex - 1]) {
                                         if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
@@ -190,9 +189,13 @@ $mysqli->close();
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
                                         $subjectName = $row["科目名"];
-                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
+                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う  
+                                        echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' data-subject-id=' . $subjectId . '">');
+                                        $howmanyA += 1;
                                         echo ($row["科目名"]);
                                     } else {
+                                        echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' data-subject-id=' . $subjectId . '">');
+                                        $howmanyA += 1;
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                     }
                                     ?>
