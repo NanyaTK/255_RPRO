@@ -333,7 +333,7 @@ footer {
   margin: 0;
 }
 
-.open-popup-btn {
+[class^="open-popup-btn-"] {
   display: block;
   margin: 20px auto;
   background-color: rgb(125, 153, 0);
@@ -525,7 +525,7 @@ footer {
     overflow-x: scroll;
   }
 
-  .open-popup-btn {
+  [class^="open-popup-btn-"] {
     width: 90%;
     height: 50%;
     font-size: 100%;
