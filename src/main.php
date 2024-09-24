@@ -203,9 +203,9 @@ $mysqli->close();
                                     }
                                     ?>
                                     </button>
-                                    <p>欠席回数 <span id="absenceCount_<?php echo $howmanyA;
-                                                                    $howmanyA += 1;
-                                                                    ?>">0</span> / 最大欠席回数</p>
+                                    <p>欠席回数 <span id="absenceCount_<?php echo $howmanyA; ?>">0</span> / 最大欠席回数</p>
+                                    <?php
+                                    $howmanyA += 1; ?>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
