@@ -195,7 +195,7 @@ $mysqli->close();
             </div>
             <div>
                 <?php
-               
+                /* こちらを採用 */
                 foreach ($days as $index => $day) :
                     foreach ($times as $timeIndex) :
                         echo ('<div class="overlay-absent-' . $howmanyB . '" id="overlay-absent">');
