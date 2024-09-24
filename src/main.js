@@ -159,6 +159,7 @@ if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
 /* ============================================================== */
 
 /* ======================= 時間割ポップアップ関連 ====================== */
+// こちらを採用
 document.addEventListener('DOMContentLoaded', () => {
     const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
     const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
