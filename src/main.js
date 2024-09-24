@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeAbsenceCount(subjectId) {
     let key = 'absenceCount_' + subjectId;  // 科目ごとのキーを設定
     let absenceCount = localStorage.getItem(key);
-    
+
     console.log("[process: main] cID:" + subjectId);
     // 欠席回数が存在しない場合は初期化
     if (absenceCount === null) {
@@ -339,7 +339,9 @@ function incrementAbsence(subjectId) {
 // ページ読み込み時に各教科の初期化
 window.onload = function () {
     let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
-
+    if (subjectElements) {
+        console.log("[process: main] sE:");
+    }
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
         console.log("[process: main] subjectid:" + subjectId);
