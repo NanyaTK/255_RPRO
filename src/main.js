@@ -351,7 +351,7 @@ window.onload = function () {
         initializeAbsenceCount(subjectId);
 
         // 欠席ボタンのイベントリスナーを設定
-        document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
+        document.getElementById('absenceButton_0').addEventListener('click', function () {
             incrementAbsence(subjectId);
             console.log("[process: main] " + subjectId + " was registered.");
         });
