@@ -342,7 +342,7 @@ window.onload = function () {
 
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
-
+        console.log("[process: main] subjectid:" + subjectId);
         // 初期化
         initializeAbsenceCount(subjectId);
 
