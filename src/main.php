@@ -191,7 +191,6 @@ $mysqli->close();
                                         $subjectName = $row["科目名"];
                                         $subjectId = $row["科目ID"]; // 科目ごとのIDを使う  
                                         echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
-                                        $howmanyA += 1;
                                         echo ($row["科目名"]);
                                         $subjectName = $row["科目名"];
                                         $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
