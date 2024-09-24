@@ -315,6 +315,7 @@ function initializeAbsenceCount(subjectId) {
     if (absenceCount === null) {
         absenceCount = 0;
         localStorage.setItem(key, absenceCount);
+        absenceCount = localStorage.getItem(key);
     }
 
     // 欠席回数を画面に反映
