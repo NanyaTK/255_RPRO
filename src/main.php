@@ -178,7 +178,7 @@ $mysqli->close();
                             <?php foreach ($times as $timeIndex) : ?>
                                 <td class="time-cell">
                                     <?php
-                              
+
                                     // 科目名を取得
                                     if ($subjectsByDay[$index][$timeIndex - 1]) {
                                         if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
@@ -190,13 +190,13 @@ $mysqli->close();
                                         $row = $time_schdule->fetch_assoc();
                                         $subjectName = $row["科目名"];
                                         $subjectId = $row["科目ID"]; // 科目ごとのIDを使う  
-                                        echo ('<button class ="open-popup-btn-' . $howmanyA . '">');
+                                        echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         $howmanyA += 1;
                                         echo ($row["科目名"]);
                                         $subjectName = $row["科目名"];
                                         $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
                                     } else {
-                                        echo ('<button class ="open-popup-btn-' . $howmanyA . '">');
+                                        echo ('<button class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         $howmanyA += 1;
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
@@ -217,7 +217,7 @@ $mysqli->close();
                 foreach ($days as $index => $day) :
                     foreach ($times as $timeIndex) :
                         echo ('<div class="overlay-absent-' . $howmanyB . '" id="overlay-absent">');
-                        $howmanyB += 1;
+
                         echo (' <div class="popup-absent" id="popup-absent">
                     <p class="close-absent" id="close-absent">&times;</p>
                     <div class="sm-w">
@@ -247,8 +247,7 @@ $mysqli->close();
                             echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
                             echo ("</p>");
                             echo ('<p class="absent-msg">本当に欠席しますか？</p>');
-                            echo ('<button id="absenceButton_' . $subjectId . '" class="absenceButton" data-subject-id=' . $subjectId . '>');
-                            echo ('欠席する</button>');
+                            echo ('<button class="absent-btn" id="absenceButton_' . $howmanyB . 'data-subject-id=' . $$howmanyB . '">欠席する</button>');
                         } else {
                             echo '<p class="name-subjects">開きコマです</p>';
                             echo '<p class="name-subjects">ゆっくりお休みください</p>';
@@ -257,6 +256,7 @@ $mysqli->close();
                         echo ('</div>');
                         echo ('</div>');
                         echo ('</div>');
+                        $howmanyB += 1;
                     endforeach;
                 endforeach;
                 ?>
