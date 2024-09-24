@@ -317,6 +317,7 @@ function initializeAbsenceCount(subjectId) {
         localStorage.setItem(key, absenceCount);
         absenceCount = localStorage.getItem(key);
     }
+    console.log("[process: main] absenceCount:" + absenceCount);
 
     // 欠席回数を画面に反映
     document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
