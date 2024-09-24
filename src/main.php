@@ -71,14 +71,24 @@ $mysqli->close();
                     <div id="message">
                         <h2>新規登録</h2>
                         <p>時間割を設定してください</p>
-                        <label class="select-class">
-                            <select>
-                                <option id=13>電気情報工学科電気電子コース4年</option>
-                                <option id=14>電気情報工学科情報工学コース4年</option>
-                                <option id=17>電気情報工学科電気電子コース5年</option>
-                                <option id=18>電気情報工学科情報工学コース5年</option>
-                            </select>
-                        </label>
+                        <div class="flex-byForce">
+                            <label class="select-class">
+                                <select class="auto-complete">
+                                    <option id=13>電気情報工学科電気電子コース4年</option>
+                                    <option id=14>電気情報工学科情報工学コース4年</option>
+                                    <option id=17>電気情報工学科電気電子コース5年</option>
+                                    <option id=18>電気情報工学科情報工学コース5年</option>
+                                </select>
+                            </label>
+                            <label class="select-class term-sel-label">
+                                <select class="term-sel">
+                                    <option id=1>前期</option>
+                                    <option id=2>後期</option>
+                                </select>
+                            </label>
+                            <button id="cltemp-btn" class="clt-fil-btn filDB">絞り込み</button>
+                            <button id="rstFilter-btn" class="clt-fil-btn">リセット</button>
+                        </div>
                         <div class="jikanwari">
                             <?php
                             // 曜日と時間割の初期データ
@@ -103,12 +113,12 @@ $mysqli->close();
                                                     $selectId = 'mys-' . $day . '-' . $timeIndex;
                                                     ?>
                                                     <select id="<?php echo $selectId; ?>" class="subject-select">
-                                                        <option>空コマ</option>
+                                                        <option class="empty">空コマ</option>
                                                         <?php
                                                         for ($row_no = $time_schdule->num_rows - 1; $row_no >= 0; $row_no--) {
                                                             $time_schdule->data_seek($row_no);
                                                             $row = $time_schdule->fetch_assoc();
-                                                            echo '<option id = ' . $row["ID"] . '>' . $row["科目名"] . '</option>';
+                                                            echo '<option id ="' . $row["ID"] . '" class="c-' . $row["学科ID"] . '">' . $row["科目名"] . '</option>';
                                                         }
                                                         ?>
                                                     </select>
@@ -210,9 +220,8 @@ $mysqli->close();
             </div>
             <?php // ここまで時間割表示   
             ?>
-            <script type="text/javascript" src="main.js"></script>
         </div>
-
+        <script type="text/javascript" src="main.js"></script>
     </div>
     <footer>
         &copy; 2024 留年プロテクタープロジェクト

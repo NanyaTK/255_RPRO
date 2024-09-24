@@ -1,9 +1,9 @@
-/* =========== service Worker 新規インストールイベント ============ */
+﻿/* =========== service Worker 新規インストールイベント ============ */
 const registerServiceWorker = async () => {
     if ("serviceWorker" in navigator) {
         try {
             const registration = await navigator.serviceWorker.register("./sw.js", {
-                scope: "/src/",
+                scope: "/",
             });
             if (registration.installing) {
                 console.log("[process: main] Service worker installing");
@@ -86,6 +86,112 @@ popupWrapper.addEventListener('click', e => {
         popupWrapper.style.display = 'none';
     }
 });
+/* ============================================================== */
+
+/* ==================== 時間割自動入力関連 ======================== */
+/**
+ * 時間割の学科絞り込み関数
+ */
+function FilterClasses(selectedClassId) {
+    const filterSelectElements = document.querySelectorAll(".subject-select");
+    filterSelectElements.forEach((filterSelectElement, index) => {
+        const AllFilterOptions = filterSelectElement.querySelectorAll("option");
+        if (!tempOptions[index]) tempOptions[index] = [];
+        AllFilterOptions.forEach(filterOption => {
+            tempOptions[index].push(filterOption);
+            if ((!filterOption.classList.contains("c-" + selectedClassId)) && (!filterOption.classList.contains("empty"))) {
+                //tempOptions[index].push(filterOption);
+                filterOption.remove();
+            }
+        });
+    });
+}
+/**
+ * 時間割のフィルタリング関数
+ */
+function AutoCompleteClasses() {
+    // 学科・コースのセレクタを取得
+    const selectedClass = document.querySelector('.auto-complete');
+    const selectedClassOpt = selectedClass.options[selectedClass.selectedIndex];
+    const selectedClassId = selectedClassOpt.id;
+    // 学期のセレクタを取得
+    const selectedTerm = document.querySelector('.term-sel');
+    const selectedTermOpt = selectedTerm.options[selectedTerm.selectedIndex];
+    const selectedTermId = selectedTermOpt.id;
+    const CTData = selectedClassId + "," + selectedTermId;
+    console.log("[process: main] " + CTData);
+    FilterClasses(selectedClassId);
+    ableRstFlag = true;
+    console.log("[process: main] filtering finished.");
+    return CTData;
+}
+
+/**
+ * フィルターのリセット関数
+ */
+function ResetFilter() {
+    if (ableRstFlag) {
+        const filterSelectElements = document.querySelectorAll(".subject-select");
+        filterSelectElements.forEach((filterSelectElement, index) => {
+            const AllFilterOptions = filterSelectElement.querySelectorAll("option");
+            AllFilterOptions.forEach(filterOption => {
+                filterOption.remove();
+            });
+            if (tempOptions[index]) {
+                tempOptions[index].forEach(option => {
+                    filterSelectElement.appendChild(option);
+                });
+            }
+            filterSelectElement.options[0].selected = true;
+            tempOptions[index] = [];
+        });
+        ableRstFlag = false;
+        console.log("[process: main] filtering reseted.");
+    } else {
+        ableRstFlag = false;
+        console.log("[process: main] filtering was not reseted.");
+    }
+}
+
+let tempOptions = {};
+let temp = {};
+let ableRstFlag = false;
+const cltempBtn = document.getElementById("cltemp-btn");
+cltempBtn.addEventListener("click", () => {
+    const CTData = AutoCompleteClasses();
+    fetch('/asyncSW.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(CTData) // 必要なデータを送信
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('[process: asyncSW] ', data);
+            if (data) {
+                let clID = data.split(',');
+                console.log('[process: asyncSW] ', clID);
+                const classElements = document.querySelectorAll(".subject-select");
+                classElements.forEach((classElement) => {
+                    //console.log(clID[0]);
+                    if (clID[0] != 0) {
+                        classElement.options[clID[0] - 1].selected = true;
+
+                    } else {
+                        classElement.options[0].selected = true;
+                    }
+                    clID.splice(0, 1);
+                })
+            }
+        })
+        .catch(error => {
+            console.error('[process: asyncSW] ', error);
+        });
+});
+const rstFilterBtn = document.getElementById("rstFilter-btn");
+rstFilterBtn.addEventListener("click", () => { ResetFilter(); });
+
 /* ============================================================== */
 
 

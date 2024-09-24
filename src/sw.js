@@ -22,6 +22,7 @@ function installSW() {
     console.log("[process: SW] Caching data...");
     addResourcesToCache([
         "/main.php",
+        "/asyncSW.php",
         "/main.js",
         "/sw.js",
         "/main.css",
@@ -55,17 +56,24 @@ self.addEventListener("install", (event) => {
  * and returns it.
  */
 addEventListener("fetch", (event) => {
-    event.respondWith(
-        (async () => {
-            const cachedResponse = await caches.match(event.request);
-            if (cachedResponse) {
-                console.log("[process: SW] respond from cache");
-                return cachedResponse;
-            };
-            console.log("[process: SW] respond from network");
-            return fetch(event.request);
-        })(),
-    );
+    if (event.request.url.includes('/asyncSW.php')) {
+        event.respondWith((async () => {
+            return fetch(event.request)
+        })()
+        );
+    } else {
+        event.respondWith(
+            (async () => {
+                const cachedResponse = await caches.match(event.request);
+                if (cachedResponse) {
+                    console.log("[process: SW] respond from cache");
+                    return cachedResponse;
+                };
+                console.log("[process: SW] respond from network");
+                return fetch(event.request);
+            })(),
+        );
+    }
 });
 
 /**
