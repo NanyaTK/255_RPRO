@@ -1,4 +1,25 @@
-body {
+/*
+ * Copyright 2024 留年プロテクタープロジェクト
+ * This file is part of RPRO.
+ * 
+ * RPRO is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU General Public License as published by the Free Software Foundation, either 
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * RPRO is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+ * PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with RPRO.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/*
+ * main.css
+ * 
+ * main.css is the main css file of RPRO app.
+ */
+ 
+ body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
   margin: 0;
@@ -318,7 +339,7 @@ footer {
   z-index: 1000;
 }
 
-.overlay-absent {
+[class^="overlay-absent-"] {
   display: none;
   position: fixed;
   left: 0;
@@ -346,6 +367,7 @@ footer {
   border: 0;
   padding: 20px 35px;
 }
+/*コンフリ生成*/
 
 .absent-btn {
   /* display: block;

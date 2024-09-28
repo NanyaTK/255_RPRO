@@ -1,4 +1,25 @@
-﻿/* =========== service Worker 新規インストールイベント ============ */
+﻿/*
+ * Copyright 2024 留年プロテクタープロジェクト
+ * This file is part of RPRO.
+ * 
+ * RPRO is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU General Public License as published by the Free Software Foundation, either 
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * RPRO is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+ * PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with RPRO.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/*
+ * main.js
+ * 
+ * main.js is the main file of RPRO app functions.
+ */
+
+/* =========== service Worker 新規インストールイベント ============ */
 const registerServiceWorker = async () => {
     if ("serviceWorker" in navigator) {
         try {
@@ -266,34 +287,41 @@ if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
 
 /* ======================= 時間割ポップアップ関連 ====================== */
 document.addEventListener('DOMContentLoaded', () => {
-    const openButtons = document.querySelectorAll('.open-popup-btn');
-    const overlay = document.getElementById('overlay-absent');
+    const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
+    const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
     const popup = document.getElementById('popup-absent');
-    const closeButton = document.getElementById('close-absent');
+    const closeButtons = document.querySelectorAll('close-absent');
     const absentButton = document.querySelectorAll('.absent-btn');
 
     // ポップアップを表示する関数
     function showPopup() {
-        overlay.style.display = 'block';
+        overlays[this.num].style.display = 'block';
         //popup.style.display = 'block';
     }
 
     // ポップアップを閉じる関数
     function hidePopup() {
-        overlay.style.display = 'none';
+        overlays.forEach(overlay => {
+            overlay.style.display = 'none';
+        });
         //popup.style.display = 'none';
     }
 
     // 各ボタンにクリックイベントを追加
+    let i = 0;
     openButtons.forEach(button => {
-        button.addEventListener('click', showPopup);
+        button.addEventListener('click', { num: i++, handleEvent: showPopup });
     });
 
     // 閉じるボタンにクリックイベントを追加
-    closeButton.addEventListener('click', hidePopup);
+    closeButtons.forEach(closeButton => {
+        closeButton.addEventListener('click', hidePopup);
+    });
 
     // オーバーレイをクリックしたときにもポップアップを閉じる
-    overlay.addEventListener('click', hidePopup);
+    overlays.forEach(overlay => {
+        overlay.addEventListener('click', hidePopup);
+    });
 });
 /* ============================================================== */
 
@@ -303,11 +331,14 @@ function initializeAbsenceCount(subjectId) {
     let key = 'absenceCount_' + subjectId;  // 科目ごとのキーを設定
     let absenceCount = localStorage.getItem(key);
 
+    console.log("[process: main] cID:" + subjectId);
     // 欠席回数が存在しない場合は初期化
     if (absenceCount === null) {
         absenceCount = 0;
         localStorage.setItem(key, absenceCount);
+        absenceCount = localStorage.getItem(key);
     }
+    console.log("[process: main] absenceCount:" + absenceCount);
 
     // 欠席回数を画面に反映
     document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
@@ -330,17 +361,20 @@ function incrementAbsence(subjectId) {
 
 // ページ読み込み時に各教科の初期化
 window.onload = function () {
-    let subjectElements = document.querySelectorAll('.subject');
-
+    let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
+    if (subjectElements) {
+        console.log("[process: main] sE:");
+    }
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
-
+        console.log("[process: main] subjectid:" + subjectId);
         // 初期化
         initializeAbsenceCount(subjectId);
 
         // 欠席ボタンのイベントリスナーを設定
         document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
             incrementAbsence(subjectId);
+            console.log("[process: main] " + subjectId + " was registered.");
         });
     });
 };

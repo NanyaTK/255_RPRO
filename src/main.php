@@ -1,4 +1,25 @@
 <?php
+/*
+ * Copyright 2024 留年プロテクタープロジェクト
+ * This file is part of RPRO.
+ * 
+ * RPRO is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU General Public License as published by the Free Software Foundation, either 
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * RPRO is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+ * PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with RPRO.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/*
+ * main.php
+ * 
+ * main.php is the main file of RPRO app.
+ */
+
 // POSTされたデータを取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // JavaScriptから渡された値を取得
@@ -164,7 +185,10 @@ $mysqli->close();
                 <table class="timetable">
                     <tr>
                         <th class="day-column">曜日</th>
-                        <?php foreach ($times as $time) : ?>
+                        <?php
+                        $howmanyA = 0;
+                        $howmanyB = 0;
+                        foreach ($times as $time) : ?>
                             <th><?php echo $time; ?></th>
                         <?php endforeach; ?>
                     </tr>
@@ -175,6 +199,7 @@ $mysqli->close();
                             <?php foreach ($times as $timeIndex) : ?>
                                 <td class="time-cell">
                                     <?php
+
                                     // 科目名を取得
                                     if ($subjectsByDay[$index][$timeIndex - 1]) {
                                         if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
@@ -185,47 +210,83 @@ $mysqli->close();
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
                                         $subjectName = $row["科目名"];
+                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う  
+                                        echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                                        echo ($row["科目名"]);
+                                        $subjectName = $row["科目名"];
                                         $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
                                     } else {
+                                        echo ('<button class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                                        echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
                                     }
                                     ?>
-
-                                    <!-- 欠席ボタンと欠席回数の表示 -->
-                                    <button id="absenceButton_<?php echo $subjectId; ?>" class="open-popup-btn subject" data-subject-id="<?php echo $subjectId; ?>">
-                                        <?php echo $subjectName; ?>
                                     </button>
-                                    <p>欠席回数 <span id="absenceCount_<?php echo $subjectId; ?>">0</span> / 最大欠席回数</p>
+                                    <p>欠席回数 <span id="absenceCount_<?php echo $howmanyA; ?>">0</span> / 最大欠席回数</p>
+                                    <?php
+                                    $howmanyA += 1; ?>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
                     <?php endforeach; ?>
                 </table>
             </div>
-            <div class="overlay-absent" id="overlay-absent">
-                <div class="popup-absent" id="popup-absent">
+            <div>
+                <?php
+                /* こちらを採用 */
+                foreach ($days as $index => $day) :
+                    foreach ($times as $timeIndex) :
+                        echo ('<div class="overlay-absent-' . $howmanyB . '" id="overlay-absent">');
+
+                        echo (' <div class="popup-absent" id="popup-absent">
                     <p class="close-absent" id="close-absent">&times;</p>
                     <div class="sm-w">
-                        <p class="name-subjects"><?php echo $row["科目名"]; ?></p>
-                        <p class="teacher-subjects"><?php echo ("担当教員" . "：" . $row["学科ID"]); ?></p>
-                        <?php
-                        if (!empty($row["特殊欠席条件"])) {
-                            echo '<p class = "absent-condition">.$row["特殊欠席条件"].</p>';
+                        <p class="name-subjects">');
+
+                        //各要素に適するRowを設定
+                        if ($subjectsByDay[$index][$timeIndex - 1]) {
+                            if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
+                                // 国語IVのid対策用
+                                $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
+                            } else {
+                                $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
+                            }
+                            $time_schdule->data_seek($row_no);
+                            $row = $time_schdule->fetch_assoc();
+
+                            echo $row["科目名"];
+                            echo ('</p>
+                                    <p class="teacher-subjects">');
+                            echo ("担当教員" . "：" . $row["学科ID"]);
+                            echo ("</p>");
+                            if (!empty($row["特殊欠席条件"])) {
+                                echo '<p class = "absent-condition">' . $row["特殊欠席条件"] . '</p>';
+                            } else {
+                                echo '<p class = "absent-condition">特殊欠席条件はありません</p>';
+                            }
+                            echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
+                            echo ("</p>");
+                            echo ('<p class="absent-msg">本当に欠席しますか？</p>');
+                            echo ('<button id="absenceButton_' . $howmanyB . '"  class="absenceButton_' . $howmanyB . ' absent-btn" data-subject-id=' . $howmanyB . '>欠席する</button>');
                         } else {
-                            echo '<p class = "absent-condition">特殊欠席条件はありません</p>';
+                            echo '<p class="name-subjects">開きコマです</p>';
+                            echo '<p class="name-subjects">ゆっくりお休みください</p>';
                         }
-                        echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
-                        ?>
-                        <p class="absent-msg">本当に欠席しますか？</p>
-                        <button class="absent-btn" id="absenceButton">欠席する</button>
-                    </div>
-                </div>
+
+                        echo ('</div>');
+                        echo ('</div>');
+                        echo ('</div>');
+                        $howmanyB += 1;
+                    endforeach;
+                endforeach;
+                ?>
             </div>
-            <?php // ここまで時間割表示   
-            ?>
         </div>
-        <script type="text/javascript" src="main.js"></script>
+        <?php // ここまで時間割表示   
+        ?>
+    </div>
+    <script type="text/javascript" src="main.js"></script>
     </div>
     <footer>
         &copy; 2024 留年プロテクタープロジェクト
