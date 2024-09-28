@@ -1,3 +1,25 @@
+# /*
+#  * Copyright 2024 留年プロテクタープロジェクト
+#  * This file is part of RPRO.
+#  * 
+#  * RPRO is free software: you can redistribute it and/or modify it under the terms of
+#  * the GNU General Public License as published by the Free Software Foundation, either 
+#  * version 3 of the License, or (at your option) any later version.
+#  * 
+#  * RPRO is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+#  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+#  * PURPOSE. See the GNU General Public License for more details.
+#  * You should have received a copy of the GNU General Public License along with RPRO.
+#  * If not, see <https://www.gnu.org/licenses/>.
+#  */
+
+# /*
+#  * scraping.py
+#  * 
+#  * scraping.py is file for scraping class datas.
+#  */
+
+
 import requests
 from bs4 import BeautifulSoup
 import time
