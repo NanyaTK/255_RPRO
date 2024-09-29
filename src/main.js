@@ -127,7 +127,7 @@ function FilterClasses(selectedClassId) {
     const filterSelectElements = document.querySelectorAll(".subject-select");
     filterSelectElements.forEach((filterSelectElement, index) => {
         const AllFilterOptions = filterSelectElement.querySelectorAll("option");
-        if (!tempOptions[index]) tempOptions[index] = [];
+        tempOptions[index] = [];
         AllFilterOptions.forEach(filterOption => {
             tempOptions[index].push(filterOption);
             if ((!filterOption.classList.contains("c-" + selectedClassId)) && (!filterOption.classList.contains("empty"))) {
@@ -164,10 +164,9 @@ function ResetFilter() {
     if (ableRstFlag) {
         const filterSelectElements = document.querySelectorAll(".subject-select");
         filterSelectElements.forEach((filterSelectElement, index) => {
-            const AllFilterOptions = filterSelectElement.querySelectorAll("option");
-            AllFilterOptions.forEach(filterOption => {
-                filterOption.remove();
-            });
+            while (filterSelectElement.firstChild) {
+                filterSelectElement.removeChild(filterSelectElement.firstChild);
+            }
             if (tempOptions[index]) {
                 tempOptions[index].forEach(option => {
                     filterSelectElement.appendChild(option);
@@ -207,8 +206,8 @@ cltempBtn.addEventListener("click", () => {
                 classElements.forEach((classElement) => {
                     //console.log(clID[0]);
                     if (clID[0] != 0) {
-                        classElement.options[clID[0] - 1].selected = true;
-
+                        //console.log("cs-" + (clID[0]));
+                        classElement.options["cs-" + (clID[0])].selected = true;
                     } else {
                         classElement.options[0].selected = true;
                     }
