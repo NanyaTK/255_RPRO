@@ -18,6 +18,16 @@
  * 
  * main.js is the main file of RPRO app functions.
  */
+const hostname = window.location.hostname;
+const queryParams = new URLSearchParams(window.location.search);
+const environment = queryParams.get('env');
+if (hostname === 'rpro.nanyatk.com' && environment === 'dev') {
+    const DEVFLAG = true;
+} else if (hostname === 'rpro.nanyatk.com') {
+    const DEVFLAG = false;
+} else {
+    const DEVFLAG = true;
+}
 
 /* =========== service Worker 新規インストールイベント ============ */
 const registerServiceWorker = async () => {
