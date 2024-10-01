@@ -19,6 +19,7 @@
  * 
  * main.php is the main file of RPRO app.
  */
+define("APPLICCATION_VERSION", "v1.1.1");
 
 // POSTされたデータを取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -70,19 +71,29 @@ $mysqli->close();
     <link rel="stylesheet" href="main.css" />
     <script type="text/javascript" src="sw.js"></script>
     <link rel="manifest" href="mainManifest.json" />
+    <meta name="google-site-verification" content="E3maZI8wva9G9nRwR8SETlWMM2MSqnCULOvfpkELHsI" />
 </head>
 
 <body>
     <header>
-        <a class="header" href="/">留年プロテクター</a>
+        <div class="flex-byForce">
+            <a class="header" href="/main.php">留年プロテクター <?php echo APPLICCATION_VERSION ?></a>
+            <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+            <nav id="menu" class="menu">
+                <ul>
+                    <li><a href="help.php">よくある質問</a></li>
+                    <li><button id="install-btn">インストール</button></li>
+                    <li> <button id="uninstall-btn">再起動</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </header>
     <div class="content">
 
         <div class="main">
             <div class="flex-byForce">
                 <button id="signup-btn">新規登録</button>
-                <button id="install-btn">インストール</button>
-                <button id="uninstall-btn">再起動</button>
             </div>
             <?php // ここから新規登録画面
             ?>
