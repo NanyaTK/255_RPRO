@@ -73,6 +73,10 @@ footer {
   font-size: larger;
 }
 
+.main-help li{
+  margin-top: 20px;
+}
+
 .register-button {
   background-color: #007bff;
   color: white;
