@@ -170,6 +170,7 @@ footer {
   display: flex;
   margin: auto 20%;
   justify-content: center;
+  align-items: center;
 }
 
 #signup-btn {
