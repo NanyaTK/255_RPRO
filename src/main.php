@@ -77,7 +77,7 @@ $mysqli->close();
 <body>
     <header>
         <div class="flex-byForce">
-            <a class="header" href="/main.php">留年プロテクター</a>
+            <a class="header" href="/main.php">留年プロテクター <?php echo APPLICCATION_VERSION ?></a>
             <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
             <nav id="menu" class="menu">
                 <ul>
