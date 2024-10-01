@@ -147,6 +147,7 @@ footer {
   border: 2px solid rgb(0, 153, 128);
   border-radius: 3px;
   margin-right: 10px;
+  height: 50px;
 }
 
 
@@ -164,6 +165,7 @@ footer {
   color: white;
   border: 2px solid rgb(0, 153, 128);
   border-radius: 3px;
+  height: 50px;
 }
 
 .flex-byForce {
@@ -599,6 +601,14 @@ footer {
 
   .select-subject::after {
     display: none;
+  }
+
+  .clt-fil-btn {
+    height: 80px;
+  }
+
+  #cltemp-btn {
+    height: 80px;
   }
 }
 
