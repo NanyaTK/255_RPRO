@@ -18,8 +18,8 @@
  * 
  * main.css is the main css file of RPRO app.
  */
- 
- body {
+
+body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
   margin: 0;
@@ -53,6 +53,8 @@ footer {
   color: white;
   text-decoration: none;
   font-size: 24px;
+  z-index: 100;
+  width: 100%;
 }
 
 .main {
@@ -61,6 +63,18 @@ footer {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
   text-align: center;
+}
+
+.main-help {
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.main-help li {
+  margin-top: 20px;
+  font-size: larger;
 }
 
 .register-button {
@@ -133,6 +147,7 @@ footer {
   border: 2px solid rgb(0, 153, 128);
   border-radius: 3px;
   margin-right: 10px;
+  height: 50px;
 }
 
 
@@ -150,12 +165,14 @@ footer {
   color: white;
   border: 2px solid rgb(0, 153, 128);
   border-radius: 3px;
+  height: 50px;
 }
 
 .flex-byForce {
   display: flex;
   margin: auto 20%;
   justify-content: center;
+  align-items: center;
 }
 
 #signup-btn {
@@ -367,6 +384,7 @@ footer {
   border: 0;
   padding: 20px 35px;
 }
+
 /*コンフリ生成*/
 
 .absent-btn {
@@ -584,4 +602,55 @@ footer {
   .select-subject::after {
     display: none;
   }
+
+  .clt-fil-btn {
+    height: 80px;
+  }
+
+  #cltemp-btn {
+    height: 80px;
+  }
+}
+
+.menu-icon {
+  font-size: 38px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.menu {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #333;
+  transition: top 0.3s ease-in-out;
+  z-index: 10;
+}
+
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  margin-top: 30px;
+  padding: 0;
+}
+
+.menu ul li {
+  text-align: center;
+  padding: 15px;
+}
+
+.menu ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: xx-large;
+}
+
+.menu ul li a:hover {
+  background-color: #575757;
+}
+
+.menu.show {
+  top: 96px;
 }
