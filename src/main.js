@@ -388,6 +388,8 @@ window.onload = function () {
     });
 };
 /* ========================================================== */
+
+/* ===================== ハンバーガーメニュー ================= */
 function toggleMenu() {
     var menu = document.getElementById("menu");
     if (menu.classList.contains("show")) {
@@ -396,3 +398,11 @@ function toggleMenu() {
         menu.classList.add("show");
     }
 }
+/* ========================================================== */
+
+/* ===================== キャッシュバージョン ================= */
+const phpV_send = document.getElementById('APPLICCATION_VERSION').textContent;
+if (navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({ type: 'PHP_APPLICCATION_VERSION', version: phpV_send });
+}
+/* ========================================================== */

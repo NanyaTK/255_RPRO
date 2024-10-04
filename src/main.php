@@ -84,6 +84,7 @@ $mysqli->close();
 </head>
 
 <body>
+    <?php echo '<div id="APPLICCATION_VERSION">' . APPLICCATION_VERSION . '</div>' ?>
     <header>
         <div class="flex-byForce">
             <a class="header" href="/main.php">留年プロテクター <?php echo APPLICCATION_VERSION ?></a>
