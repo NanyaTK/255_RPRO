@@ -65,7 +65,7 @@ function registerInstallAppEvent(element) {
     function installApp() {
         if (element.promptEvent) {
             element.promptEvent.prompt();
-            element.promptEvent.userChoice.then(function (choice) {
+            element.promptEvent.userChoice.then(function () {
                 element.style.display = "none";
                 element.promptEvent = null;
             });
