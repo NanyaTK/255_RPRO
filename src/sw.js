@@ -27,7 +27,7 @@
  * @param {*} resources File paths to be cached
  */
 const addResourcesToCache = async (resources) => {
-    const cache = await caches.open("v1.1.2");
+    const cache = await caches.open("v1.3.1");
     await cache.addAll(resources);
 }
 
