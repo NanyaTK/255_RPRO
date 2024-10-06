@@ -229,7 +229,11 @@ $mysqli->close();
                                         echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo ($row["科目名"]);
                                         echo "</button>";
-                                        echo '<p> <span id="absenceCount_'.$subjectId.'">0</span> / '.$maxabsent.'</p>';
+                                        if ($maxabsent) {
+                                            echo '<p> <span id="absenceCount_' . $subjectId . '">0</span> / ' . $maxabsent . '</p>';
+                                        }else {
+                                            echo '<p>特殊欠席条件</p>';
+                                        }
                                     } else {
                                         echo ('<button class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
@@ -237,11 +241,10 @@ $mysqli->close();
                                         $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
                                         $maxabsent = 0; //　時間割に設定していないマスは0を表示
                                         echo "</button>";
-                                        echo '<p>特殊欠席条件</p>';
                                     }
                                     ?>
-                                    
-                                    
+
+
                                     <?php
                                     $howmanyA += 1; ?>
                                 </td>
