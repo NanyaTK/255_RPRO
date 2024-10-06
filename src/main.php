@@ -233,7 +233,7 @@ $mysqli->close();
                                             echo '<p> <span id="absenceCount_' . $howmanyA . '">0</span> / ' . $maxabsent . '</p>';
                                         } else {
                                             echo '<p>特殊欠席条件</p>';
-                                            echo '<p> <span id="absenceCount_' . $howmanyA . '" class="unvisible">0</span> / ' . $maxabsent . '</p>';
+                                            echo '<p> <span id="absenceCount_' . $howmanyA . '" class="unvisible">0</span>  ' . $maxabsent . '</p>';
                                         }
                                     } else {
                                         echo ('<button class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
