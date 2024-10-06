@@ -176,9 +176,11 @@ $mysqli->close();
                                         $row = $time_schdule->fetch_assoc();
                                         $subjectName = $row["科目名"];
                                         $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
+                                        $maxabsent = $row["最大欠席可能回数"]; //　最大欠席回数を取得する
                                     } else {
                                         $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
+                                        $maxabsent = 0; //　時間割に設定していないマスは0を表示
                                     }
                                     ?>
 
@@ -186,7 +188,7 @@ $mysqli->close();
                                     <button id="absenceButton_<?php echo $subjectId; ?>" class="open-popup-btn subject" data-subject-id="<?php echo $subjectId; ?>">
                                         <?php echo $subjectName; ?>
                                     </button>
-                                    <p>欠席回数 <span id="absenceCount_<?php echo $subjectId; ?>">0</span> / 最大欠席回数</p>
+                                    <p><span id="absenceCount_<?php echo $subjectId; ?>">0</span> / <?php echo $maxabsent; ?></p>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
