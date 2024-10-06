@@ -167,15 +167,11 @@ $mysqli->close();
                                     <?php
                                     // 科目名を取得
                                     if ($subjectsByDay[$index][$timeIndex - 1]) {
-                                        if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
-                                            $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
-                                        } else {
-                                            $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
-                                        }
+                                        $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
                                         $subjectName = $row["科目名"];
-                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
+                                        $subjectId = $row["ID"]; // 科目ごとのIDを使う
                                         $maxabsent = $row["最大欠席可能回数"]; //　最大欠席回数を取得する
                                     } else {
                                         $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
