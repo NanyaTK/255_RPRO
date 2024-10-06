@@ -189,8 +189,11 @@ let ableRstFlag = false;
 const cltempBtn = document.getElementById("cltemp-btn");
 cltempBtn.addEventListener("click", () => {
     const CTData = AutoCompleteClasses();
-    fetch('/asyncSW.php', {
-        method: 'POST',
+    const params = new URLSearchParams({
+        key1: jsData
+    })
+    fetch('/asyncSW.php', + params, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
