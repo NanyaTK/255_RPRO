@@ -257,6 +257,15 @@ function getAllSelectedOptionIds() {
     let getData = JSON.parse(getval);
     console.log("[process: main] " + getData);
 
+    // 下 新規作成部分記入開始
+    fetch('/asyncSW.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(getData) // 必要なデータを送信
+    })
+
     // JSONデータを文字列にして隠しフィールドにセット
     document.getElementById('jsData').value = JSON.stringify(getData);
 
