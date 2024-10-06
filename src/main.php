@@ -1,4 +1,6 @@
 <?php
+define("APPLICCATION_VERSION", "v1.3.1");
+
 // POSTされたデータを取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // JavaScriptから渡された値を取得
