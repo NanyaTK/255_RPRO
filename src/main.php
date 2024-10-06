@@ -224,20 +224,20 @@ $mysqli->close();
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
                                         $subjectName = $row["科目名"];
-                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う  
+                                        $subjectId = $row["ID"]; // 科目ごとのIDを使う  
+                                        $maxabsent = $row["最大欠席可能回数"]; //　最大欠席回数を取得する
                                         echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo ($row["科目名"]);
-                                        $subjectName = $row["科目名"];
-                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
                                     } else {
                                         echo ('<button class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
+                                        $maxabsent = 0; //　時間割に設定していないマスは0を表示
                                     }
                                     ?>
                                     </button>
-                                    <p>欠席回数 <span id="absenceCount_<?php echo $howmanyA; ?>">0</span> / 最大欠席回数</p>
+                                    <p> <span id="absenceCount_<?php echo $howmanyA; ?>">0</span> / <?php echo $maxabsent; ?></p>
                                     <?php
                                     $howmanyA += 1; ?>
                                 </td>
