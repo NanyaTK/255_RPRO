@@ -224,7 +224,7 @@ $mysqli->close();
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
                                         $subjectName = $row["科目名"];
-                                        $subjectId = $row["ID"]; // 科目ごとのIDを使う  
+                                        $subjectId = $row["ID"]; // IDを使う  
                                         $maxabsent = $row["最大欠席可能回数"]; //　最大欠席回数を取得する
                                         echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo ($row["科目名"]);
