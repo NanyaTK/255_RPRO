@@ -265,6 +265,28 @@ function getAllSelectedOptionIds() {
         },
         body: JSON.stringify(getData) // 必要なデータを送信
     })
+        .then(response => response.json())
+        .then(data => {
+            console.log('[process: asyncSW] ', data);
+            if (data) {
+                let clID = data.split(',');
+                console.log('[process: asyncSW] ', clID);
+                const classElements = document.querySelectorAll(".subject-select");
+                classElements.forEach((classElement) => {
+                    //console.log(clID[0]);
+                    if (clID[0] != 0) {
+                        //console.log("cs-" + (clID[0]));
+                        classElement.options["cs-" + (clID[0])].selected = true;
+                    } else {
+                        classElement.options[0].selected = true;
+                    }
+                    clID.splice(0, 1);
+                })
+            }
+        })
+        .catch(error => {
+            console.error('[process: asyncSW] ', error);
+        });
 
     // JSONデータを文字列にして隠しフィールドにセット
     document.getElementById('jsData').value = JSON.stringify(getData);
