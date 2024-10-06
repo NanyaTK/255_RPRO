@@ -226,12 +226,12 @@ $mysqli->close();
                                         $subjectName = $row["科目名"];
                                         $subjectId = $row["ID"]; // IDを使う  
                                         $maxabsent = $row["最大欠席可能回数"]; //　最大欠席回数を取得する
-                                        echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                                        echo ('<button id="absenceButton_' . $howmanyA . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo ($row["科目名"]);
                                         echo "</button>";
                                         if ($maxabsent) {
-                                            echo '<p> <span id="absenceCount_' . $subjectId . '">0</span> / ' . $maxabsent . '</p>';
-                                        }else {
+                                            echo '<p> <span id="absenceCount_' . $howmanyA . '">0</span> / ' . $maxabsent . '</p>';
+                                        } else {
                                             echo '<p>特殊欠席条件</p>';
                                         }
                                     } else {
