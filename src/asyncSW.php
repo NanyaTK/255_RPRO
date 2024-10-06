@@ -20,7 +20,7 @@
  * asyncSW.php is asynchronous processing file.
  */
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_SERVER['key1'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $data = json_decode(file_get_contents('php://input'), true);
     $data = explode(",", $data);
     $mysqli = new mysqli("127.0.0.1", "rpro_u", "uhe6WTScplbJ", "rpro", 3306);

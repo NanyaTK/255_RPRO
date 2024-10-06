@@ -259,7 +259,7 @@ function getAllSelectedOptionIds() {
 
     // 下 新規作成部分記入開始
     fetch('/asyncSW.php', {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
