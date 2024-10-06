@@ -237,7 +237,7 @@ $mysqli->close();
                                     }
                                     ?>
                                     </button>
-                                    <p> <span id="absenceCount_<?php echo $howmanyA; ?>">0</span> / <?php echo $maxabsent; ?></p>
+                                    <p> <span id="absenceCount_<?php echo $subjectId; ?>">0</span> / <?php echo $maxabsent; ?></p>
                                     <?php
                                     $howmanyA += 1; ?>
                                 </td>
