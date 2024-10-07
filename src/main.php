@@ -21,12 +21,14 @@
  */
 define("APPLICCATION_VERSION", "v1.3.7");
 
+/*
 // POSTされたデータを取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // JavaScriptから渡された値を取得
     $data_subjects = isset($_POST['jsData']) ? $_POST['jsData'] : '値がありません';
     $subjects = json_decode($data_subjects, true);
 }
+*/
 ?>
 
 <!DOCTYPE html>
