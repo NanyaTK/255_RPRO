@@ -173,7 +173,7 @@ $mysqli->close();
                                 <?php endforeach; ?>
                             </table>
                         </div>
-                        <button id="finalize-btn" onclick="getAllSelectedOptionIds()" type="submit">確定する</button>
+                        <button id="finalize-btn" onclick="getAllSelectedOptionIds()">確定する</button>
                         <!--
                         <form method="POST" action="main.php" id="hiddenForm">
                             <?php // JSで値を設定する隠しフィールド
