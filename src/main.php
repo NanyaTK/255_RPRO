@@ -176,8 +176,6 @@ $mysqli->close();
                         <button id="finalize-btn" onclick="getAllSelectedOptionIds()">確定する</button>
                         <!--
                         <form method="POST" action="main.php" id="hiddenForm">
-                            <?php // JSで値を設定する隠しフィールド
-                            ?>
                             <input type="hidden" name="jsData" id="jsData">
                             <button id="finalize-btn" onclick="getAllSelectedOptionIds()" type="submit">確定する</button>
                         </form>

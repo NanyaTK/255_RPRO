@@ -20,7 +20,7 @@
  * asyncSW.php is asynchronous processing file.
  */
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $data = explode(",", $data);
     if ($data[0] == "0") {
