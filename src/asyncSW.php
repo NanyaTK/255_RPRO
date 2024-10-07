@@ -23,7 +23,9 @@
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $data = json_decode(file_get_contents('php://input'), true);
     $data = explode(",", $data);
-    if ($data[0] == "1"){
+    if ($data[0] == "0") {
+        array_shift($data);
+    }else if($data[0] == "1") {
         array_shift($data);
     }
     $mysqli = new mysqli("127.0.0.1", "rpro_u", "uhe6WTScplbJ", "rpro", 3306);
