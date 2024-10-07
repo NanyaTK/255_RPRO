@@ -149,7 +149,7 @@ function AutoCompleteClasses() {
     const selectedTerm = document.querySelector('.term-sel');
     const selectedTermOpt = selectedTerm.options[selectedTerm.selectedIndex];
     const selectedTermId = selectedTermOpt.id;
-    const CTData = selectedClassId + "," + selectedTermId;
+    const CTData = "0," + selectedClassId + "," + selectedTermId;
     console.log("[process: main] " + CTData);
     FilterClasses(selectedClassId);
     ableRstFlag = true;
@@ -300,6 +300,7 @@ function getAllSelectedOptionIds() {
 
 /* ======================= JS-phpデータ渡し ====================== */
 // 保存された日時がある場合
+/*
 const savedTime = localStorage.getItem('savedTime');
 const savedTimestamp = parseInt(savedTime, 10); // 文字列を数値に変換
 
@@ -326,6 +327,7 @@ if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
 } else {
     console.log('[process: main] The current time is earlier than or equal to the saved time.');
 }
+*/
 /* ============================================================== */
 
 /* ======================= 時間割ポップアップ関連 ====================== */
