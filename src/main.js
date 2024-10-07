@@ -189,7 +189,7 @@ let ableRstFlag = false;
 const cltempBtn = document.getElementById("cltemp-btn");
 cltempBtn.addEventListener("click", () => {
     const CTData = AutoCompleteClasses();
-    fetch('/asyncSW.php', {
+    fetch('asyncSW.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -257,7 +257,7 @@ function getAllSelectedOptionIds() {
     console.log("[process: main] " + getData);
 
     // 下 新規作成部分記入開始
-    fetch('/asyncSW.php', {
+    fetch('asyncSW.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
