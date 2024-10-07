@@ -25,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $data = explode(",", $data);
     if ($data[0] == "1"){
         array_shift($data);
-        error_log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     }
     $mysqli = new mysqli("127.0.0.1", "rpro_u", "uhe6WTScplbJ", "rpro", 3306);
     if ($mysqli->connect_error) {

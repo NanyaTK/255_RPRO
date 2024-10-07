@@ -189,10 +189,7 @@ let ableRstFlag = false;
 const cltempBtn = document.getElementById("cltemp-btn");
 cltempBtn.addEventListener("click", () => {
     const CTData = AutoCompleteClasses();
-    const params = new URLSearchParams({
-        key1: jsData
-    })
-    fetch('/asyncSW.php', + params, {
+    fetch('/asyncSW.php', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -290,12 +287,14 @@ function getAllSelectedOptionIds() {
             console.error('[process: asyncSW] ', error);
         });
 
+    /*
     // JSONデータを文字列にして隠しフィールドにセット
     document.getElementById('jsData').value = JSON.stringify(getData);
 
     // フラグを設定して、次回ロード時にフォームが自動送信されるようにする
     localStorage.setItem('flag', 1);
     location.reload();
+    */
 }
 /* ============================================================== */
 
