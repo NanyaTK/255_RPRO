@@ -27,7 +27,7 @@
  * @param {*} resources File paths to be cached
  */
 const addResourcesToCache = async (resources) => {
-    const cache = await caches.open("v1.1.2");
+    const cache = await caches.open("v1.1.3");
     await cache.addAll(resources);
 }
 
@@ -86,7 +86,7 @@ addEventListener("fetch", (event) => {
                     return cachedResponse;
                 };
                 console.log("[process: SW] respond from network");
-                return fetch(event.request);
+                return fetch(event.request, { cache: 'no-cache' });
             })(),
         );
     }
