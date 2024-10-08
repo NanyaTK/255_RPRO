@@ -57,6 +57,10 @@ footer {
   width: 100%;
 }
 
+#APPLICCATION_VERSION {
+  display: none;
+}
+
 .main {
   background-color: #fff;
   padding: 20px;
@@ -384,6 +388,10 @@ footer {
   color: white;
   border: 0;
   padding: 20px 35px;
+}
+
+.unvisible {
+  display: none;
 }
 
 /*コンフリ生成*/

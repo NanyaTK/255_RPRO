@@ -11,27 +11,49 @@
     そのままの場所でも全く問題ない．
 
 ## 開発の手順(VS Code,WSL前提)
-1. ctrl+@でUbuntuのシェル(コマンド実行するやつ)を開ける<br>その後，次のコマンドでリポジトリを最新にする．
-1. ```git fetch```<br>
-```git rebase origin/develop```
+1. ctrl+@でUbuntuのシェル(コマンド実行するやつ)を開ける<br>その後，developブランチにいることを確認し，developブランチを最新にする．
+1. ```git pull```
 1. ブランチを作成し，そのブランチへ移動する．命名規則は次節参照のこと．<br>
-```git branch feat-〇〇```<br>
-```git checkout feat-〇〇```
+```git branch feat-#xx-〇〇```<br>
+```git checkout feat-#xx-〇〇```
 1. コードを書く．実装する機能ごとにステージング&コミットする．まとまってコミットするよりは細かすぎる方がまし．コミットメッセージの規則は次節参照のこと．
 1. 実装がひと段落ついたらpushする．
-1. GitHubでPRを作成する．声をかけるでも可
-1. PRをマージしてもらったらブランチを消し，次のブランチを作り開発を続ける．<br>
+1. GitHubでPRを作成する．
+1. PRがマージされたらブランチを消し，手順1に戻り開発を続ける．<br>
 ```git branch -d ブランチの名前```
 
 ## 命名規則
 ### ブランチ
-機能実装の場合：feat-〇〇<br>
-〇〇には実装する機能について簡潔に名づける．<br>
-ドキュメントの場合：doc-〇〇<br>
+機能実装の場合：feat-#xx-〇〇<br>
+〇〇には実装する機能について簡潔に名づける．#xxはissue等を参照．<br>
+ドキュメントの場合：doc-#xx-〇〇<br>
 リファクタの場合：refactor<br>
-バグの修正の場合：fix-〇〇<br>
+バグの修正の場合：fix-#xx-〇〇<br>
 issueの番号とする．ない場合は自分でissueをたてる．
 ### コミットメッセージ
 ブランチの先頭の文字列: コミット内容とする<br>
 e.g.<br>
 feat: ユーザーデータの保存の実装
+
+## 環境変数
+### インストール
+```
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+sudo mv composer.phar /usr/local/bin/composer
+```
+### プロジェクトに追加
+```composer require vlucas/phpdotenv```
+.envファイルを追加
+.gitignoreファイルを追加
+.gitignoreファイルの中身↓↓
+```
+.env
+/vendor/
+```
+.envファイルの中身↓↓
+```
+
+```
