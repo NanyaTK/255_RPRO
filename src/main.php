@@ -19,7 +19,7 @@
  * 
  * main.php is the main file of RPRO app.
  */
-define("APPLICCATION_VERSION", "v1.1.3");
+define("APPLICCATION_VERSION", "v1.3.0");
 
 // POSTされたデータを取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -33,7 +33,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="ja">
 
 <?php
-$mysqli = new mysqli("127.0.0.1", "rpro_u", "uhe6WTScplbJ", "rpro", 3306);
+require __DIR__ .  '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+$dbHost = $_ENV['DB_HOST'];
+$dbUser = $_ENV['DB_USER'];
+$dbPass = $_ENV['DB_PASS'];
+$dbName = $_ENV['DB_NAME'];
+$dbPort = $_ENV['DB_PORT'];
+
+$mysqli = new mysqli($dbHost, $dbUser, $dbPass, $dbName, $dbPort);
 if ($mysqli->connect_error) {
     echo $mysqli->connect_error;
     exit();
@@ -75,6 +84,7 @@ $mysqli->close();
 </head>
 
 <body>
+    <?php echo '<div id="APPLICCATION_VERSION">' . APPLICCATION_VERSION . '</div>' ?>
     <header>
         <div class="flex-byForce">
             <a class="header" href="/main.php">留年プロテクター <?php echo APPLICCATION_VERSION ?></a>
