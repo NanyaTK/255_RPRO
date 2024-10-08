@@ -20,6 +20,7 @@
  * sw.js is the abbreviation for ServiceWorker.js
  * This file includes function of PWA.
  */
+const APPLICCATION_VERSION = "v1.3.1"
 
 /**
  * The file path to be cached passed in the resource
@@ -27,7 +28,7 @@
  * @param {*} resources File paths to be cached
  */
 const addResourcesToCache = async (resources) => {
-    const cache = await caches.open("v3");
+    const cache = await caches.open(APPLICCATION_VERSION);
     await cache.addAll(resources);
 }
 
@@ -86,7 +87,7 @@ addEventListener("fetch", (event) => {
                     return cachedResponse;
                 };
                 console.log("[process: SW] respond from network");
-                return fetch(event.request);
+                return fetch(event.request, { cache: 'no-cache' });
             })(),
         );
     }
@@ -128,3 +129,42 @@ self.addEventListener("activate", (event) => {
         event.waitUntil(installSW());
     }));
 });
+
+/**
+ * 
+ * @returns cacheVersions(current and latest)
+ */
+async function getCurrentCacheVersion() {
+    const cacheKeys = await caches.keys();
+    //console.log("[process: SW] Available Cache Versions:", cacheKeys);
+    const currentCacheVersion = cacheKeys.find(key => key.startsWith('v'));
+    const newlyCacheVersion = cacheKeys.slice(-1)[0];
+    let caV = [currentCacheVersion, newlyCacheVersion];
+    return caV;
+}
+
+/**
+ * 更新を検知して自動更新する
+ */
+self.addEventListener('message', event => {
+    if (event.data && event.data.type === 'PHP_APPLICCATION_VERSION') {
+        const phpV_recv = event.data.version;
+        console.log("[process: SW] Current PHP Version is: ", phpV_recv);
+        getCurrentCacheVersion().then(caV => {
+            let caCV = caV[0];
+            let caNV = caV[1];
+            if (caNV) {
+                console.log("[process: SW] Latest Cache Version is: ", caNV);
+                console.log("[process: SW] Current Cache Version is: ", caCV);
+                if (phpV_recv == caNV) { } else {
+                    caches.delete(caCV);
+                    self.clients.matchAll({ includeUncontrolled: true }).then(clients => {
+                        clients.forEach(client => client.navigate(client.url));
+                    });
+                }
+            } else {
+                console.log("No Cache Version Found.");
+            }
+        });
+    }
+})

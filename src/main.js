@@ -18,6 +18,16 @@
  * 
  * main.js is the main file of RPRO app functions.
  */
+const hostname = window.location.hostname;
+const queryParams = new URLSearchParams(window.location.search);
+const environment = queryParams.get('env');
+if (hostname === 'rpro.nanyatk.com' && environment === 'dev') {
+    const DEVFLAG = true;
+} else if (hostname === 'rpro.nanyatk.com') {
+    const DEVFLAG = false;
+} else {
+    const DEVFLAG = true;
+}
 
 /* =========== service Worker 新規インストールイベント ============ */
 const registerServiceWorker = async () => {
@@ -55,7 +65,7 @@ function registerInstallAppEvent(element) {
     function installApp() {
         if (element.promptEvent) {
             element.promptEvent.prompt();
-            element.promptEvent.userChoice.then(function (choice) {
+            element.promptEvent.userChoice.then(function () {
                 element.style.display = "none";
                 element.promptEvent = null;
             });
@@ -117,7 +127,7 @@ function FilterClasses(selectedClassId) {
     const filterSelectElements = document.querySelectorAll(".subject-select");
     filterSelectElements.forEach((filterSelectElement, index) => {
         const AllFilterOptions = filterSelectElement.querySelectorAll("option");
-        if (!tempOptions[index]) tempOptions[index] = [];
+        tempOptions[index] = [];
         AllFilterOptions.forEach(filterOption => {
             tempOptions[index].push(filterOption);
             if ((!filterOption.classList.contains("c-" + selectedClassId)) && (!filterOption.classList.contains("empty"))) {
@@ -154,10 +164,9 @@ function ResetFilter() {
     if (ableRstFlag) {
         const filterSelectElements = document.querySelectorAll(".subject-select");
         filterSelectElements.forEach((filterSelectElement, index) => {
-            const AllFilterOptions = filterSelectElement.querySelectorAll("option");
-            AllFilterOptions.forEach(filterOption => {
-                filterOption.remove();
-            });
+            while (filterSelectElement.firstChild) {
+                filterSelectElement.removeChild(filterSelectElement.firstChild);
+            }
             if (tempOptions[index]) {
                 tempOptions[index].forEach(option => {
                     filterSelectElement.appendChild(option);
@@ -197,8 +206,8 @@ cltempBtn.addEventListener("click", () => {
                 classElements.forEach((classElement) => {
                     //console.log(clID[0]);
                     if (clID[0] != 0) {
-                        classElement.options[clID[0] - 1].selected = true;
-
+                        //console.log("cs-" + (clID[0]));
+                        classElement.options["cs-" + (clID[0])].selected = true;
                     } else {
                         classElement.options[0].selected = true;
                     }
@@ -340,8 +349,10 @@ function initializeAbsenceCount(subjectId) {
     }
     console.log("[process: main] absenceCount:" + absenceCount);
 
-    // 欠席回数を画面に反映
-    document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+    if (absenceCount) {
+        // 欠席回数を画面に反映
+        document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+    }
 }
 
 // 欠席ボタンが押された時の処理
@@ -378,4 +389,22 @@ window.onload = function () {
         });
     });
 };
+/* ========================================================== */
+
+/* ===================== ハンバーガーメニュー ================= */
+function toggleMenu() {
+    var menu = document.getElementById("menu");
+    if (menu.classList.contains("show")) {
+        menu.classList.remove("show");
+    } else {
+        menu.classList.add("show");
+    }
+}
+/* ========================================================== */
+
+/* ===================== キャッシュバージョン ================= */
+const phpV_send = document.getElementById('APPLICCATION_VERSION').textContent;
+if (navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({ type: 'PHP_APPLICCATION_VERSION', version: phpV_send });
+}
 /* ========================================================== */

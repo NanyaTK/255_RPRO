@@ -19,6 +19,7 @@
  * 
  * main.php is the main file of RPRO app.
  */
+define("APPLICCATION_VERSION", "v1.3.1");
 
 // POSTされたデータを取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -32,7 +33,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="ja">
 
 <?php
-$mysqli = new mysqli("127.0.0.1", "rpro_u", "uhe6WTScplbJ", "rpro", 3306);
+require __DIR__ .  '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+$dbHost = $_ENV['DB_HOST'];
+$dbUser = $_ENV['DB_USER'];
+$dbPass = $_ENV['DB_PASS'];
+$dbName = $_ENV['DB_NAME'];
+$dbPort = $_ENV['DB_PORT'];
+
+$mysqli = new mysqli($dbHost, $dbUser, $dbPass, $dbName, $dbPort);
 if ($mysqli->connect_error) {
     echo $mysqli->connect_error;
     exit();
@@ -70,19 +80,30 @@ $mysqli->close();
     <link rel="stylesheet" href="main.css" />
     <script type="text/javascript" src="sw.js"></script>
     <link rel="manifest" href="mainManifest.json" />
+    <meta name="google-site-verification" content="E3maZI8wva9G9nRwR8SETlWMM2MSqnCULOvfpkELHsI" />
 </head>
 
 <body>
+    <?php echo '<div id="APPLICCATION_VERSION">' . APPLICCATION_VERSION . '</div>' ?>
     <header>
-        <a class="header" href="/">留年プロテクター</a>
+        <div class="flex-byForce">
+            <a class="header" href="/main.php">留年プロテクター <?php echo APPLICCATION_VERSION ?></a>
+            <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+            <nav id="menu" class="menu">
+                <ul>
+                    <li><a href="help.php">よくある質問</a></li>
+                    <li><button id="install-btn">インストール</button></li>
+                    <li> <button id="uninstall-btn">再起動</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </header>
     <div class="content">
 
         <div class="main">
             <div class="flex-byForce">
                 <button id="signup-btn">新規登録</button>
-                <button id="install-btn">インストール</button>
-                <button id="uninstall-btn">再起動</button>
             </div>
             <?php // ここから新規登録画面
             ?>
@@ -139,7 +160,7 @@ $mysqli->close();
                                                         for ($row_no = $time_schdule->num_rows - 1; $row_no >= 0; $row_no--) {
                                                             $time_schdule->data_seek($row_no);
                                                             $row = $time_schdule->fetch_assoc();
-                                                            echo '<option id ="' . $row["ID"] . '" class="c-' . $row["学科ID"] . '">' . $row["科目名"] . '</option>';
+                                                            echo '<option id ="cs-' . $row["ID"] . '" class="c-' . $row["学科ID"] . '">' . $row["科目名"] . '</option>';
                                                         }
                                                         ?>
                                                     </select>
@@ -168,6 +189,9 @@ $mysqli->close();
                 if (!$subjects) {
                     // POSTデータが無い時の時間割データの初期値
                     $subjects = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+                }
+                foreach ($subjects as &$subject) {
+                    $subject = substr($subject, -2);
                 }
                 // 曜日と時間割の初期データ
                 $days = ['月', '火', '水', '木', '金'];
@@ -210,8 +234,8 @@ $mysqli->close();
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
                                         $subjectName = $row["科目名"];
-                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う  
-
+                                        $subjectId = $row["ID"]; // IDを使う  
+                                        $maxabsent = $row["最大欠席可能回数"]; //　最大欠席回数を取得する
                                         $subjectType = $row["科目分類"];
                                         $subjectTypeClass = "open-popup-btn-";
                                         if($subjectType == "専門")
@@ -240,14 +264,16 @@ $mysqli->close();
                                                     break;
                                             }
                                             $subjectTypeClass .= $colorName;
-                                        }
-                                        
-                                        echo ('<button id="absenceButton_' . $subjectId . '" class ="'. $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
-
+                                        }      
+                                        echo ('<button id="absenceButton_' . $howmanyA . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo ($row["科目名"]);
-                                        $subjectName = $row["科目名"];
-                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
-                                    
+                                        echo "</button>";
+                                        if ($maxabsent) {
+                                            echo '<p> <span id="absenceCount_' . $howmanyA . '">0</span> / ' . $maxabsent . '</p>';
+                                        } else {
+                                            echo '<p>特殊欠席条件</p>';
+                                            echo '<p> <span id="absenceCount_' . $howmanyA . '" class="unvisible">0</span>  ' . $maxabsent . '</p>';
+                                        }
                                     } else {
                                         /*
                                         echo ('<button class ="open-popup-btn-green-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
@@ -255,10 +281,12 @@ $mysqli->close();
                                         $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
                                         */
+                                        $maxabsent = 0; //　時間割に設定していないマスは0を表示
+                                        echo "</button>";
                                     }
                                     ?>
-                                    </button>
-                                    <p>欠席回数 <span id="absenceCount_<?php echo $howmanyA; ?>">0</span> / 最大欠席回数</p>
+
+
                                     <?php
                                     $howmanyA += 1; ?>
                                 </td>
