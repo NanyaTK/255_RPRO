@@ -238,15 +238,12 @@ $mysqli->close();
                                         $maxabsent = $row["最大欠席可能回数"]; //　最大欠席回数を取得する
                                         $subjectType = $row["科目分類"];
                                         $subjectTypeClass = "open-popup-btn-";
-                                        if($subjectType == "専門")
-                                        {
+                                        if ($subjectType == "専門") {
                                             $subjectTypeClass .= "purple-";
-                                        }
-                                        else//一般科目
+                                        } else //一般科目
                                         {
                                             $colorName = "";
-                                            switch($subjectType)
-                                            {
+                                            switch ($subjectType) {
                                                 case "一般赤":
                                                     $colorName .= "red-";
                                                     break;
@@ -259,19 +256,19 @@ $mysqli->close();
                                                 case "一般桃":
                                                     $colorName .= "pink-";
                                                     break;
-                                                default :
+                                                default:
                                                     $colorName .= "green-";
                                                     break;
                                             }
                                             $subjectTypeClass .= $colorName;
-                                        }      
-                                        echo ('<button id="absenceButton_' . $howmanyA . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                                        }
+                                        echo ('<button id="absenceButton_' . $howmanyA . '" class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo ($row["科目名"]);
                                         echo "</button>";
                                         if ($maxabsent) {
                                             echo '<p> <span id="absenceCount_' . $howmanyA . '">0</span> / ' . $maxabsent . '</p>';
                                         } else {
-                                            echo '<p>特殊欠席条件</p>';
+                                            echo '<p style="font-size: x-large;">特殊欠席条件</p>';
                                             echo '<p> <span id="absenceCount_' . $howmanyA . '" class="unvisible">0</span>  ' . $maxabsent . '</p>';
                                         }
                                     } else {
