@@ -623,14 +623,14 @@ footer {
   .scroll {
     overflow-x: scroll;
   }
-/*
+
   [class^="open-popup-btn-"] {
     width: 90%;
-    height: 50%;
+    height: 170px;
     font-size: 100%;
     padding: 20px 10px;
   }
-*/
+
   #finalize-btn {
     font-size: 32px;
   }
