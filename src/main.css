@@ -381,11 +381,11 @@ footer {
   margin: 0;
 }
 
-[class^="open-popup-btn-"] {
+[class^="open-popup-btn-green-"] {
   display: block;
   margin: 20px auto;
   background-color: rgb(125, 153, 0);
-  color: white;
+  color: black;
   border: 0;
   padding: 20px 35px;
 }
@@ -395,6 +395,50 @@ footer {
 }
 
 /*コンフリ生成*/
+
+[class^="open-popup-btn-red-"] {
+  display: block;
+  margin: 20px auto;
+  background-color: rgb(255,152,153);
+  color: black;
+  border: 0;
+  padding: 20px 35px;
+}
+
+[class^="open-popup-btn-blue-"] {
+  display: block;
+  margin: 20px auto;
+  background-color: rgb(153,205,255);
+  color: black;
+  border: 0;
+  padding: 20px 35px;
+}
+[class^="open-popup-btn-yellow-"] {
+  display: block;
+  margin: 20px auto;
+  background-color: rgb(254,255,153);
+  color: black;
+  border: 0;
+  padding: 20px 35px;
+}
+
+[class^="open-popup-btn-pink-"] {
+  display: block;
+  margin: 20px auto;
+  background-color: rgb(255,153,203);
+  color: black;
+  border: 0;
+  padding: 20px 35px;
+}
+
+[class^="open-popup-btn-purple-"] {
+  display: block;
+  margin: 20px auto;
+  background-color: rgb(204,153,254);
+  color: black;
+  border: 0;
+  padding: 20px 35px;
+}
 
 .absent-btn {
   /* display: block;
@@ -579,14 +623,14 @@ footer {
   .scroll {
     overflow-x: scroll;
   }
-
+/*
   [class^="open-popup-btn-"] {
     width: 90%;
     height: 50%;
     font-size: 100%;
     padding: 20px 10px;
   }
-
+*/
   #finalize-btn {
     font-size: 32px;
   }

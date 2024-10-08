@@ -236,6 +236,35 @@ $mysqli->close();
                                         $subjectName = $row["科目名"];
                                         $subjectId = $row["ID"]; // IDを使う  
                                         $maxabsent = $row["最大欠席可能回数"]; //　最大欠席回数を取得する
+                                        $subjectType = $row["科目分類"];
+                                        $subjectTypeClass = "open-popup-btn-";
+                                        if($subjectType == "専門")
+                                        {
+                                            $subjectTypeClass .= "purple-";
+                                        }
+                                        else//一般科目
+                                        {
+                                            $colorName = "";
+                                            switch($subjectType)
+                                            {
+                                                case "一般赤":
+                                                    $colorName .= "red-";
+                                                    break;
+                                                case "一般水":
+                                                    $colorName .= "blue-";
+                                                    break;
+                                                case "一般黄":
+                                                    $colorName .= "yellow-";
+                                                    break;
+                                                case "一般桃":
+                                                    $colorName .= "pink-";
+                                                    break;
+                                                default :
+                                                    $colorName .= "green-";
+                                                    break;
+                                            }
+                                            $subjectTypeClass .= $colorName;
+                                        }      
                                         echo ('<button id="absenceButton_' . $howmanyA . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo ($row["科目名"]);
                                         echo "</button>";
@@ -246,10 +275,12 @@ $mysqli->close();
                                             echo '<p> <span id="absenceCount_' . $howmanyA . '" class="unvisible">0</span>  ' . $maxabsent . '</p>';
                                         }
                                     } else {
-                                        echo ('<button class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                                        /*
+                                        echo ('<button class ="open-popup-btn-green-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
+                                        */
                                         $maxabsent = 0; //　時間割に設定していないマスは0を表示
                                         echo "</button>";
                                     }
