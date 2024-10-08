@@ -211,15 +211,50 @@ $mysqli->close();
                                         $row = $time_schdule->fetch_assoc();
                                         $subjectName = $row["科目名"];
                                         $subjectId = $row["科目ID"]; // 科目ごとのIDを使う  
-                                        echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+
+                                        $subjectType = $row["科目分類"];
+                                        $subjectTypeClass = "open-popup-btn-";
+                                        if($subjectType == "専門")
+                                        {
+                                            $subjectTypeClass .= "purple-";
+                                        }
+                                        else//一般科目
+                                        {
+                                            $colorName = "";
+                                            switch($subjectType)
+                                            {
+                                                case "一般赤":
+                                                    $colorName .= "red-";
+                                                    break;
+                                                case "一般水":
+                                                    $colorName .= "blue-";
+                                                    break;
+                                                case "一般黄":
+                                                    $colorName .= "yellow-";
+                                                    break;
+                                                case "一般桃":
+                                                    $colorName .= "pink-";
+                                                    break;
+                                                default :
+                                                    $colorName .= "green-";
+                                                    break;
+                                            }
+                                            $subjectTypeClass .= $colorName;
+                                        }
+                                        
+                                        echo ('<button id="absenceButton_' . $subjectId . '" class ="'. $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+
                                         echo ($row["科目名"]);
                                         $subjectName = $row["科目名"];
                                         $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
+                                    
                                     } else {
-                                        echo ('<button class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                                        /*
+                                        echo ('<button class ="open-popup-btn-green-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
+                                        */
                                     }
                                     ?>
                                     </button>
