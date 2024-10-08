@@ -87,7 +87,7 @@ addEventListener("fetch", (event) => {
                     return cachedResponse;
                 };
                 console.log("[process: SW] respond from network");
-                return fetch(event.request);
+                return fetch(event.request, { cache: 'no-cache' });
             })(),
         );
     }
