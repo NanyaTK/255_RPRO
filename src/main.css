@@ -390,6 +390,10 @@ footer {
   padding: 20px 35px;
 }
 
+.unvisible {
+  display: none;
+}
+
 /*コンフリ生成*/
 
 .absent-btn {

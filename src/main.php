@@ -19,7 +19,7 @@
  * 
  * main.php is the main file of RPRO app.
  */
-define("APPLICCATION_VERSION", "v1.3.0");
+define("APPLICCATION_VERSION", "v1.3.1");
 
 // POSTされたデータを取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -234,20 +234,28 @@ $mysqli->close();
                                         $time_schdule->data_seek($row_no);
                                         $row = $time_schdule->fetch_assoc();
                                         $subjectName = $row["科目名"];
-                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う  
-                                        echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                                        $subjectId = $row["ID"]; // IDを使う  
+                                        $maxabsent = $row["最大欠席可能回数"]; //　最大欠席回数を取得する
+                                        echo ('<button id="absenceButton_' . $howmanyA . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo ($row["科目名"]);
-                                        $subjectName = $row["科目名"];
-                                        $subjectId = $row["科目ID"]; // 科目ごとのIDを使う
+                                        echo "</button>";
+                                        if ($maxabsent) {
+                                            echo '<p> <span id="absenceCount_' . $howmanyA . '">0</span> / ' . $maxabsent . '</p>';
+                                        } else {
+                                            echo '<p>特殊欠席条件</p>';
+                                            echo '<p> <span id="absenceCount_' . $howmanyA . '" class="unvisible">0</span>  ' . $maxabsent . '</p>';
+                                        }
                                     } else {
                                         echo ('<button class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
+                                        $maxabsent = 0; //　時間割に設定していないマスは0を表示
+                                        echo "</button>";
                                     }
                                     ?>
-                                    </button>
-                                    <p>欠席回数 <span id="absenceCount_<?php echo $howmanyA; ?>">0</span> / 最大欠席回数</p>
+
+
                                     <?php
                                     $howmanyA += 1; ?>
                                 </td>
