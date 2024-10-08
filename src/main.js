@@ -65,7 +65,7 @@ function registerInstallAppEvent(element) {
     function installApp() {
         if (element.promptEvent) {
             element.promptEvent.prompt();
-            element.promptEvent.userChoice.then(function (choice) {
+            element.promptEvent.userChoice.then(function () {
                 element.style.display = "none";
                 element.promptEvent = null;
             });
@@ -390,6 +390,8 @@ window.onload = function () {
     });
 };
 /* ========================================================== */
+
+/* ===================== ハンバーガーメニュー ================= */
 function toggleMenu() {
     var menu = document.getElementById("menu");
     if (menu.classList.contains("show")) {
@@ -398,3 +400,11 @@ function toggleMenu() {
         menu.classList.add("show");
     }
 }
+/* ========================================================== */
+
+/* ===================== キャッシュバージョン ================= */
+const phpV_send = document.getElementById('APPLICCATION_VERSION').textContent;
+if (navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({ type: 'PHP_APPLICCATION_VERSION', version: phpV_send });
+}
+/* ========================================================== */

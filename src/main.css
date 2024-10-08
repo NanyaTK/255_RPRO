@@ -57,6 +57,10 @@ footer {
   width: 100%;
 }
 
+#APPLICCATION_VERSION {
+  display: none;
+}
+
 .main {
   background-color: #fff;
   padding: 20px;

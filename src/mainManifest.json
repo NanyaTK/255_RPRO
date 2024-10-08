@@ -1,7 +1,7 @@
 {
     "name": "留年プロテクター v1.3.1",
     "short_name": "留プロ",
-    "start_url": "/",
+    "start_url": "/main.php",
     "icons": [
         {
             "src": "icon-images/192.png",
