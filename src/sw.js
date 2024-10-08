@@ -78,7 +78,12 @@ addEventListener("fetch", (event) => {
             return fetch(event.request)
         })()
         );
-    } else {
+    } else if(event.request.url.includes('/main-cp.php')) {
+        //time-cellが必要
+        event.respondWith((async () => {
+            return fetch(event.request)
+        }))
+    }else {
         event.respondWith(
             (async () => {
                 const cachedResponse = await caches.match(event.request);
