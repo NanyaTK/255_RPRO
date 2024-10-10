@@ -284,7 +284,6 @@ const seconds = Math.floor(timeDifference / 1000);
 if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
     let getval1 = localStorage.getItem('key');
     let getData2 = JSON.parse(getval1);
-
     // JSONデータを文字列にして隠しフィールドにセット
     document.getElementById('jsData').value = JSON.stringify(getData2);
     // フォームを自動送信する
@@ -340,14 +339,14 @@ function initializeAbsenceCount(subjectId) {
     let key = 'absenceCount_' + subjectId;  // 科目ごとのキーを設定
     let absenceCount = localStorage.getItem(key);
 
-    console.log("[process: main] cID:" + subjectId);
+    //console.log("[process: main] cID:" + subjectId);
     // 欠席回数が存在しない場合は初期化
     if (absenceCount === null) {
         absenceCount = 0;
         localStorage.setItem(key, absenceCount);
         absenceCount = localStorage.getItem(key);
     }
-    console.log("[process: main] absenceCount:" + absenceCount);
+    //console.log("[process: main] absenceCount:" + absenceCount);
 
     if (absenceCount) {
         // 欠席回数を画面に反映
@@ -378,7 +377,7 @@ window.onload = function () {
     }
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
-        console.log("[process: main] subjectid:" + subjectId);
+        //console.log("[process: main] subjectid:" + subjectId);
         // 初期化
         initializeAbsenceCount(subjectId);
 
