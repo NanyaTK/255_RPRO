@@ -19,7 +19,7 @@
  * 
  * main.php is the main file of RPRO app.
  */
-define("APPLICCATION_VERSION", "v1.3.3");
+define("APPLICCATION_VERSION", "v1.3.4");
 
 // POSTされたデータを取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -262,7 +262,7 @@ $mysqli->close();
                                             }
                                             $subjectTypeClass .= $colorName;
                                         }
-                                        echo ('<button id="absenceButton_' . $howmanyA . '" class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                                        echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo ($row["科目名"]);
                                         echo "</button>";
                                         if ($maxabsent) {
