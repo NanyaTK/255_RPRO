@@ -177,7 +177,7 @@ $mysqli->close();
                             <input type="hidden" name="jsData" id="jsData">
                             <button id="finalize-btn" onclick="getAllSelectedOptionIds()" type="submit">確定する</button>
                         </form>
-                        <p id="result"></p>
+                        <p id="result" style="display: none;"></p>
                     </div>
                 </div>
             </div>
