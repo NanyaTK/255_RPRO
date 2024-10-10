@@ -262,7 +262,7 @@ $mysqli->close();
                                             }
                                             $subjectTypeClass .= $colorName;
                                         }
-                                        echo ('<button id="absenceButton_' . $howmanyA . '" class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                                        echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo ($row["科目名"]);
                                         echo "</button>";
                                         if ($maxabsent) {
