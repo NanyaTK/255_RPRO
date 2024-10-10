@@ -20,7 +20,7 @@
  * sw.js is the abbreviation for ServiceWorker.js
  * This file includes function of PWA.
  */
-const APPLICCATION_VERSION = "v1.3.3"
+const APPLICCATION_VERSION = "v1.3.4"
 
 /**
  * The file path to be cached passed in the resource
