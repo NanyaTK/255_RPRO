@@ -19,7 +19,7 @@
  * 
  * main.php is the main file of RPRO app.
  */
-define("APPLICCATION_VERSION", "v1.3.5");
+define("APPLICCATION_VERSION", "v1.3.7");
 
 // POSTされたデータを取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -177,7 +177,7 @@ $mysqli->close();
                             <input type="hidden" name="jsData" id="jsData">
                             <button id="finalize-btn" onclick="getAllSelectedOptionIds()" type="submit">確定する</button>
                         </form>
-                        <p id="result"></p>
+                        <p id="result" style="display: none;"></p>
                     </div>
                 </div>
             </div>
@@ -192,7 +192,6 @@ $mysqli->close();
                 }
                 foreach ($subjects as &$subject) {
                     $subject = substr($subject, 3);
-                    echo $subject;
                 }
                 // 曜日と時間割の初期データ
                 $days = ['月', '火', '水', '木', '金'];
