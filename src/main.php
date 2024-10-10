@@ -191,7 +191,8 @@ $mysqli->close();
                     $subjects = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
                 }
                 foreach ($subjects as &$subject) {
-                    $subject = substr($subject, -2);
+                    $subject = substr($subject, 3);
+                    echo $subject;
                 }
                 // 曜日と時間割の初期データ
                 $days = ['月', '火', '水', '木', '金'];
