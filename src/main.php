@@ -104,6 +104,7 @@ $mysqli->close();
         <div class="main">
             <div class="flex-byForce">
                 <button id="signup-btn">新規登録</button>
+                <button id="delete-btn">削除</button>
             </div>
             <?php // ここから新規登録画面
             ?>
@@ -180,9 +181,18 @@ $mysqli->close();
                         <p id="result"></p>
                     </div>
                 </div>
-            </div>
             <?php // ここまで新規登録画面
             ?>
+            </div>
+            <div id = "deletepopup-wrapper">
+                <div id = "popup-inside">
+                    <div id="close">&times;</div>
+                    <div id ="message">
+                        <p>本当に削除しますか?</p>
+                        <button id="deletefinalize-btn" onclick="DeleteAll()" type="submit">確定する</button>
+                    </div>
+                </div>
+            </div>
             <div class="jikanwari">
                 <?php
                 // ここから時間割表示

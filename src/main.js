@@ -21,6 +21,7 @@
 const hostname = window.location.hostname;
 const queryParams = new URLSearchParams(window.location.search);
 const environment = queryParams.get('env');
+
 if (hostname === 'rpro.nanyatk.com' && environment === 'dev') {
     const DEVFLAG = true;
 } else if (hostname === 'rpro.nanyatk.com') {
@@ -105,6 +106,15 @@ unregisterSW.addEventListener("click", () => {
 const signUpBtn = document.getElementById('signup-btn');
 const popupWrapper = document.getElementById('popup-wrapper');
 const close = document.getElementById('close');
+const registState = localStorage.getItem("deleteflag");
+
+if(registState==1){
+    signUpBtn.style.display = "none"
+}else if(registState==0){
+    signUpBtn.style.display = "block"
+}else{
+    signUpBtn.style.display = "block"
+}
 
 // ボタンをクリックしたときにポップアップを表示させる
 signUpBtn.addEventListener('click', () => {
@@ -115,6 +125,31 @@ signUpBtn.addEventListener('click', () => {
 popupWrapper.addEventListener('click', e => {
     if (e.target.id === popupWrapper.id || e.target.id === close.id) {
         popupWrapper.style.display = 'none';
+    }
+});
+/* ============================================================== */
+
+/* ==================== 削除ボタンイベント ==================== */
+const DeleteBtn = document.getElementById('delete-btn');
+const DeletePopupWrapper = document.getElementById('deletepopup-wrapper');
+const DeleteClose = document.getElementById('close');
+
+if(registState==1){
+    DeleteBtn.style.display = "block"
+}else if(registState==0){
+    DeleteBtn.style.display = "none"
+}else {
+    DeleteBtn.style.display = "none"
+}
+// ボタンをクリックしたときにポップアップを表示させる
+DeleteBtn.addEventListener('click', () => {
+    DeletePopupWrapper.style.display = "block";
+});
+
+// ポップアップの外側又は「x」のマークをクリックしたときポップアップを閉じる
+DeletePopupWrapper.addEventListener('click', e => {
+    if (e.target.id === DeletePopupWrapper.id || e.target.id === close.id) {
+        DeletePopupWrapper.style.display = 'none';
     }
 });
 /* ============================================================== */
@@ -259,9 +294,20 @@ function getAllSelectedOptionIds() {
 
     // フラグを設定して、次回ロード時にフォームが自動送信されるようにする
     localStorage.setItem('flag', 1);
+    localStorage.setItem('deleteflag',1);
     location.reload();
 }
 /* ============================================================== */
+
+/* ================== 削除ボタンイベント ================== */
+function DeleteAll() {
+    localStorage.clear();
+    deleteAllCaches();
+    localStorage.setItem('deleteflag',0);
+    location.reload();
+}
+/* ============================================================== */
+
 
 /* ======================= JS-phpデータ渡し ====================== */
 // 保存された日時がある場合
