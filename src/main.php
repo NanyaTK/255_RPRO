@@ -181,9 +181,9 @@ $mysqli->close();
                         <p id="result"></p>
                     </div>
                 </div>
+            </div>
             <?php // ここまで新規登録画面
             ?>
-            </div>
             <div id = "deletepopup-wrapper">
                 <div id = "popup-inside">
                     <div id="close">&times;</div>
