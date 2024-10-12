@@ -189,7 +189,7 @@ $mysqli->close();
                     <div id="close">&times;</div>
                     <div id ="message">
                         <p>本当に削除しますか?</p>
-                        <button id="deletefinalize-btn" onclick="DeleteAll()" type="submit">確定する</button>
+                        <button id="deletefinalize-btn">確定する</button>
                     </div>
                 </div>
             </div>

@@ -154,6 +154,61 @@ DeletePopupWrapper.addEventListener('click', e => {
 });
 /* ============================================================== */
 
+/* ==================== 新規登録確定ボタンイベント ==================== */
+const FinalBtn = document.getElementById('finalize-btn');
+FinalBtn.addEventListener('click', () => {
+    // .subject-selectクラスを持つ全てのselect要素を取得
+    const selectElements = document.querySelectorAll('.subject-select');
+    const selectedOptionIds = [];
+    // 各select要素をループして選択されたoptionのidを取得
+    selectElements.forEach(selectElement => {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const selectedOptionId = selectedOption.id;
+        selectedOptionIds.push(selectedOptionId); // 配列に追加
+    });
+
+    // 結果を表示
+    document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
+    console.log(selectedOptionIds);
+    const registDatas = [];
+
+    for (let i = 0; i < selectedOptionIds.length; i++) {
+        const registData = selectedOptionIds[i];
+        registDatas.push(registData);
+    }
+
+    console.log("[process: main] " + registDatas);
+    const registJSON = JSON.stringify(registDatas);
+    localStorage.setItem('key', registJSON);
+    let getval = localStorage.getItem('key');
+    let getData = JSON.parse(getval);
+    console.log("[process: main] " + getData);
+
+    // JSONデータを文字列にして隠しフィールドにセット
+    document.getElementById('jsData').value = JSON.stringify(getData);
+
+    // フラグを設定して、次回ロード時にフォームが自動送信されるようにする
+    localStorage.setItem('flag', 1);
+    localStorage.setItem('deleteflag',1);
+location.reload();
+})
+/* ============================================================== */
+
+
+/* ==================== 削除確定ボタンイベント ====================== */
+const DeleteFinalBtn = document.getElementById('deletefinalize-btn');
+DeleteFinalBtn.addEventListener('click', () => {
+    localStorage.clear();
+    deleteAllCaches();
+    const registDatas = [];
+    const registJSON = JSON.stringify(registDatas);
+    localStorage.setItem('key', registJSON);
+    localStorage.setItem('flag', 1);
+    localStorage.setItem('deleteflag',0);
+    location.reload();
+})
+/* ============================================================== */
+
 /* ==================== 時間割自動入力関連 ======================== */
 /**
  * 時間割の学科絞り込み関数
@@ -258,56 +313,6 @@ const rstFilterBtn = document.getElementById("rstFilter-btn");
 rstFilterBtn.addEventListener("click", () => { ResetFilter(); });
 
 /* ============================================================== */
-
-
-/* ================== 新規登録確定ボタンイベント ================== */
-function getAllSelectedOptionIds() {
-    // .subject-selectクラスを持つ全てのselect要素を取得
-    const selectElements = document.querySelectorAll('.subject-select');
-    const selectedOptionIds = [];
-    // 各select要素をループして選択されたoptionのidを取得
-    selectElements.forEach(selectElement => {
-        const selectedOption = selectElement.options[selectElement.selectedIndex];
-        const selectedOptionId = selectedOption.id;
-        selectedOptionIds.push(selectedOptionId); // 配列に追加
-    });
-
-    // 結果を表示
-    document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
-    console.log(selectedOptionIds);
-    const registDatas = [];
-
-    for (let i = 0; i < selectedOptionIds.length; i++) {
-        const registData = selectedOptionIds[i];
-        registDatas.push(registData);
-    }
-
-    console.log("[process: main] " + registDatas);
-    const registJSON = JSON.stringify(registDatas);
-    localStorage.setItem('key', registJSON);
-    let getval = localStorage.getItem('key');
-    let getData = JSON.parse(getval);
-    console.log("[process: main] " + getData);
-
-    // JSONデータを文字列にして隠しフィールドにセット
-    document.getElementById('jsData').value = JSON.stringify(getData);
-
-    // フラグを設定して、次回ロード時にフォームが自動送信されるようにする
-    localStorage.setItem('flag', 1);
-    localStorage.setItem('deleteflag',1);
-    location.reload();
-}
-/* ============================================================== */
-
-/* ================== 削除ボタンイベント ================== */
-function DeleteAll() {
-    localStorage.clear();
-    deleteAllCaches();
-    localStorage.setItem('deleteflag',0);
-    location.reload();
-}
-/* ============================================================== */
-
 
 /* ======================= JS-phpデータ渡し ====================== */
 // 保存された日時がある場合
