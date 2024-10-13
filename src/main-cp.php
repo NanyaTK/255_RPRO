@@ -22,7 +22,10 @@
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
-    $data = explode(",", $data);
+    $data = str_replace('"', '', $data);
+    $data = explode(',', $data);
+    //$data = explode(",", $data);
+    //echo json_encode($data[0]);
     $subjects = $data;
 
     // DBから科目データを取得
