@@ -272,19 +272,32 @@ function getAllSelectedOptionIds() {
         .then(data => {
             console.log('[process: main-cp] ', data);
             if (data) {
-                let clID = data.split(',');
-                console.log('[process: main-cp] ', clID);
-                const classElements = document.querySelectorAll(".subject-select");
-                classElements.forEach((classElement) => {
-                    //console.log(clID[0]);
-                    if (clID[0] != 0) {
-                        //console.log("cs-" + (clID[0]));
-                        classElement.options["cs-" + (clID[0])].selected = true;
-                    } else {
-                        classElement.options[0].selected = true;
+                //let clID = data.split(',');
+                //console.log('[process: main-cp] ', clID);
+                let clID2 = [];
+                for (let i = 0; i < data.length; i++) {
+                    clID2[i] = data[i].split(";");
+
+                    for (let j = 0; j < clID2[i].length; j++) {
+                        if (clID2[i][j] !== "") {
+                            clID2[i][j] += ";";
+                        }
                     }
-                    clID.splice(0, 1);
+                }
+                console.log('[process: main-cp] ', clID2);
+                /*
+                const classElements = document.querySelectorAll(".time-cell");
+                classElements.forEach((classElement) => {
+                    classElement
                 })
+                */
+                for (let i = 0; i < 20; i++) {
+                    let element1 = document.getElementById(' . $subjectId . ');
+                    let element2 = document.getElementById("absenceCount_' . $howmanyA . '");
+                    if (element1) {
+                        element1.textContent = clID2[i][0];
+                    }
+                }
             }
         })
         .catch(error => {

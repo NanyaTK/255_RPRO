@@ -265,9 +265,10 @@ $mysqli->close();
                                             }
                                             $subjectTypeClass .= $colorName;
                                         }
-                                        echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
-                                        echo ($row["科目名"]);
-                                        echo "</button>";
+                                        echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>$row["科目名"]</button>');
+                                        //echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                                        //echo ($row["科目名"]);
+                                        //echo "</button>";
                                         if ($maxabsent) {
                                             echo '<p> <span id="absenceCount_' . $howmanyA . '">0</span> / ' . $maxabsent . '</p>';
                                         } else {
