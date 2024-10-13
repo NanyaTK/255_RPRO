@@ -15,9 +15,9 @@
  */
 
 /*
- * main.php
+ * main-cp.php
  * 
- * main.php is the main file of RPRO app.
+ * main-cp.php is asynchronous processing file.
  */
 define("APPLICCATION_VERSION", "v1.1.2");
 
@@ -48,22 +48,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mysqli->set_charset("utf8");
     }
     $mysqli->query("use rpro");
-    $result = $mysqli->prepare(
-        "SELECT
-    `ID`
-    ,`科目ID`
-    , `学科ID`
-    , `科目名`
-    , `講義回数`
-    , `最大欠席可能回数`
-    , `特殊欠席条件`
-    , `評価割合`
-    , `科目分類`
-FROM
-    rpro.classtable
-ORDER BY
-    `ID` DESC"
-    );
+    $result = $mysqli->prepare("
+    SELECT
+        `ID`
+        ,`科目ID`
+        , `学科ID`
+        , `科目名`
+        , `講義回数`
+        , `最大欠席可能回数`
+        , `特殊欠席条件`
+        , `評価割合`
+        , `科目分類`
+    FROM
+        rpro.classtable
+    ORDER BY
+        `ID` DESC
+    ");
     $result->execute();
     $time_schdule = $result->get_result();
     $row_data = $time_schdule->fetch_array(MYSQLI_NUM);
