@@ -72,6 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mysqli->close();
     // 科目取得ここまで
 
+    $resSubjectsData = [];
+
     // ここから時間割表示
     if (!$subjects) {
         // POSTデータが無い時の時間割データの初期値
@@ -131,29 +133,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                     $subjectTypeClass .= $colorName;
                 }
+                $resSubjectsData[$howmanyA] = <<<'EOD'
                 echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                 echo ($row["科目名"]);
-                echo "</button>";
+                echo "</button>";'
+                EOD;
                 if ($maxabsent) {
+                    $resSubjectsData[$howmanyA] .= <<<'EOD'
                     echo '<p> <span id="absenceCount_' . $howmanyA . '">0</span> / ' . $maxabsent . '</p>';
+                    EOD;
                 } else {
+                    $resSubjectsData[$howmanyA] .= <<<'EOD'
                     echo '<p style="font-size: x-large;">特殊欠席条件</p>';
                     echo '<p> <span id="absenceCount_' . $howmanyA . '" class="unvisible">0</span>  ' . $maxabsent . '</p>';
+                    EOD;
                 }
             } else {
+                $resSubjectsData[$howmanyA] .= <<<'EOD'
                 echo ('<button style="display:none;" class ="open-popup-btn-green-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                 echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
+                EOD;
                 $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                 $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
                 $maxabsent = 0; //　時間割に設定していないマスは0を表示
-                echo "</button>";
+                $resSubjectsData[$howmanyA] .= 'echo "</button>";';
             }
-            // hoge[0] = "<button> ~~ </button><p> ~~~ </p>"
-            // hoge[19] までできる
+            // resSubjectsData[0] = "<button> ~~ </button><p> ~~~ </p>"
+            // resSubjectsData[19] までできる
             $howmanyA += 1;
         endforeach;
     endforeach;
 
-    // $response = json_encode($hoge)
+    $response = json_encode($resSubjectsData);
     echo $response;
 }
