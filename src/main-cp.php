@@ -24,10 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $data = explode(",", $data);
     $subjects = $data;
-    foreach ($subjects as &$subject) {
-        // cs- を削除
-        $subject = substr($subject, 3);
-    }
 
     // DBから科目データを取得
     require __DIR__ . '/../vendor/autoload.php';
@@ -78,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $subjects = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
     }
     foreach ($subjects as &$subject) {
+        // cs- を削除
         $subject = substr($subject, 3);
     }
     // 曜日と時間割の初期データ
