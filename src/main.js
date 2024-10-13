@@ -149,7 +149,8 @@ function AutoCompleteClasses() {
     const selectedTerm = document.querySelector('.term-sel');
     const selectedTermOpt = selectedTerm.options[selectedTerm.selectedIndex];
     const selectedTermId = selectedTermOpt.id;
-    const CTData = "0," + selectedClassId + "," + selectedTermId;
+    const CTData = selectedClassId + "," + selectedTermId;
+    //const CTData = "0," + selectedClassId + "," + selectedTermId;
     console.log("[process: main] " + CTData);
     FilterClasses(selectedClassId);
     ableRstFlag = true;
@@ -247,9 +248,9 @@ function getAllSelectedOptionIds() {
         registDatas.push(registData);
     }
 
-    if(registDatas[0] == "0"){
+    /*if(registDatas[0] == "0"){
         registDatas.unshift("1");
-    }
+    }*/
 
     console.log("[process: main] " + registDatas);
     const registJSON = JSON.stringify(registDatas);
