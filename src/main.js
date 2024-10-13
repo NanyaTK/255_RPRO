@@ -108,11 +108,11 @@ const popupWrapper = document.getElementById('popup-wrapper');
 const close = document.getElementById('close');
 const registState = localStorage.getItem("deleteflag");
 
-if(registState==1){
+if (registState == 1) {
     signUpBtn.style.display = "none"
-}else if(registState==0){
+} else if (registState == 0) {
     signUpBtn.style.display = "block"
-}else{
+} else {
     signUpBtn.style.display = "block"
 }
 
@@ -134,11 +134,11 @@ const DeleteBtn = document.getElementById('delete-btn');
 const DeletePopupWrapper = document.getElementById('deletepopup-wrapper');
 const DeleteClose = document.getElementById('close');
 
-if(registState==1){
+if (registState == 1) {
     DeleteBtn.style.display = "block"
-}else if(registState==0){
+} else if (registState == 0) {
     DeleteBtn.style.display = "none"
-}else {
+} else {
     DeleteBtn.style.display = "none"
 }
 // ボタンをクリックしたときにポップアップを表示させる
@@ -189,8 +189,8 @@ FinalBtn.addEventListener('click', () => {
 
     // フラグを設定して、次回ロード時にフォームが自動送信されるようにする
     localStorage.setItem('flag', 1);
-    localStorage.setItem('deleteflag',1);
-location.reload();
+    localStorage.setItem('deleteflag', 1);
+    location.reload();
 })
 /* ============================================================== */
 
@@ -198,13 +198,11 @@ location.reload();
 /* ==================== 削除確定ボタンイベント ====================== */
 const DeleteFinalBtn = document.getElementById('deletefinalize-btn');
 DeleteFinalBtn.addEventListener('click', () => {
-    localStorage.clear();
-    deleteAllCaches();
-    const registDatas = [];
+    const registDatas = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
     const registJSON = JSON.stringify(registDatas);
     localStorage.setItem('key', registJSON);
     localStorage.setItem('flag', 1);
-    localStorage.setItem('deleteflag',0);
+    localStorage.setItem('deleteflag', 0);
     location.reload();
 })
 /* ============================================================== */
