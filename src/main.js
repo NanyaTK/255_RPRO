@@ -269,10 +269,10 @@ function getAllSelectedOptionIds() {
     })
         .then(response => response.json())
         .then(data => {
-            console.log('[process: asyncSW] ', data);
+            console.log('[process: main-cp] ', data);
             if (data) {
                 let clID = data.split(',');
-                console.log('[process: asyncSW] ', clID);
+                console.log('[process: main-cp] ', clID);
                 const classElements = document.querySelectorAll(".subject-select");
                 classElements.forEach((classElement) => {
                     //console.log(clID[0]);
@@ -287,7 +287,7 @@ function getAllSelectedOptionIds() {
             }
         })
         .catch(error => {
-            console.error('[process: asyncSW] ', error);
+            console.error('[process: main-cp] ', error);
         });
 
     /*
