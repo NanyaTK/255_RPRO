@@ -256,8 +256,8 @@ function getAllSelectedOptionIds() {
     const registJSON = JSON.stringify(registDatas);
     localStorage.setItem('key', registJSON);
     let getval = localStorage.getItem('key');
-    let getData = JSON.parse(getval);
-    console.log("[process: main] " + getData);
+    //let getData = JSON.parse(getval);
+    console.log("[process: main] " + getval);
 
     // 下 新規作成部分記入開始
     fetch('main-cp.php', {
@@ -265,7 +265,7 @@ function getAllSelectedOptionIds() {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(getData) // 必要なデータを送信
+        body: JSON.stringify(getval) // 必要なデータを送信
     })
         .then(response => response.json())
         .then(data => {
