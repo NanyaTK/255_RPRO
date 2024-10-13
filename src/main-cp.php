@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $resSubjectsData[$howmanyA] = <<<'EOD'
                 echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                 echo ($row["科目名"]);
-                echo "</button>";'
+                echo "</button>";
                 EOD;
                 if ($maxabsent) {
                     $resSubjectsData[$howmanyA] .= <<<'EOD'
