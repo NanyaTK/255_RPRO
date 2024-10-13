@@ -25,10 +25,74 @@ define("APPLICCATION_VERSION", "v1.1.2");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $data = explode(",", $data);
-    $output = <<<HTML
-    <?php foreach ($times as $timeIndex) : ?>
-        <td class="time-cell">
-            <?php
+    foreach ($subjects as &$subject) {
+        // cs- を削除
+        $subject = substr($subject, 3);
+    }
+
+    // DBから科目データを取得
+    require __DIR__ . '/../vendor/autoload.php';
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+    $dotenv->load();
+    $dbHost = $_ENV['DB_HOST'];
+    $dbUser = $_ENV['DB_USER'];
+    $dbPass = $_ENV['DB_PASS'];
+    $dbName = $_ENV['DB_NAME'];
+    $dbPort = $_ENV['DB_PORT'];
+
+    $mysqli = new mysqli($dbHost, $dbUser, $dbPass, $dbName, $dbPort);
+    if ($mysqli->connect_error) {
+        echo $mysqli->connect_error;
+        exit();
+    } else {
+        $mysqli->set_charset("utf8");
+    }
+    $mysqli->query("use rpro");
+    $result = $mysqli->prepare(
+        "SELECT
+    `ID`
+    ,`科目ID`
+    , `学科ID`
+    , `科目名`
+    , `講義回数`
+    , `最大欠席可能回数`
+    , `特殊欠席条件`
+    , `評価割合`
+    , `科目分類`
+FROM
+    rpro.classtable
+ORDER BY
+    `ID` DESC"
+    );
+    $result->execute();
+    $time_schdule = $result->get_result();
+    $row_data = $time_schdule->fetch_array(MYSQLI_NUM);
+
+    $mysqli->close();
+    // 科目取得ここまで
+
+    // ここから時間割表示
+    if (!$subjects) {
+        // POSTデータが無い時の時間割データの初期値
+        $subjects = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+    }
+    foreach ($subjects as &$subject) {
+        $subject = substr($subject, 3);
+    }
+    // 曜日と時間割の初期データ
+    $days = ['月', '火', '水', '木', '金'];
+    $times = ['1', '2', '3', '4'];
+
+    // 1週間の時間割の科目数（曜日数×時間数）
+    $subjectsPerDay = count($subjects) / count($days);
+
+    // 各曜日ごとに科目を分割
+    $subjectsByDay = array_chunk($subjects, $subjectsPerDay);
+
+    $howmanyA = 0;
+    foreach ($days as $index => $day):
+        foreach ($times as $timeIndex):
+            // 科目名を取得
             if ($subjectsByDay[$index][$timeIndex - 1]) {
                 if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
                     $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
@@ -37,26 +101,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 $time_schdule->data_seek($row_no);
                 $row = $time_schdule->fetch_assoc();
-                $subjectName = {$row["科目名"]};
-                $subjectId = {$row["科目ID"]}; 
-                echo ('<button id="absenceButton_' . $subjectId . '" class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
-                echo ($row{["科目名"]});
-                $subjectName = $row{["科目名"]};
-                $subjectId = $row{["科目ID"]};
+                $subjectName = $row["科目名"];
+                $subjectId = $row["ID"]; // IDを使う  
+                $maxabsent = $row["最大欠席可能回数"]; //　最大欠席回数を取得する
+                $subjectType = $row["科目分類"];
+                $subjectTypeClass = "open-popup-btn-";
+                if ($subjectType == "専門") {
+                    $subjectTypeClass .= "purple-";
+                } else //一般科目
+                {
+                    $colorName = "";
+                    switch ($subjectType) {
+                        case "一般赤":
+                            $colorName .= "red-";
+                            break;
+                        case "一般水":
+                            $colorName .= "blue-";
+                            break;
+                        case "一般黄":
+                            $colorName .= "yellow-";
+                            break;
+                        case "一般桃":
+                            $colorName .= "pink-";
+                            break;
+                        default:
+                            $colorName .= "green-";
+                            break;
+                    }
+                    $subjectTypeClass .= $colorName;
+                }
+                echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                echo ($row["科目名"]);
+                echo "</button>";
+                if ($maxabsent) {
+                    echo '<p> <span id="absenceCount_' . $howmanyA . '">0</span> / ' . $maxabsent . '</p>';
+                } else {
+                    echo '<p style="font-size: x-large;">特殊欠席条件</p>';
+                    echo '<p> <span id="absenceCount_' . $howmanyA . '" class="unvisible">0</span>  ' . $maxabsent . '</p>';
+                }
             } else {
-                echo ('<button class ="open-popup-btn-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                echo ('<button style="display:none;" class ="open-popup-btn-green-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                 echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                 $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
-                $subjectId = $index . '-' . $timeIndex;
+                $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
+                $maxabsent = 0; //　時間割に設定していないマスは0を表示
+                echo "</button>";
             }
-            ?>
-            </button>
-            <p>欠席回数 <span id="absenceCount_<?php echo $howmanyA; ?>">0</span> / 最大欠席回数</p>
-            <?php
-            $howmanyA += 1; ?>
-        </td>
-    <?php endforeach; ?>
-    HTML;
-    $response = $output;
-    echo json_encode($response);
+            // hoge[0] = "<button> ~~ </button><p> ~~~ </p>"
+            // hoge[19] までできる
+            $howmanyA += 1;
+        endforeach;
+    endforeach;
+
+    // $response = json_encode($hoge)
+    echo $response;
 }
