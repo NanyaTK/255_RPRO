@@ -70,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 科目取得ここまで
 
     $resSubjectsData = [];
+    $resSubjectsDetail = [];
 
     // ここから時間割表示
     if (!$subjects) {
@@ -91,6 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subjectsByDay = array_chunk($subjects, $subjectsPerDay);
 
     $howmanyA = 0;
+    $howmanyB = 0;
+
     foreach ($days as $index => $day):
         foreach ($times as $timeIndex):
             // 科目名を取得
@@ -159,12 +162,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $maxabsent = 0; //　時間割に設定していないマスは0を表示
                 $resSubjectsData[$howmanyA] .= '</button>';
             }
-            // resSubjectsData[0] = "<button> ~~ </button><p> ~~~ </p>"
-            // resSubjectsData[19] までできる
             $howmanyA += 1;
         endforeach;
     endforeach;
 
-    $response = json_encode($resSubjectsData);
+    foreach ($days as $index => $day) :
+        foreach ($times as $timeIndex) :
+            $resSubjectsDetail[$howmanyB] .= <<<EOD
+            <div class='overlay-absent-$howmanyB' id='overlay-absent'><div class='popup-absent' id='popup-absent'><p class='close-absent' id='close-absent'>&times;</p><div class='sm-w'><p class='name-subjects'>
+            EOD;
+            if ($subjectsByDay[$index][$timeIndex - 1]) {
+                if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
+                    // 国語IVのid対策用
+                    $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
+                } else {
+                    $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
+                }
+                $time_schdule->data_seek($row_no);
+                $row = $time_schdule->fetch_assoc();
+                $subjectName = $row["科目名"];
+                $subjectIF = $row["特殊欠席条件"];
+                $subjectRate = $row["評価割合"];
+                $resSubjectsDetail[$howmanyB] .= <<<EOD
+                $subjectName</p><p class='teacher-subjects'></p>
+                EOD;
+                if (!empty($row["特殊欠席条件"])) {
+                    $resSubjectsDetail[$howmanyB] .= <<<EOD
+                    <p class = 'absent-condition'>$subjectIF</p>
+                    EOD;
+                } else {
+                    $resSubjectsDetail[$howmanyB] .= <<<EOD
+                    <p class = 'absent-condition'>特殊欠席条件はありません</p>
+                    EOD;
+                }
+                $resSubjectsDetail[$howmanyB] .= <<<EOD
+                <div class='scroll'><table class='rating-subjects'>$subjectRate</table></div><p class='absent-msg'>本当に欠席しますか？</p><button id='absenceButton_$howmanyB'  class='absenceButton_$howmanyB absent-btn' data-subject-id='$howmanyB'>欠席する</button>
+                EOD;
+            } else {
+                $resSubjectsDetail[$howmanyB] .= <<<EOD
+                <p class='name-subjects'>開きコマです</p><p class='name-subjects'>ゆっくりお休みください</p>
+                EOD;
+            }
+
+            $resSubjectsDetail[$howmanyB] .= <<<EOD
+                </div></div></div>
+            EOD;
+            $howmanyB += 1;
+        endforeach;
+    endforeach;
+
+    $response = [$resSubjectsData, $resSubjectsDetail];
+    $response = json_encode($response);
     echo $response;
 }

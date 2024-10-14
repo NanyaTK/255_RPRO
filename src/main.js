@@ -134,6 +134,39 @@ popupWrapper.addEventListener('click', e => {
 
 /* ================== 新規登録確定ボタンイベント ================== */
 function updateClassTable() {
+    const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
+    const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
+    const closeButtons = document.querySelectorAll('close-absent');
+    //console.log(openButtons)
+    function showPopup() {
+        overlays[this.num].style.display = 'block';
+    }
+    function hidePopup() {
+        overlays.forEach(overlay => {
+            overlay.style.display = 'none';
+        });
+    }
+    let i = 0;
+    openButtons.forEach(button => {
+        button.removeEventListener('click', showPopup);
+    });
+    closeButtons.forEach(closeButton => {
+        closeButton.removeEventListener('click', hidePopup);
+    });
+    overlays.forEach(overlay => {
+        overlay.removeEventListener('click', hidePopup);
+    });
+
+    let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
+    if (subjectElements) {
+        console.log("[process: main] sE: update");
+    }
+    subjectElements.forEach(function (subjectElement) {
+        let subjectId = subjectElement.dataset.subjectId;
+        // 欠席ボタンのイベントリスナーを設定
+        document.getElementById('absenceButton_' + subjectId).removeEventListener('click', function () { });
+    });
+
     return new Promise((resolve) => {
         let getval = localStorage.getItem('key');
         if (getval) {
@@ -150,12 +183,65 @@ function updateClassTable() {
             })
                 .then(response => response.json())
                 .then(data => {
-                    // console.log('[process: main-cp] ', data);
+                    //console.log('[process: main-cp] ', data);
                     if (data) {
-                        const oldDataTag = document.getElementsByClassName("asyncCNN");
-                        for (let i = 0; i < 20; i++) {
-                            oldDataTag[i].innerHTML = data[i];
-                        }
+                        (async () => {
+                            let [subjectsData, subjectsDetail] = data;
+                            const oldDataTag = document.getElementsByClassName("asyncCNN");
+                            for (let i = 0; i < 20; i++) {
+                                oldDataTag[i].innerHTML = subjectsData[i];
+                            }
+                            const oldDetailTag = document.getElementsByClassName("asyncCD");
+                            for (let i = 0; i < 20; i++) {
+                                oldDetailTag[i].innerHTML = subjectsDetail[i];
+                            }
+
+                            await new Promise(() => {
+                                const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
+                                const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
+                                const closeButtons = document.querySelectorAll('close-absent');
+                                //console.log(openButtons)
+                                function showPopup() {
+                                    overlays[this.num].style.display = 'block';
+                                }
+                                function hidePopup() {
+                                    overlays.forEach(overlay => {
+                                        overlay.style.display = 'none';
+                                    });
+                                }
+                                let i = 0;
+                                openButtons.forEach(button => {
+                                    button.addEventListener('click', { num: i++, handleEvent: showPopup });
+                                });
+                                closeButtons.forEach(closeButton => {
+                                    closeButton.addEventListener('click', hidePopup);
+                                });
+                                overlays.forEach(overlay => {
+                                    overlay.addEventListener('click', hidePopup);
+                                });
+
+                                function incrementAbsence(subjectId) {
+                                    let key = 'absenceCount_' + subjectId;
+                                    let absenceCount = parseInt(localStorage.getItem(key));
+                                    absenceCount += 1;
+                                    localStorage.setItem(key, absenceCount);
+                                    document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+                                }
+                                let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
+                                if (subjectElements) {
+                                    console.log("[process: main] sE: updating...");
+                                }
+                                subjectElements.forEach(function (subjectElement) {
+                                    let subjectId = subjectElement.dataset.subjectId;
+                                    initializeAbsenceCount(subjectId);
+                                    document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
+                                        incrementAbsence(subjectId);
+                                        console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
+                                    });
+                                });
+                                console.log("[process: main] sE: update finished");
+                            });
+                        })();
                     }
                 })
                 .catch(error => {
@@ -362,9 +448,7 @@ rstFilterBtn.addEventListener("click", () => { ResetFilter(); });
 document.addEventListener('DOMContentLoaded', () => {
     const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
     const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
-    const popup = document.getElementById('popup-absent');
     const closeButtons = document.querySelectorAll('close-absent');
-    const absentButton = document.querySelectorAll('.absent-btn');
 
     // ポップアップを表示する関数
     function showPopup() {
@@ -449,7 +533,7 @@ function initializeAConload() {
         // 欠席ボタンのイベントリスナーを設定
         document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
             incrementAbsence(subjectId);
-            console.log("[process: main] " + subjectId + " was registered.");
+            console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
         });
     });
 }
