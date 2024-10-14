@@ -98,6 +98,10 @@
                     <strong>Q: ヘルプページからメインページへ戻るボタンが欲しい</strong><br>
                     A: v1.4.1にてリンクを追加しました．
                 </li>
+                <li>
+                    <strong>Q: Registration Failedの表示がでる</strong><br>
+                    A: 一部のiOS端末にて確認しています．ブラウザのキャッシュ削除及び再起動ボタンの押下をお試しください．
+                </li>
             </ol>
             <h1>留年プロテクターの使い方</h1>
             <ol style="margin-left: 50px;">
