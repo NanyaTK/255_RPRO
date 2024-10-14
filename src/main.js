@@ -272,63 +272,69 @@ function getAllSelectedOptionIds() {
         .then(data => {
             console.log('[process: main-cp] ', data);
             if (data) {
-                let clID2 = [];
-                for (let i = 0; i < data.length; i++) {
-                    // "<p style=\"font-size: x-large;\">特殊欠席条件</p>"; とかの x-largeの ; と 末尾の ; とを区別する為
-                    let tempString = data[i].replace(/([a-zA-Z]);/g, '$1##SEMICOLON##'); // アルファベットの後にある";"を一時的に置換
-                
-                    clID2[i] = tempString.split(";"); // ;毎に配列作成
-                    clID2[i].pop(); // 配列末尾の""を削除
-                
-                    // 置換した文字を";"に戻す
-                    for (let j = 0; j < clID2[i].length; j++) {
-                        clID2[i][j] = clID2[i][j].replace(/##SEMICOLON##/g, ";");
-                    }
-                
-                    //console.log('[process: main-cp]', i, clID2[i]);
+                // let clID2 = [];
+                // for (let i = 0; i < data.length; i++) {
+                //     // "<p style=\"font-size: x-large;\">特殊欠席条件</p>"; とかの x-largeの ; と 末尾の ; とを区別する為
+                //     let tempString = data[i].replace(/([a-zA-Z]);/g, '$1##SEMICOLON##'); // アルファベットの後にある";"を一時的に置換
 
-                    /*for (let j = 0; j < clID2[i].length; j++) {
-                        if (clID2[i][j] !== "") {
-                            clID2[i][j] += ";";
-                        }
-                    }*/
-                }
-                console.log('[process: main-cp] ', clID2);
+                //     clID2[i] = tempString.split(";"); // ;毎に配列作成
+                //     clID2[i].pop(); // 配列末尾の""を削除
+
+                //     // 置換した文字を";"に戻す
+                //     for (let j = 0; j < clID2[i].length; j++) {
+                //         clID2[i][j] = clID2[i][j].replace(/##SEMICOLON##/g, ";");
+                //     }
+
+                //     //console.log('[process: main-cp]', i, clID2[i]);
+
+                //     /*for (let j = 0; j < clID2[i].length; j++) {
+                //         if (clID2[i][j] !== "") {
+                //             clID2[i][j] += ";";
+                //         }
+                //     }*/
+                // }
+                console.log('[process: main-cp] ', data);
                 /*
                 const classElements = document.querySelectorAll(".time-cell");
                 classElements.forEach((classElement) => {
                     classElement
                 })
                 */
+
+
+                const oldDataTag = document.getElementsByClassName("asyncCNN");
                 for (let i = 0; i < 20; i++) {
-                    //console.log(clID2[i][0]);
-                    //var phpClass = "' . $subjectTypeClass . $howmanyA . ' subject";
-                    //console.log('phpClass' + phpClass);
-                    let element1 = document.querySelectorAll('.time-cell .subject')[i];
-                    //console.log('element1' + element1.innerHTML);
-                    let element2 = document.querySelector(".time-cell #absenceCount_");
-                    let element3 = document.querySelector(".time-cell .open-popup-btn-green-");
-                    if (element3) {
-                        console.log('element3_1' + element3.innerHTML);
-                        element3.textContent = clID2[i][0];
-                        console.log('element3_2' + element3.innerHTML);
-                    }else if (element1) {
-                        console.log('element1_1' + element1.innerHTML);
-                        element1.textContent = clID2[i][0];
-                        console.log('element1_2' + element1.innerHTML);
-                    }
+                    // //console.log(clID2[i][0]);
+                    // //var phpClass = "' . $subjectTypeClass . $howmanyA . ' subject";
+                    // //console.log('phpClass' + phpClass);
+                    // let element1 = document.querySelectorAll('.time-cell .subject')[i];
+                    // //console.log('element1' + element1.innerHTML);
+                    // let element2 = document.querySelector(".time-cell #absenceCount_");
+                    // let element3 = document.querySelector(".time-cell .open-popup-btn-green-");
+                    // if (element3) {
+                    //     console.log('element3_1' + element3.innerHTML);
+                    //     element3.textContent = clID2[i][0];
+                    //     console.log('element3_2' + element3.innerHTML);
+                    // }else if (element1) {
+                    //     console.log('element1_1' + element1.innerHTML);
+                    //     element1.textContent = clID2[i][0];
+                    //     console.log('element1_2' + element1.innerHTML);
+                    // }
                     /*if (element3 && clID2[i].length == 3) {
                         
                     }else if (element2 && clID2[i].length == 2) {
                         element2.textContent = clID2[i][1];
                     }*/
                     //if ()
+                    oldDataTag[i].innerHTML = data[i];
+
                 }
+
             }
         })
         .catch(error => {
             console.error('[process: main-cp] ', error);
-        });
+        }).then(() => { popupWrapper.style.display = 'none'; })
 
     /*
     // JSONデータを文字列にして隠しフィールドにセット

@@ -224,7 +224,7 @@ $mysqli->close();
                         <tr>
                             <td class="day-column"><?php echo $day; ?></td>
                             <?php foreach ($times as $timeIndex) : ?>
-                                <td class="time-cell">
+                                <td class="time-cell asyncCNN">
                                     <?php
 
                                     // 科目名を取得
