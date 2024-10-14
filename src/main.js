@@ -150,7 +150,6 @@ function AutoCompleteClasses() {
     const selectedTermOpt = selectedTerm.options[selectedTerm.selectedIndex];
     const selectedTermId = selectedTermOpt.id;
     const CTData = selectedClassId + "," + selectedTermId;
-    //const CTData = "0," + selectedClassId + "," + selectedTermId;
     console.log("[process: main] " + CTData);
     FilterClasses(selectedClassId);
     ableRstFlag = true;
@@ -248,19 +247,13 @@ function getAllSelectedOptionIds() {
         registDatas.push(registData);
     }
 
-    /*if(registDatas[0] == "0"){
-        registDatas.unshift("1");
-    }*/
-
-    console.log("[process: main] " + registDatas);
+    // console.log("[process: main] " + registDatas);
     const registJSON = JSON.stringify(registDatas);
     localStorage.setItem('key', registJSON);
     let getval = localStorage.getItem('key');
     let getData = getval.replace(/[\[\]]/g, '');
-    //let getData = JSON.parse(getval);
-    console.log("[process: main] " + getData);
+    // console.log("[process: main] " + getData);
 
-    // 下 新規作成部分記入開始
     fetch('main-cp.php', {
         method: 'POST',
         headers: {
@@ -270,113 +263,20 @@ function getAllSelectedOptionIds() {
     })
         .then(response => response.json())
         .then(data => {
-            console.log('[process: main-cp] ', data);
+            // console.log('[process: main-cp] ', data);
             if (data) {
-                // let clID2 = [];
-                // for (let i = 0; i < data.length; i++) {
-                //     // "<p style=\"font-size: x-large;\">特殊欠席条件</p>"; とかの x-largeの ; と 末尾の ; とを区別する為
-                //     let tempString = data[i].replace(/([a-zA-Z]);/g, '$1##SEMICOLON##'); // アルファベットの後にある";"を一時的に置換
-
-                //     clID2[i] = tempString.split(";"); // ;毎に配列作成
-                //     clID2[i].pop(); // 配列末尾の""を削除
-
-                //     // 置換した文字を";"に戻す
-                //     for (let j = 0; j < clID2[i].length; j++) {
-                //         clID2[i][j] = clID2[i][j].replace(/##SEMICOLON##/g, ";");
-                //     }
-
-                //     //console.log('[process: main-cp]', i, clID2[i]);
-
-                //     /*for (let j = 0; j < clID2[i].length; j++) {
-                //         if (clID2[i][j] !== "") {
-                //             clID2[i][j] += ";";
-                //         }
-                //     }*/
-                // }
-                console.log('[process: main-cp] ', data);
-                /*
-                const classElements = document.querySelectorAll(".time-cell");
-                classElements.forEach((classElement) => {
-                    classElement
-                })
-                */
-
-
                 const oldDataTag = document.getElementsByClassName("asyncCNN");
                 for (let i = 0; i < 20; i++) {
-                    // //console.log(clID2[i][0]);
-                    // //var phpClass = "' . $subjectTypeClass . $howmanyA . ' subject";
-                    // //console.log('phpClass' + phpClass);
-                    // let element1 = document.querySelectorAll('.time-cell .subject')[i];
-                    // //console.log('element1' + element1.innerHTML);
-                    // let element2 = document.querySelector(".time-cell #absenceCount_");
-                    // let element3 = document.querySelector(".time-cell .open-popup-btn-green-");
-                    // if (element3) {
-                    //     console.log('element3_1' + element3.innerHTML);
-                    //     element3.textContent = clID2[i][0];
-                    //     console.log('element3_2' + element3.innerHTML);
-                    // }else if (element1) {
-                    //     console.log('element1_1' + element1.innerHTML);
-                    //     element1.textContent = clID2[i][0];
-                    //     console.log('element1_2' + element1.innerHTML);
-                    // }
-                    /*if (element3 && clID2[i].length == 3) {
-                        
-                    }else if (element2 && clID2[i].length == 2) {
-                        element2.textContent = clID2[i][1];
-                    }*/
-                    //if ()
                     oldDataTag[i].innerHTML = data[i];
-
                 }
-
             }
         })
         .catch(error => {
             console.error('[process: main-cp] ', error);
-        }).then(() => { popupWrapper.style.display = 'none'; })
-
-    /*
-    // JSONデータを文字列にして隠しフィールドにセット
-    document.getElementById('jsData').value = JSON.stringify(getData);
-
-    // フラグを設定して、次回ロード時にフォームが自動送信されるようにする
-    localStorage.setItem('flag', 1);
-    location.reload();
-    */
+        }).then(() => {
+            popupWrapper.style.display = 'none'; 
+        });
 }
-/* ============================================================== */
-
-/* ======================= JS-phpデータ渡し ====================== */
-// 保存された日時がある場合
-/*
-const savedTime = localStorage.getItem('savedTime');
-const savedTimestamp = parseInt(savedTime, 10); // 文字列を数値に変換
-
-// 現在のタイムスタンプを取得
-const currentTime = new Date().getTime();
-const currentTimestamp = parseInt(currentTime, 10); // 文字列を数値に変換
-localStorage.setItem('savedTime', currentTimestamp); // savedTime を更新
-
-// 時間の差をミリ秒で計算
-const timeDifference = currentTimestamp - savedTimestamp;
-console.log("[process: main] " + timeDifference);
-
-// 時間差を1秒で切り捨て（1秒未満だと0となる）
-const seconds = Math.floor(timeDifference / 1000);
-
-// 現在の時刻が保存された時刻より進んでいて、時間割のデータフラグが立っている場合のみフォーム送信
-if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
-    let getval1 = localStorage.getItem('key');
-    let getData2 = JSON.parse(getval1);
-    // JSONデータを文字列にして隠しフィールドにセット
-    document.getElementById('jsData').value = JSON.stringify(getData2);
-    // フォームを自動送信する
-    document.getElementById('hiddenForm').submit();
-} else {
-    console.log('[process: main] The current time is earlier than or equal to the saved time.');
-}
-*/
 /* ============================================================== */
 
 /* ======================= 時間割ポップアップ関連 ====================== */

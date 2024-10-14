@@ -134,13 +134,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $resSubjectsData[$howmanyA] = <<<EOD
                 <button class ='$subjectTypeClass$howmanyA subject' data-subject-id='$subjectId'>{$row["科目名"]}</button>
                 EOD;
-                /*
-                $resSubjectsData[$howmanyA] = <<<'EOD'
-                echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
-                echo ($row["科目名"]);
-                echo "</button>";
-                EOD;
-                */
                 if ($maxabsent) {
                     $resSubjectsData[$howmanyA] .= <<<EOD
                     <p> <span id='absenceCount_$howmanyA'>0</span> / $maxabsent</p>
