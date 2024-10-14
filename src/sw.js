@@ -40,6 +40,7 @@ function installSW() {
     addResourcesToCache([
         "/main.php",
         "/main.js",
+        "/help.php",
         "/sw.js",
         "/main.css",
         "/mainManifest.json",
