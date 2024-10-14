@@ -19,7 +19,7 @@
  * 
  * main.php is the main file of RPRO app.
  */
-define("APPLICCATION_VERSION", "v1.4.1");
+define("APPLICCATION_VERSION", "v1.4.2");
 
 /*
 // POSTされたデータを取得
