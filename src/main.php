@@ -86,7 +86,8 @@ $mysqli->close();
 </head>
 
 <body>
-    <?php echo '<div id="APPLICCATION_VERSION">' . APPLICCATION_VERSION . '</div>' ?>
+    <?php echo '<div id="APPLICCATION_VERSION">APPLICCATION VERSION: ' . APPLICCATION_VERSION . '</div>' ?>
+    <div id="DEBUG_MODE">DEBUG MODE: TRUE</div>
     <header>
         <div class="flex-byForce">
             <a class="header" href="/main.php">留年プロテクター <?php echo APPLICCATION_VERSION ?></a>
@@ -94,11 +95,11 @@ $mysqli->close();
             <nav id="menu" class="menu">
                 <ul>
                     <li><a href="help.php">よくある質問</a></li>
-                    <button id="signup-btn">新規登録</button>
-                    <button id="delete-btn">削除</button>
+                    <li><button id="signup-btn">新規登録</button></li>
+                    <li> <button id="delete-btn">削除</button></li>
                     <li><button id="install-btn">インストール</button></li>
-                    <li> <button id="uninstall-btn">再起動</button>
-                    </li>
+                    <li> <button id="uninstall-btn">再起動</button></li>
+                    <li id="debugmode">デバッグモード</li>
                 </ul>
             </nav>
         </div>
@@ -173,12 +174,6 @@ $mysqli->close();
                             </table>
                         </div>
                         <button id="finalize-btn">確定する</button>
-                        <!--
-                        <form method="POST" action="main.php" id="hiddenForm">
-                            <input type="hidden" name="jsData" id="jsData">
-                            <button id="finalize-btn" onclick="getAllSelectedOptionIds()" type="submit">確定する</button>
-                        </form>
-                        --->
                         <p id="result" style="display: none;"></p>
                     </div>
                 </div>

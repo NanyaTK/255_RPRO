@@ -22,12 +22,23 @@ const hostname = window.location.hostname;
 const queryParams = new URLSearchParams(window.location.search);
 const environment = queryParams.get('env');
 
-if (hostname === 'rpro.nanyatk.com' && environment === 'dev') {
-    const DEVFLAG = true;
-} else if (hostname === 'rpro.nanyatk.com') {
-    const DEVFLAG = false;
+let DEVFLAG = false;
+if ((hostname === 'rpro.nanyatk.com' || hostname === 'test.rpro.nanyatk.com') && environment === 'dev') {
+    DEVFLAG = true;
+} else if (hostname === 'rpro.nanyatk.com' || hostname === 'test.rpro.nanyatk.com') {
+    DEVFLAG = false;
 } else {
-    const DEVFLAG = true;
+    DEVFLAG = true;
+}
+const dbgmd = document.getElementById("debugmode");
+dbgmd.innerText = "DEBUG MODE: " + DEVFLAG;
+let consoleStyle = "font-size:x-large";
+console.log("%c[process: main] %c" + DEVFLAG, consoleStyle, consoleStyle);
+if (DEVFLAG) {
+    const APPV = document.getElementById("APPLICCATION_VERSION");
+    APPV.style.display = "block";
+    const DBGM = document.getElementById("DEBUG_MODE");
+    DBGM.style.display = "block";
 }
 
 /* =========== service Worker 新規インストールイベント ============ */
@@ -38,11 +49,17 @@ const registerServiceWorker = async () => {
                 scope: "/",
             });
             if (registration.installing) {
-                console.log("[process: main] Service worker installing");
+                if (DEVFLAG) {
+                    console.log("[process: main] Service worker installing");
+                }
             } else if (registration.waiting) {
-                console.log("[process: main] Service worker installed");
+                if (DEVFLAG) {
+                    console.log("[process: main] Service worker installed");
+                }
             } else if (registration.active) {
-                console.log("[process: main] Service worker active");
+                if (DEVFLAG) {
+                    console.log("[process: main] Service worker active");
+                }
             }
         } catch (error) {
             console.error(`[process: main] Registration failed with ${error}`);
@@ -150,7 +167,9 @@ function updateClassTable() {
     const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
     const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
     const closeButtons = document.querySelectorAll('close-absent');
-    //console.log(openButtons)
+    if (DEVFLAG) {
+        console.log("[process: main] " + openButtons)
+    }
     function showPopup() {
         overlays[this.num].style.display = 'block';
     }
@@ -172,7 +191,9 @@ function updateClassTable() {
 
     let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
     if (subjectElements) {
-        console.log("[process: main] sE: update");
+        if (DEVFLAG) {
+            console.log("[process: main] sE: update");
+        }
     }
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
@@ -184,9 +205,13 @@ function updateClassTable() {
         let getval = localStorage.getItem('key');
         if (getval) {
             let getData = getval.replace(/[\[\]]/g, '');
-            //console.log("[process: main] " + getData);
+            if (DEVFLAG) {
+                console.log("[process: main] " + getData);
+            }
             getData = JSON.stringify(getData);
-            //console.log(getData)
+            if (DEVFLAG) {
+                console.log("[process: main] " + getData)
+            }
             fetch('/main-cp.php', {
                 method: 'POST',
                 headers: {
@@ -196,7 +221,9 @@ function updateClassTable() {
             })
                 .then(response => response.json())
                 .then(data => {
-                    //console.log('[process: main-cp] ', data);
+                    if (DEVFLAG) {
+                        console.log('[process: main-cp] ', data);
+                    }
                     if (data) {
                         (async () => {
                             let [subjectsData, subjectsDetail] = data;
@@ -213,7 +240,9 @@ function updateClassTable() {
                                 const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
                                 const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
                                 const closeButtons = document.querySelectorAll('close-absent');
-                                //console.log(openButtons)
+                                if (DEVFLAG) {
+                                    console.log("[process: main] " + openButtons)
+                                }
                                 function showPopup() {
                                     overlays[this.num].style.display = 'block';
                                 }
@@ -242,17 +271,23 @@ function updateClassTable() {
                                 }
                                 let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
                                 if (subjectElements) {
-                                    console.log("[process: main] sE: updating...");
+                                    if (DEVFLAG) {
+                                        console.log("[process: main] sE: updating...");
+                                    }
                                 }
                                 subjectElements.forEach(function (subjectElement) {
                                     let subjectId = subjectElement.dataset.subjectId;
                                     initializeAbsenceCount(subjectId);
                                     document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
                                         incrementAbsence(subjectId);
-                                        console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
+                                        if (DEVFLAG) {
+                                            console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
+                                        }
                                     });
                                 });
-                                console.log("[process: main] sE: update finished");
+                                if (DEVFLAG) {
+                                    console.log("[process: main] sE: update finished");
+                                }
                             });
                         })();
                     }
@@ -293,7 +328,9 @@ function getAllSelectedOptionIds() {
 
     // 結果を表示
     document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
-    //console.log(selectedOptionIds);
+    if (DEVFLAG) {
+        console.log(selectedOptionIds);
+    }
     const registDatas = [];
 
     for (let i = 0; i < selectedOptionIds.length; i++) {
@@ -305,7 +342,9 @@ function getAllSelectedOptionIds() {
     localStorage.setItem('key', registJSON);
 
     updateClassTable().then(() => {
-        console.log("[process: main] classTable updated");
+        if (DEVFLAG) {
+            console.log("[process: main] classTable updated");
+        }
     })
 }
 
@@ -347,7 +386,9 @@ DeleteFinalBtn.addEventListener('click', () => {
     const registJSON = JSON.stringify(registDatas);
     localStorage.setItem('key', registJSON);
     updateClassTable().then(() => {
-        console.log("[process: main] classTable updated");
+        if (DEVFLAG) {
+            console.log("[process: main] classTable updated");
+        }
     })
     DeletePopupWrapper.style.display = "none";
 })
@@ -384,10 +425,14 @@ function AutoCompleteClasses() {
     const selectedTermOpt = selectedTerm.options[selectedTerm.selectedIndex];
     const selectedTermId = selectedTermOpt.id;
     const CTData = selectedClassId + "," + selectedTermId;
-    console.log("[process: main] " + CTData);
+    if (DEVFLAG) {
+        console.log("[process: main] " + CTData);
+    }
     FilterClasses(selectedClassId);
     ableRstFlag = true;
-    console.log("[process: main] filtering finished.");
+    if (DEVFLAG) {
+        console.log("[process: main] filtering finished.");
+    }
     return CTData;
 }
 
@@ -410,10 +455,14 @@ function ResetFilter() {
             tempOptions[index] = [];
         });
         ableRstFlag = false;
-        console.log("[process: main] filtering reseted.");
+        if (DEVFLAG) {
+            console.log("[process: main] filtering reseted.");
+        }
     } else {
         ableRstFlag = false;
-        console.log("[process: main] filtering was not reseted.");
+        if (DEVFLAG) {
+            console.log("[process: main] filtering was not reseted.");
+        }
     }
 }
 
@@ -432,15 +481,23 @@ cltempBtn.addEventListener("click", () => {
     })
         .then(response => response.json())
         .then(data => {
-            console.log('[process: asyncSW] ', data);
+            if (DEVFLAG) {
+                console.log('[process: asyncSW] ', data);
+            }
             if (data) {
                 let clID = data.split(',');
-                console.log('[process: asyncSW] ', clID);
+                if (DEVFLAG) {
+                    console.log('[process: asyncSW] ', clID);
+                }
                 const classElements = document.querySelectorAll(".subject-select");
                 classElements.forEach((classElement) => {
-                    //console.log(clID[0]);
+                    if (DEVFLAG) {
+                        //console.log(clID[0]);
+                    }
                     if (clID[0] != 0) {
-                        //console.log("cs-" + (clID[0]));
+                        if (DEVFLAG) {
+                            //console.log("cs-" + (clID[0]));
+                        }
                         classElement.options["cs-" + (clID[0])].selected = true;
                     } else {
                         classElement.options[0].selected = true;
@@ -502,14 +559,18 @@ function initializeAbsenceCount(subjectId) {
     let key = 'absenceCount_' + subjectId;  // 科目ごとのキーを設定
     let absenceCount = localStorage.getItem(key);
 
-    //console.log("[process: main] cID:" + subjectId);
+    if (DEVFLAG) {
+        console.log("[process: main] cID:" + subjectId);
+    }
     // 欠席回数が存在しない場合は初期化
     if (absenceCount === null) {
         absenceCount = 0;
         localStorage.setItem(key, absenceCount);
         absenceCount = localStorage.getItem(key);
     }
-    //console.log("[process: main] absenceCount:" + absenceCount);
+    if (DEVFLAG) {
+        console.log("[process: main] absenceCount:" + absenceCount);
+    }
 
     if (absenceCount) {
         // 欠席回数を画面に反映
@@ -536,18 +597,24 @@ function incrementAbsence(subjectId) {
 function initializeAConload() {
     let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
     if (subjectElements) {
-        console.log("[process: main] sE:");
+        if (DEVFLAG) {
+            console.log("[process: main] sE:");
+        }
     }
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
-        //console.log("[process: main] subjectid:" + subjectId);
+        if (DEVFLAG) {
+            console.log("[process: main] subjectid:" + subjectId);
+        }
         // 初期化
         initializeAbsenceCount(subjectId);
 
         // 欠席ボタンのイベントリスナーを設定
         document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
             incrementAbsence(subjectId);
-            console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
+            if (DEVFLAG) {
+                console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
+            }
         });
     });
 }
@@ -563,11 +630,17 @@ if (navigator.serviceWorker.controller) {
 /* ==================== ページ読み込み時の処理 ================ */
 window.onload = async function () {
     await registerServiceWorker();
-    console.log("[process: main] processing onload method...");
+    if (DEVFLAG) {
+        console.log("[process: main] processing onload method...");
+    }
     initializeAConload();
     updateClassTable().then(() => {
-        console.log("[process: main] classTable updated");
+        if (DEVFLAG) {
+            console.log("[process: main] classTable updated");
+        }
     })
-    console.log("[process: main] processing onload method finished");
+    if (DEVFLAG) {
+        console.log("[process: main] processing onload method finished");
+    }
 };
 /* ========================================================== */
