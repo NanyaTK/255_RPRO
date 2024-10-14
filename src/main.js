@@ -101,7 +101,6 @@ unregisterSW.addEventListener("click", () => {
 });
 /* ============================================================== */
 
-
 /* ==================== 新規登録ボタンイベント ==================== */
 const signUpBtn = document.getElementById('signup-btn');
 const popupWrapper = document.getElementById('popup-wrapper');
@@ -129,7 +128,62 @@ popupWrapper.addEventListener('click', e => {
 });
 /* ============================================================== */
 
-/* ==================== 削除ボタンイベント ==================== */
+
+/* ================== 新規登録確定ボタンイベント ================== */
+function getAllSelectedOptionIds() {
+    // .subject-selectクラスを持つ全てのselect要素を取得
+    const selectElements = document.querySelectorAll('.subject-select');
+    const selectedOptionIds = [];
+    // 各select要素をループして選択されたoptionのidを取得
+    selectElements.forEach(selectElement => {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const selectedOptionId = selectedOption.id;
+        selectedOptionIds.push(selectedOptionId); // 配列に追加
+    });
+
+    // 結果を表示
+    document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
+    console.log(selectedOptionIds);
+    const registDatas = [];
+
+    for (let i = 0; i < selectedOptionIds.length; i++) {
+        const registData = selectedOptionIds[i];
+        registDatas.push(registData);
+    }
+
+    // console.log("[process: main] " + registDatas);
+    const registJSON = JSON.stringify(registDatas);
+    localStorage.setItem('key', registJSON);
+    let getval = localStorage.getItem('key');
+    let getData = getval.replace(/[\[\]]/g, '');
+    // console.log("[process: main] " + getData);
+
+    fetch('/main-cp.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(getData) // 必要なデータを送信
+    })
+        .then(response => response.json())
+        .then(data => {
+            // console.log('[process: main-cp] ', data);
+            if (data) {
+                const oldDataTag = document.getElementsByClassName("asyncCNN");
+                for (let i = 0; i < 20; i++) {
+                    oldDataTag[i].innerHTML = data[i];
+                }
+            }
+        })
+        .catch(error => {
+            console.error('[process: main-cp] ', error);
+        }).then(() => {
+            popupWrapper.style.display = 'none'; 
+        });
+}
+/* ============================================================== */
+
+/* ====================== 削除ボタンイベント ====================== */
 const DeleteBtn = document.getElementById('delete-btn');
 const DeletePopupWrapper = document.getElementById('deletepopup-wrapper');
 const DeleteClose = document.getElementById('close');
@@ -154,48 +208,7 @@ DeletePopupWrapper.addEventListener('click', e => {
 });
 /* ============================================================== */
 
-/* ==================== 新規登録確定ボタンイベント ==================== */
-const FinalBtn = document.getElementById('finalize-btn');
-FinalBtn.addEventListener('click', () => {
-    // .subject-selectクラスを持つ全てのselect要素を取得
-    const selectElements = document.querySelectorAll('.subject-select');
-    const selectedOptionIds = [];
-    // 各select要素をループして選択されたoptionのidを取得
-    selectElements.forEach(selectElement => {
-        const selectedOption = selectElement.options[selectElement.selectedIndex];
-        const selectedOptionId = selectedOption.id;
-        selectedOptionIds.push(selectedOptionId); // 配列に追加
-    });
-
-    // 結果を表示
-    document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
-    console.log(selectedOptionIds);
-    const registDatas = [];
-
-    for (let i = 0; i < selectedOptionIds.length; i++) {
-        const registData = selectedOptionIds[i];
-        registDatas.push(registData);
-    }
-
-    console.log("[process: main] " + registDatas);
-    const registJSON = JSON.stringify(registDatas);
-    localStorage.setItem('key', registJSON);
-    let getval = localStorage.getItem('key');
-    let getData = JSON.parse(getval);
-    console.log("[process: main] " + getData);
-
-    // JSONデータを文字列にして隠しフィールドにセット
-    document.getElementById('jsData').value = JSON.stringify(getData);
-
-    // フラグを設定して、次回ロード時にフォームが自動送信されるようにする
-    localStorage.setItem('flag', 1);
-    localStorage.setItem('deleteflag', 1);
-    location.reload();
-})
-/* ============================================================== */
-
-
-/* ==================== 削除確定ボタンイベント ====================== */
+/* =================== 削除確定ボタンイベント ===================== */
 const DeleteFinalBtn = document.getElementById('deletefinalize-btn');
 DeleteFinalBtn.addEventListener('click', () => {
     const registDatas = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
@@ -312,38 +325,7 @@ rstFilterBtn.addEventListener("click", () => { ResetFilter(); });
 
 /* ============================================================== */
 
-/* ======================= JS-phpデータ渡し ====================== */
-// 保存された日時がある場合
-const savedTime = localStorage.getItem('savedTime');
-const savedTimestamp = parseInt(savedTime, 10); // 文字列を数値に変換
-
-// 現在のタイムスタンプを取得
-const currentTime = new Date().getTime();
-const currentTimestamp = parseInt(currentTime, 10); // 文字列を数値に変換
-localStorage.setItem('savedTime', currentTimestamp); // savedTime を更新
-
-// 時間の差をミリ秒で計算
-const timeDifference = currentTimestamp - savedTimestamp;
-console.log("[process: main] " + timeDifference);
-
-// 時間差を1秒で切り捨て（1秒未満だと0となる）
-const seconds = Math.floor(timeDifference / 1000);
-
-// 現在の時刻が保存された時刻より進んでいて、時間割のデータフラグが立っている場合のみフォーム送信
-if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
-    let getval1 = localStorage.getItem('key');
-    let getData2 = JSON.parse(getval1);
-
-    // JSONデータを文字列にして隠しフィールドにセット
-    document.getElementById('jsData').value = JSON.stringify(getData2);
-    // フォームを自動送信する
-    document.getElementById('hiddenForm').submit();
-} else {
-    console.log('[process: main] The current time is earlier than or equal to the saved time.');
-}
-/* ============================================================== */
-
-/* ======================= 時間割ポップアップ関連 ====================== */
+/* ==================== 時間割ポップアップ関連 ==================== */
 document.addEventListener('DOMContentLoaded', () => {
     const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
     const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
@@ -381,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.addEventListener('click', hidePopup);
     });
 });
-/* ============================================================== */
+/* ========================================================== */
 
 /* ======================= 出欠回数管理 ====================== */
 // 初期化またはlocalStorageから教科ごとの欠席回数を取得
@@ -389,14 +371,14 @@ function initializeAbsenceCount(subjectId) {
     let key = 'absenceCount_' + subjectId;  // 科目ごとのキーを設定
     let absenceCount = localStorage.getItem(key);
 
-    console.log("[process: main] cID:" + subjectId);
+    //console.log("[process: main] cID:" + subjectId);
     // 欠席回数が存在しない場合は初期化
     if (absenceCount === null) {
         absenceCount = 0;
         localStorage.setItem(key, absenceCount);
         absenceCount = localStorage.getItem(key);
     }
-    console.log("[process: main] absenceCount:" + absenceCount);
+    //console.log("[process: main] absenceCount:" + absenceCount);
 
     if (absenceCount) {
         // 欠席回数を画面に反映
@@ -427,7 +409,7 @@ window.onload = function () {
     }
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
-        console.log("[process: main] subjectid:" + subjectId);
+        //console.log("[process: main] subjectid:" + subjectId);
         // 初期化
         initializeAbsenceCount(subjectId);
 

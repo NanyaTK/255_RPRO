@@ -19,14 +19,16 @@
  * 
  * main.php is the main file of RPRO app.
  */
-define("APPLICCATION_VERSION", "v1.3.2");
+define("APPLICCATION_VERSION", "v1.3.8");
 
+/*
 // POSTされたデータを取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // JavaScriptから渡された値を取得
     $data_subjects = isset($_POST['jsData']) ? $_POST['jsData'] : '値がありません';
     $subjects = json_decode($data_subjects, true);
 }
+*/
 ?>
 
 <!DOCTYPE html>
@@ -172,13 +174,14 @@ $mysqli->close();
                                 <?php endforeach; ?>
                             </table>
                         </div>
+                        <button id="finalize-btn" onclick="getAllSelectedOptionIds()">確定する</button>
+                        <!--
                         <form method="POST" action="main.php" id="hiddenForm">
-                            <?php // JSで値を設定する隠しフィールド
-                            ?>
                             <input type="hidden" name="jsData" id="jsData">
                             <button id="finalize-btn" onclick="getAllSelectedOptionIds()" type="submit">確定する</button>
                         </form>
-                        <p id="result"></p>
+                        --->
+                        <p id="result" style="display: none;"></p>
                     </div>
                 </div>
             </div>
@@ -201,7 +204,7 @@ $mysqli->close();
                     $subjects = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
                 }
                 foreach ($subjects as &$subject) {
-                    $subject = substr($subject, -2);
+                    $subject = substr($subject, 3);
                 }
                 // 曜日と時間割の初期データ
                 $days = ['月', '火', '水', '木', '金'];
@@ -231,7 +234,7 @@ $mysqli->close();
                         <tr>
                             <td class="day-column"><?php echo $day; ?></td>
                             <?php foreach ($times as $timeIndex) : ?>
-                                <td class="time-cell">
+                                <td class="time-cell asyncCNN">
                                     <?php
 
                                     // 科目名を取得
@@ -272,9 +275,10 @@ $mysqli->close();
                                             }
                                             $subjectTypeClass .= $colorName;
                                         }
-                                        echo ('<button id="absenceButton_' . $howmanyA . '" class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
-                                        echo ($row["科目名"]);
-                                        echo "</button>";
+                                        echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>$row["科目名"]</button>');
+                                        //echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                                        //echo ($row["科目名"]);
+                                        //echo "</button>";
                                         if ($maxabsent) {
                                             echo '<p> <span id="absenceCount_' . $howmanyA . '">0</span> / ' . $maxabsent . '</p>';
                                         } else {
@@ -282,12 +286,10 @@ $mysqli->close();
                                             echo '<p> <span id="absenceCount_' . $howmanyA . '" class="unvisible">0</span>  ' . $maxabsent . '</p>';
                                         }
                                     } else {
-                                        /*
-                                        echo ('<button class ="open-popup-btn-green-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                                        echo ('<button style="display:none;" class ="open-popup-btn-green-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
                                         echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                                         $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
-                                        */
                                         $maxabsent = 0; //　時間割に設定していないマスは0を表示
                                         echo "</button>";
                                     }

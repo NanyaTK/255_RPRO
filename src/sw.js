@@ -20,7 +20,7 @@
  * sw.js is the abbreviation for ServiceWorker.js
  * This file includes function of PWA.
  */
-const APPLICCATION_VERSION = "v1.3.2"
+const APPLICCATION_VERSION = "v1.3.8"
 
 /**
  * The file path to be cached passed in the resource
@@ -78,7 +78,12 @@ addEventListener("fetch", (event) => {
             return fetch(event.request)
         })()
         );
-    } else {
+    } else if(event.request.url.includes('/main-cp.php')) {
+        //time-cellが必要
+        event.respondWith((async () => {
+            return fetch(event.request)
+        }))
+    }else {
         event.respondWith(
             (async () => {
                 const cachedResponse = await caches.match(event.request);
