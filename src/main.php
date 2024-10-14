@@ -174,7 +174,7 @@ $mysqli->close();
                                 <?php endforeach; ?>
                             </table>
                         </div>
-                        <button id="finalize-btn" onclick="getAllSelectedOptionIds()">確定する</button>
+                        <button id="finalize-btn">確定する</button>
                         <!--
                         <form method="POST" action="main.php" id="hiddenForm">
                             <input type="hidden" name="jsData" id="jsData">
@@ -187,10 +187,10 @@ $mysqli->close();
             </div>
             <?php // ここまで新規登録画面
             ?>
-            <div id = "deletepopup-wrapper">
-                <div id = "popup-inside">
+            <div id="deletepopup-wrapper">
+                <div id="popup-inside">
                     <div id="close">&times;</div>
-                    <div id ="message">
+                    <div id="message">
                         <p>本当に削除しますか?</p>
                         <button id="deletefinalize-btn">確定する</button>
                     </div>
@@ -234,71 +234,7 @@ $mysqli->close();
                         <tr>
                             <td class="day-column"><?php echo $day; ?></td>
                             <?php foreach ($times as $timeIndex) : ?>
-                                <td class="time-cell asyncCNN">
-                                    <?php
-
-                                    // 科目名を取得
-                                    if ($subjectsByDay[$index][$timeIndex - 1]) {
-                                        if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
-                                            $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
-                                        } else {
-                                            $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
-                                        }
-                                        $time_schdule->data_seek($row_no);
-                                        $row = $time_schdule->fetch_assoc();
-                                        $subjectName = $row["科目名"];
-                                        $subjectId = $row["ID"]; // IDを使う  
-                                        $maxabsent = $row["最大欠席可能回数"]; //　最大欠席回数を取得する
-                                        $subjectType = $row["科目分類"];
-                                        $subjectTypeClass = "open-popup-btn-";
-                                        if ($subjectType == "専門") {
-                                            $subjectTypeClass .= "purple-";
-                                        } else //一般科目
-                                        {
-                                            $colorName = "";
-                                            switch ($subjectType) {
-                                                case "一般赤":
-                                                    $colorName .= "red-";
-                                                    break;
-                                                case "一般水":
-                                                    $colorName .= "blue-";
-                                                    break;
-                                                case "一般黄":
-                                                    $colorName .= "yellow-";
-                                                    break;
-                                                case "一般桃":
-                                                    $colorName .= "pink-";
-                                                    break;
-                                                default:
-                                                    $colorName .= "green-";
-                                                    break;
-                                            }
-                                            $subjectTypeClass .= $colorName;
-                                        }
-                                        echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>$row["科目名"]</button>');
-                                        //echo ('<button class ="' . $subjectTypeClass . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
-                                        //echo ($row["科目名"]);
-                                        //echo "</button>";
-                                        if ($maxabsent) {
-                                            echo '<p> <span id="absenceCount_' . $howmanyA . '">0</span> / ' . $maxabsent . '</p>';
-                                        } else {
-                                            echo '<p style="font-size: x-large;">特殊欠席条件</p>';
-                                            echo '<p> <span id="absenceCount_' . $howmanyA . '" class="unvisible">0</span>  ' . $maxabsent . '</p>';
-                                        }
-                                    } else {
-                                        echo ('<button style="display:none;" class ="open-popup-btn-green-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
-                                        echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
-                                        $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
-                                        $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
-                                        $maxabsent = 0; //　時間割に設定していないマスは0を表示
-                                        echo "</button>";
-                                    }
-                                    ?>
-
-
-                                    <?php
-                                    $howmanyA += 1; ?>
-                                </td>
+                                <td class="time-cell asyncCNN"></td>
                             <?php endforeach; ?>
                         </tr>
                     <?php endforeach; ?>

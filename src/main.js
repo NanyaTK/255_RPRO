@@ -107,10 +107,13 @@ const popupWrapper = document.getElementById('popup-wrapper');
 const close = document.getElementById('close');
 const registState = localStorage.getItem("deleteflag");
 
-if (registState == 1) {
-    signUpBtn.style.display = "none"
-} else if (registState == 0) {
+const registDataCheck = localStorage.getItem('key');
+let tmp = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+tmp = JSON.stringify(tmp);
+if (registDataCheck === tmp) {
     signUpBtn.style.display = "block"
+} else if (registDataCheck) {
+    signUpBtn.style.display = "none"
 } else {
     signUpBtn.style.display = "block"
 }
@@ -130,6 +133,54 @@ popupWrapper.addEventListener('click', e => {
 
 
 /* ================== 新規登録確定ボタンイベント ================== */
+function updateClassTable() {
+    return new Promise((resolve) => {
+        let getval = localStorage.getItem('key');
+        if (getval) {
+            let getData = getval.replace(/[\[\]]/g, '');
+            //console.log("[process: main] " + getData);
+            getData = JSON.stringify(getData);
+            //console.log(getData)
+            fetch('/main-cp.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: getData // 必要なデータを送信
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // console.log('[process: main-cp] ', data);
+                    if (data) {
+                        const oldDataTag = document.getElementsByClassName("asyncCNN");
+                        for (let i = 0; i < 20; i++) {
+                            oldDataTag[i].innerHTML = data[i];
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('[process: main-cp] ', error);
+                }).then(() => {
+                    popupWrapper.style.display = 'none';
+                });
+        }
+        const registDataCheck = localStorage.getItem('key');
+        let tmp = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+        tmp = JSON.stringify(tmp);
+        if (registDataCheck === tmp) {
+            signUpBtn.style.display = "block"
+            DeleteBtn.style.display = "none"
+        } else if (registDataCheck) {
+            signUpBtn.style.display = "none"
+            DeleteBtn.style.display = "block"
+        } else {
+            signUpBtn.style.display = "block"
+            DeleteBtn.style.display = "none"
+        }
+        resolve();
+    });
+}
+
 function getAllSelectedOptionIds() {
     // .subject-selectクラスを持つ全てのselect要素を取得
     const selectElements = document.querySelectorAll('.subject-select');
@@ -143,7 +194,7 @@ function getAllSelectedOptionIds() {
 
     // 結果を表示
     document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
-    console.log(selectedOptionIds);
+    //console.log(selectedOptionIds);
     const registDatas = [];
 
     for (let i = 0; i < selectedOptionIds.length; i++) {
@@ -151,36 +202,16 @@ function getAllSelectedOptionIds() {
         registDatas.push(registData);
     }
 
-    // console.log("[process: main] " + registDatas);
     const registJSON = JSON.stringify(registDatas);
     localStorage.setItem('key', registJSON);
-    let getval = localStorage.getItem('key');
-    let getData = getval.replace(/[\[\]]/g, '');
-    // console.log("[process: main] " + getData);
 
-    fetch('/main-cp.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(getData) // 必要なデータを送信
+    updateClassTable().then(() => {
+        console.log("[process: main] classTable updated");
     })
-        .then(response => response.json())
-        .then(data => {
-            // console.log('[process: main-cp] ', data);
-            if (data) {
-                const oldDataTag = document.getElementsByClassName("asyncCNN");
-                for (let i = 0; i < 20; i++) {
-                    oldDataTag[i].innerHTML = data[i];
-                }
-            }
-        })
-        .catch(error => {
-            console.error('[process: main-cp] ', error);
-        }).then(() => {
-            popupWrapper.style.display = 'none'; 
-        });
 }
+
+const RegistBtn = document.getElementById("finalize-btn");
+RegistBtn.addEventListener('click', () => { getAllSelectedOptionIds(); })
 /* ============================================================== */
 
 /* ====================== 削除ボタンイベント ====================== */
@@ -188,13 +219,14 @@ const DeleteBtn = document.getElementById('delete-btn');
 const DeletePopupWrapper = document.getElementById('deletepopup-wrapper');
 const DeleteClose = document.getElementById('close');
 
-if (registState == 1) {
-    DeleteBtn.style.display = "block"
-} else if (registState == 0) {
+if (registDataCheck === tmp) {
     DeleteBtn.style.display = "none"
+} else if (registDataCheck) {
+    DeleteBtn.style.display = "block"
 } else {
     DeleteBtn.style.display = "none"
 }
+
 // ボタンをクリックしたときにポップアップを表示させる
 DeleteBtn.addEventListener('click', () => {
     DeletePopupWrapper.style.display = "block";
@@ -214,9 +246,10 @@ DeleteFinalBtn.addEventListener('click', () => {
     const registDatas = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
     const registJSON = JSON.stringify(registDatas);
     localStorage.setItem('key', registJSON);
-    localStorage.setItem('flag', 1);
-    localStorage.setItem('deleteflag', 0);
-    location.reload();
+    updateClassTable().then(() => {
+        console.log("[process: main] classTable updated");
+    })
+    DeletePopupWrapper.style.display = "none";
 })
 /* ============================================================== */
 
@@ -402,7 +435,7 @@ function incrementAbsence(subjectId) {
 }
 
 // ページ読み込み時に各教科の初期化
-window.onload = function () {
+function initializeAConload() {
     let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
     if (subjectElements) {
         console.log("[process: main] sE:");
@@ -419,7 +452,7 @@ window.onload = function () {
             console.log("[process: main] " + subjectId + " was registered.");
         });
     });
-};
+}
 /* ========================================================== */
 
 /* ===================== ハンバーガーメニュー ================= */
@@ -438,4 +471,16 @@ const phpV_send = document.getElementById('APPLICCATION_VERSION').textContent;
 if (navigator.serviceWorker.controller) {
     navigator.serviceWorker.controller.postMessage({ type: 'PHP_APPLICCATION_VERSION', version: phpV_send });
 }
+/* ========================================================== */
+
+/* ==================== ページ読み込み時の処理 ================ */
+window.onload = async function () {
+    await registerServiceWorker();
+    console.log("[process: main] processing onload method...");
+    initializeAConload();
+    updateClassTable().then(() => {
+        console.log("[process: main] classTable updated");
+    })
+    console.log("[process: main] processing onload method finished");
+};
 /* ========================================================== */
