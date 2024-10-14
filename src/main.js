@@ -301,12 +301,20 @@ function getAllSelectedOptionIds() {
                 */
                 for (let i = 0; i < 20; i++) {
                     //console.log(clID2[i][0]);
-                    let element1 = document.getElementsByClassName(' . $subjectTypeClass . $howmanyA . ');
-                    //let element2 = document.getElementById("absenceCount_' . $howmanyA . '");
-                    //let element3 = document.getElementById("")
-                    if (element1) {
+                    //var phpClass = "' . $subjectTypeClass . $howmanyA . ' subject";
+                    //console.log('phpClass' + phpClass);
+                    let element1 = document.querySelectorAll('.time-cell .subject')[i];
+                    //console.log('element1' + element1.innerHTML);
+                    let element2 = document.querySelector(".time-cell #absenceCount_");
+                    let element3 = document.querySelector(".time-cell .open-popup-btn-green-");
+                    if (element3) {
+                        console.log('element3_1' + element3.innerHTML);
+                        element3.textContent = clID2[i][0];
+                        console.log('element3_2' + element3.innerHTML);
+                    }else if (element1) {
+                        console.log('element1_1' + element1.innerHTML);
                         element1.textContent = clID2[i][0];
-                        console.log(clID2[i][0]);
+                        console.log('element1_2' + element1.innerHTML);
                     }
                     /*if (element3 && clID2[i].length == 3) {
                         
