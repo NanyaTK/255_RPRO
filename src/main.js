@@ -52,6 +52,18 @@ const registerServiceWorker = async () => {
 }
 /* ============================================================== */
 
+/* ===================== ハンバーガーメニュー ================= */
+function toggleMenu() {
+    var menu = document.getElementById("menu");
+    if (menu.classList.contains("show")) {
+        menu.classList.remove("show");
+    } else {
+        menu.classList.add("show");
+    }
+}
+const showMenu = document.getElementById("menu-icon");
+showMenu.addEventListener("click", toggleMenu);
+/* ========================================================== */
 
 /* ==================== インストールボタン関連 ==================== */
 registerInstallAppEvent(document.getElementById("install-btn"));
@@ -121,6 +133,7 @@ if (registDataCheck === tmp) {
 // ボタンをクリックしたときにポップアップを表示させる
 signUpBtn.addEventListener('click', () => {
     popupWrapper.style.display = "block";
+    toggleMenu();
 });
 
 // ポップアップの外側又は「x」のマークをクリックしたときポップアップを閉じる
@@ -316,6 +329,7 @@ if (registDataCheck === tmp) {
 // ボタンをクリックしたときにポップアップを表示させる
 DeleteBtn.addEventListener('click', () => {
     DeletePopupWrapper.style.display = "block";
+    toggleMenu();
 });
 
 // ポップアップの外側又は「x」のマークをクリックしたときポップアップを閉じる
@@ -536,17 +550,6 @@ function initializeAConload() {
             console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
         });
     });
-}
-/* ========================================================== */
-
-/* ===================== ハンバーガーメニュー ================= */
-function toggleMenu() {
-    var menu = document.getElementById("menu");
-    if (menu.classList.contains("show")) {
-        menu.classList.remove("show");
-    } else {
-        menu.classList.add("show");
-    }
 }
 /* ========================================================== */
 

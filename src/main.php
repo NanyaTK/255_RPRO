@@ -90,10 +90,12 @@ $mysqli->close();
     <header>
         <div class="flex-byForce">
             <a class="header" href="/main.php">留年プロテクター <?php echo APPLICCATION_VERSION ?></a>
-            <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+            <div class="menu-icon" id="menu-icon">&#9776;</div>
             <nav id="menu" class="menu">
                 <ul>
                     <li><a href="help.php">よくある質問</a></li>
+                    <button id="signup-btn">新規登録</button>
+                    <button id="delete-btn">削除</button>
                     <li><button id="install-btn">インストール</button></li>
                     <li> <button id="uninstall-btn">再起動</button>
                     </li>
@@ -104,10 +106,6 @@ $mysqli->close();
     <div class="content">
 
         <div class="main">
-            <div class="flex-byForce">
-                <button id="signup-btn">新規登録</button>
-                <button id="delete-btn">削除</button>
-            </div>
             <?php // ここから新規登録画面
             ?>
             <div id="popup-wrapper">
