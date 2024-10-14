@@ -148,12 +148,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $resSubjectsData[$howmanyA] .= <<<'EOD'
                     echo '<p style="font-size: x-large;">特殊欠席条件</p>';
+                    EOD;
+                    $resSubjectsData[$howmanyA] .= <<<'EOD'
                     echo '<p> <span id="absenceCount_' . $howmanyA . '" class="unvisible">0</span>  ' . $maxabsent . '</p>';
                     EOD;
                 }
             } else {
                 $resSubjectsData[$howmanyA] .= <<<'EOD'
                 echo ('<button style="display:none;" class ="open-popup-btn-green-' . $howmanyA . ' subject" data-subject-id=' . $subjectId . '>');
+                EOD;
+                $resSubjectsData[$howmanyA] .= <<<'EOD'
                 echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                 EOD;
                 $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
