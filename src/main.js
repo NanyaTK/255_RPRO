@@ -300,15 +300,19 @@ function getAllSelectedOptionIds() {
                 })
                 */
                 for (let i = 0; i < 20; i++) {
-                    let element1 = document.getElementById(' . $subjectId . ');
-                    let element2 = document.getElementById("absenceCount_' . $howmanyA . '");
+                    //console.log(clID2[i][0]);
+                    let element1 = document.getElementsByClassName(' . $subjectTypeClass . $howmanyA . ');
+                    //let element2 = document.getElementById("absenceCount_' . $howmanyA . '");
                     //let element3 = document.getElementById("")
                     if (element1) {
                         element1.textContent = clID2[i][0];
+                        console.log(clID2[i][0]);
                     }
-                    if (element2 && clID2[i].length == 2) {
+                    /*if (element3 && clID2[i].length == 3) {
+                        
+                    }else if (element2 && clID2[i].length == 2) {
                         element2.textContent = clID2[i][1];
-                    }
+                    }*/
                     //if ()
                 }
             }
