@@ -126,6 +126,7 @@ unregisterSW.addEventListener("click", () => {
         }
     });
     deleteAllCachesByManual();
+    alert("Pre-reload process completed.\nReloading now.")
     window.location.reload();
 });
 /* ============================================================== */
