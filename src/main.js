@@ -21,6 +21,7 @@
 const hostname = window.location.hostname;
 const queryParams = new URLSearchParams(window.location.search);
 const environment = queryParams.get('env');
+
 if (hostname === 'rpro.nanyatk.com' && environment === 'dev') {
     const DEVFLAG = true;
 } else if (hostname === 'rpro.nanyatk.com') {
@@ -100,11 +101,22 @@ unregisterSW.addEventListener("click", () => {
 });
 /* ============================================================== */
 
-
 /* ==================== 新規登録ボタンイベント ==================== */
 const signUpBtn = document.getElementById('signup-btn');
 const popupWrapper = document.getElementById('popup-wrapper');
 const close = document.getElementById('close');
+const registState = localStorage.getItem("deleteflag");
+
+const registDataCheck = localStorage.getItem('key');
+let tmp = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+tmp = JSON.stringify(tmp);
+if (registDataCheck === tmp) {
+    signUpBtn.style.display = "block"
+} else if (registDataCheck) {
+    signUpBtn.style.display = "none"
+} else {
+    signUpBtn.style.display = "block"
+}
 
 // ボタンをクリックしたときにポップアップを表示させる
 signUpBtn.addEventListener('click', () => {
@@ -117,6 +129,128 @@ popupWrapper.addEventListener('click', e => {
         popupWrapper.style.display = 'none';
     }
 });
+/* ============================================================== */
+
+
+/* ================== 新規登録確定ボタンイベント ================== */
+function updateClassTable() {
+    return new Promise((resolve) => {
+        let getval = localStorage.getItem('key');
+        if (getval) {
+            let getData = getval.replace(/[\[\]]/g, '');
+            //console.log("[process: main] " + getData);
+            getData = JSON.stringify(getData);
+            //console.log(getData)
+            fetch('/main-cp.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: getData // 必要なデータを送信
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // console.log('[process: main-cp] ', data);
+                    if (data) {
+                        const oldDataTag = document.getElementsByClassName("asyncCNN");
+                        for (let i = 0; i < 20; i++) {
+                            oldDataTag[i].innerHTML = data[i];
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('[process: main-cp] ', error);
+                }).then(() => {
+                    popupWrapper.style.display = 'none';
+                });
+        }
+        const registDataCheck = localStorage.getItem('key');
+        let tmp = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+        tmp = JSON.stringify(tmp);
+        if (registDataCheck === tmp) {
+            signUpBtn.style.display = "block"
+            DeleteBtn.style.display = "none"
+        } else if (registDataCheck) {
+            signUpBtn.style.display = "none"
+            DeleteBtn.style.display = "block"
+        } else {
+            signUpBtn.style.display = "block"
+            DeleteBtn.style.display = "none"
+        }
+        resolve();
+    });
+}
+
+function getAllSelectedOptionIds() {
+    // .subject-selectクラスを持つ全てのselect要素を取得
+    const selectElements = document.querySelectorAll('.subject-select');
+    const selectedOptionIds = [];
+    // 各select要素をループして選択されたoptionのidを取得
+    selectElements.forEach(selectElement => {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const selectedOptionId = selectedOption.id;
+        selectedOptionIds.push(selectedOptionId); // 配列に追加
+    });
+
+    // 結果を表示
+    document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
+    //console.log(selectedOptionIds);
+    const registDatas = [];
+
+    for (let i = 0; i < selectedOptionIds.length; i++) {
+        const registData = selectedOptionIds[i];
+        registDatas.push(registData);
+    }
+
+    const registJSON = JSON.stringify(registDatas);
+    localStorage.setItem('key', registJSON);
+
+    updateClassTable().then(() => {
+        console.log("[process: main] classTable updated");
+    })
+}
+
+const RegistBtn = document.getElementById("finalize-btn");
+RegistBtn.addEventListener('click', () => { getAllSelectedOptionIds(); })
+/* ============================================================== */
+
+/* ====================== 削除ボタンイベント ====================== */
+const DeleteBtn = document.getElementById('delete-btn');
+const DeletePopupWrapper = document.getElementById('deletepopup-wrapper');
+const DeleteClose = document.getElementById('close');
+
+if (registDataCheck === tmp) {
+    DeleteBtn.style.display = "none"
+} else if (registDataCheck) {
+    DeleteBtn.style.display = "block"
+} else {
+    DeleteBtn.style.display = "none"
+}
+
+// ボタンをクリックしたときにポップアップを表示させる
+DeleteBtn.addEventListener('click', () => {
+    DeletePopupWrapper.style.display = "block";
+});
+
+// ポップアップの外側又は「x」のマークをクリックしたときポップアップを閉じる
+DeletePopupWrapper.addEventListener('click', e => {
+    if (e.target.id === DeletePopupWrapper.id || e.target.id === close.id) {
+        DeletePopupWrapper.style.display = 'none';
+    }
+});
+/* ============================================================== */
+
+/* =================== 削除確定ボタンイベント ===================== */
+const DeleteFinalBtn = document.getElementById('deletefinalize-btn');
+DeleteFinalBtn.addEventListener('click', () => {
+    const registDatas = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+    const registJSON = JSON.stringify(registDatas);
+    localStorage.setItem('key', registJSON);
+    updateClassTable().then(() => {
+        console.log("[process: main] classTable updated");
+    })
+    DeletePopupWrapper.style.display = "none";
+})
 /* ============================================================== */
 
 /* ==================== 時間割自動入力関連 ======================== */
@@ -224,62 +358,7 @@ rstFilterBtn.addEventListener("click", () => { ResetFilter(); });
 
 /* ============================================================== */
 
-
-/* ================== 新規登録確定ボタンイベント ================== */
-function getAllSelectedOptionIds() {
-    // .subject-selectクラスを持つ全てのselect要素を取得
-    const selectElements = document.querySelectorAll('.subject-select');
-    const selectedOptionIds = [];
-    // 各select要素をループして選択されたoptionのidを取得
-    selectElements.forEach(selectElement => {
-        const selectedOption = selectElement.options[selectElement.selectedIndex];
-        const selectedOptionId = selectedOption.id;
-        selectedOptionIds.push(selectedOptionId); // 配列に追加
-    });
-
-    // 結果を表示
-    document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
-    console.log(selectedOptionIds);
-    const registDatas = [];
-
-    for (let i = 0; i < selectedOptionIds.length; i++) {
-        const registData = selectedOptionIds[i];
-        registDatas.push(registData);
-    }
-
-    // console.log("[process: main] " + registDatas);
-    const registJSON = JSON.stringify(registDatas);
-    localStorage.setItem('key', registJSON);
-    let getval = localStorage.getItem('key');
-    let getData = getval.replace(/[\[\]]/g, '');
-    // console.log("[process: main] " + getData);
-
-    fetch('/main-cp.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(getData) // 必要なデータを送信
-    })
-        .then(response => response.json())
-        .then(data => {
-            // console.log('[process: main-cp] ', data);
-            if (data) {
-                const oldDataTag = document.getElementsByClassName("asyncCNN");
-                for (let i = 0; i < 20; i++) {
-                    oldDataTag[i].innerHTML = data[i];
-                }
-            }
-        })
-        .catch(error => {
-            console.error('[process: main-cp] ', error);
-        }).then(() => {
-            popupWrapper.style.display = 'none'; 
-        });
-}
-/* ============================================================== */
-
-/* ======================= 時間割ポップアップ関連 ====================== */
+/* ==================== 時間割ポップアップ関連 ==================== */
 document.addEventListener('DOMContentLoaded', () => {
     const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
     const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
@@ -317,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.addEventListener('click', hidePopup);
     });
 });
-/* ============================================================== */
+/* ========================================================== */
 
 /* ======================= 出欠回数管理 ====================== */
 // 初期化またはlocalStorageから教科ごとの欠席回数を取得
@@ -356,7 +435,7 @@ function incrementAbsence(subjectId) {
 }
 
 // ページ読み込み時に各教科の初期化
-window.onload = function () {
+function initializeAConload() {
     let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
     if (subjectElements) {
         console.log("[process: main] sE:");
@@ -373,7 +452,7 @@ window.onload = function () {
             console.log("[process: main] " + subjectId + " was registered.");
         });
     });
-};
+}
 /* ========================================================== */
 
 /* ===================== ハンバーガーメニュー ================= */
@@ -392,4 +471,16 @@ const phpV_send = document.getElementById('APPLICCATION_VERSION').textContent;
 if (navigator.serviceWorker.controller) {
     navigator.serviceWorker.controller.postMessage({ type: 'PHP_APPLICCATION_VERSION', version: phpV_send });
 }
+/* ========================================================== */
+
+/* ==================== ページ読み込み時の処理 ================ */
+window.onload = async function () {
+    await registerServiceWorker();
+    console.log("[process: main] processing onload method...");
+    initializeAConload();
+    updateClassTable().then(() => {
+        console.log("[process: main] classTable updated");
+    })
+    console.log("[process: main] processing onload method finished");
+};
 /* ========================================================== */
