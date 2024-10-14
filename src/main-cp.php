@@ -150,9 +150,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $resSubjectsData[$howmanyA] .= <<<EOD
                 <button style='display:none;' class ='open-popup-btn-green-$howmanyA subject data-subject-id=$subjectId'>
                 EOD;
-                /*$resSubjectsData[$howmanyA] .= <<<EOD
-                echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
-                EOD;*/
+                $tmp = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
+                $resSubjectsData[$howmanyA] .= <<<EOD
+                $tmp
+                EOD;
                 $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                 $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
                 $maxabsent = 0; //　時間割に設定していないマスは0を表示
