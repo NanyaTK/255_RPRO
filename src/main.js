@@ -33,7 +33,7 @@ if ((hostname === 'rpro.nanyatk.com' || hostname === 'test.rpro.nanyatk.com') &&
 const dbgmd = document.getElementById("debugmode");
 dbgmd.innerText = "DEBUG MODE: " + DEVFLAG;
 let consoleStyle = "font-size:x-large";
-console.log("%c[process: main] %c" + DEVFLAG, consoleStyle, consoleStyle);
+console.log("%c[process: main] DEBUG MODE: %c" + DEVFLAG, consoleStyle, consoleStyle);
 if (DEVFLAG) {
     const APPV = document.getElementById("APPLICCATION_VERSION");
     APPV.style.display = "block";
