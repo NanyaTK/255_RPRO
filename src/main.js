@@ -126,7 +126,7 @@ unregisterSW.addEventListener("click", () => {
         }
     });
     deleteAllCachesByManual();
-    //window.location.reload();
+    window.location.reload();
 });
 /* ============================================================== */
 
