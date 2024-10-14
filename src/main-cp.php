@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $subjectTypeClass .= $colorName;
                 }
                 $resSubjectsData[$howmanyA] = <<<EOD
-                echo ('<button class ="'${subjectTypeClass}${howmanyA}' subject" data-subject-id=' . ${subjectId} . '>${row["科目名"]}</button>');
+                <button class ='$subjectTypeClass$howmanyA subject' data-subject-id='$subjectId'>{$row["科目名"]}</button>;
                 EOD;
                 /*
                 $resSubjectsData[$howmanyA] = <<<'EOD'
@@ -143,19 +143,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 */
                 if ($maxabsent) {
                     $resSubjectsData[$howmanyA] .= <<<EOD
-                    echo '<p> <span id="absenceCount_' . ${howmanyA} . '">0</span> / ' . ${maxabsent} . '</p>';
+                    <p> <span id='absenceCount_$howmanyA'>0</span> / '$maxabsent'</p>;
                     EOD;
                 } else {
                     $resSubjectsData[$howmanyA] .= <<<EOD
-                    echo '<p style="font-size: x-large;">特殊欠席条件</p>';
+                    <p style='font-size: x-large;'>特殊欠席条件</p>;
                     EOD;
                     $resSubjectsData[$howmanyA] .= <<<EOD
-                    echo '<p> <span id="absenceCount_' . ${howmanyA} . '" class="unvisible">0</span>  ' . ${maxabsent} . '</p>';
+                    <p> <span id='absenceCount_$howmanyA' class='unvisible'>0</span>  '$maxabsent'</p>;
                     EOD;
                 }
             } else {
                 $resSubjectsData[$howmanyA] .= <<<EOD
-                echo ('<button style="display:none;" class ="open-popup-btn-green-' . ${howmanyA} . ' subject" data-subject-id=' . ${subjectId} . '>');
+                <button style='display:none;' class ='open-popup-btn-green-$howmanyA subject data-subject-id='$subjectId'>;
                 EOD;
                 /*$resSubjectsData[$howmanyA] .= <<<EOD
                 echo isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
@@ -163,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                 $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
                 $maxabsent = 0; //　時間割に設定していないマスは0を表示
-                $resSubjectsData[$howmanyA] .= 'echo "</button>";';
+                $resSubjectsData[$howmanyA] .= '</button>;';
             }
             // resSubjectsData[0] = "<button> ~~ </button><p> ~~~ </p>"
             // resSubjectsData[19] までできる

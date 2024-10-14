@@ -274,9 +274,10 @@ function getAllSelectedOptionIds() {
             if (data) {
                 let clID2 = [];
                 for (let i = 0; i < data.length; i++) {
+                    // "<p style=\"font-size: x-large;\">特殊欠席条件</p>"; とかの x-largeの ; と 末尾の ; とを区別する為
                     let tempString = data[i].replace(/([a-zA-Z]);/g, '$1##SEMICOLON##'); // アルファベットの後にある";"を一時的に置換
                 
-                    clID2[i] = tempString.split(";");
+                    clID2[i] = tempString.split(";"); // ;毎に配列作成
                     clID2[i].pop(); // 配列末尾の""を削除
                 
                     // 置換した文字を";"に戻す
@@ -286,11 +287,11 @@ function getAllSelectedOptionIds() {
                 
                     //console.log('[process: main-cp]', i, clID2[i]);
 
-                    for (let j = 0; j < clID2[i].length; j++) {
+                    /*for (let j = 0; j < clID2[i].length; j++) {
                         if (clID2[i][j] !== "") {
                             clID2[i][j] += ";";
                         }
-                    }
+                    }*/
                 }
                 console.log('[process: main-cp] ', clID2);
                 /*
