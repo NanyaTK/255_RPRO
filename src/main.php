@@ -96,7 +96,7 @@ $mysqli->close();
                 <ul>
                     <li><a href="help.php">よくある質問</a></li>
                     <li><button id="signup-btn">新規登録</button></li>
-                    <li> <button id="delete-btn">削除</button></li>
+                    <li> <button id="delete-btn">データ削除</button></li>
                     <li><button id="install-btn">インストール</button></li>
                     <li> <button id="uninstall-btn">再起動</button></li>
                     <li id="debugmode">デバッグモード</li>
@@ -184,8 +184,9 @@ $mysqli->close();
                 <div id="popup-inside">
                     <div id="close">&times;</div>
                     <div id="message">
-                        <p>本当に削除しますか?</p>
-                        <button id="deletefinalize-btn">確定する</button>
+                        <p>時間割 / 出欠データを削除します．</p>
+                        <p>データを復旧することはできません．</p>
+                        <button id="deletefinalize-btn">削除</button>
                     </div>
                 </div>
             </div>

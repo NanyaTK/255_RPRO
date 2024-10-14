@@ -126,7 +126,7 @@ unregisterSW.addEventListener("click", () => {
         }
     });
     deleteAllCachesByManual();
-    alert("Pre-reload process completed.\nReloading now.")
+    alert("[process: main] Pre-reload process completed.\nReloading now.")
     window.location.reload();
 });
 /* ============================================================== */
@@ -390,8 +390,17 @@ DeleteFinalBtn.addEventListener('click', () => {
         if (DEVFLAG) {
             console.log("[process: main] classTable updated");
         }
+        for (let i = 0; i < 20; i++) {
+            let key = 'absenceCount_' + i;  // 科目ごとのキーを設定
+            localStorage.setItem(key, 0);
+            console.log(key)
+        }
+        if (DEVFLAG) {
+            console.log("[process: main] absenceCount updated");
+        }
     })
     DeletePopupWrapper.style.display = "none";
+    alert("[process: main] Data deleted")
 })
 /* ============================================================== */
 
