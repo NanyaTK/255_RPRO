@@ -272,11 +272,19 @@ function getAllSelectedOptionIds() {
         .then(data => {
             console.log('[process: main-cp] ', data);
             if (data) {
-                //let clID = data.split(',');
-                //console.log('[process: main-cp] ', clID);
                 let clID2 = [];
                 for (let i = 0; i < data.length; i++) {
-                    clID2[i] = data[i].split(";");
+                    let tempString = data[i].replace(/([a-zA-Z]);/g, '$1##SEMICOLON##'); // アルファベットの後にある";"を一時的に置換
+                
+                    clID2[i] = tempString.split(";");
+                    clID2[i].pop(); // 配列末尾の""を削除
+                
+                    // 置換した文字を";"に戻す
+                    for (let j = 0; j < clID2[i].length; j++) {
+                        clID2[i][j] = clID2[i][j].replace(/##SEMICOLON##/g, ";");
+                    }
+                
+                    //console.log('[process: main-cp]', i, clID2[i]);
 
                     for (let j = 0; j < clID2[i].length; j++) {
                         if (clID2[i][j] !== "") {
@@ -294,9 +302,14 @@ function getAllSelectedOptionIds() {
                 for (let i = 0; i < 20; i++) {
                     let element1 = document.getElementById(' . $subjectId . ');
                     let element2 = document.getElementById("absenceCount_' . $howmanyA . '");
+                    //let element3 = document.getElementById("")
                     if (element1) {
                         element1.textContent = clID2[i][0];
                     }
+                    if (element2 && clID2[i].length == 2) {
+                        element2.textContent = clID2[i][1];
+                    }
+                    //if ()
                 }
             }
         })
