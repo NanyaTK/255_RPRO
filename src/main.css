@@ -61,6 +61,10 @@ footer {
   display: none;
 }
 
+#DEBUG_MODE {
+  display: none;
+}
+
 .main {
   background-color: #fff;
   padding: 20px;
@@ -187,6 +191,14 @@ footer {
   padding: 20px 35px;
 }
 
+#delete-btn {
+  margin: 20px auto;
+  background-color: rgb(0, 153, 128);
+  color: white;
+  border: 0;
+  padding: 20px 35px;
+}
+
 #install-btn {
   margin: 20px auto;
   background-color: rgb(0, 153, 128);
@@ -206,6 +218,16 @@ footer {
 }
 
 #popup-wrapper {
+  background-color: rgba(0, 0, 0, .5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* height: 100%; */
+  display: none;
+}
+
+#deletepopup-wrapper {
   background-color: rgba(0, 0, 0, .5);
   position: absolute;
   top: 0;
@@ -241,6 +263,14 @@ footer {
 }
 
 #finalize-btn {
+  margin: 10px auto;
+  background-color: rgb(0, 155, 116);
+  color: white;
+  border: 0;
+  padding: 18px 36px;
+}
+
+#deletefinalize-btn {
   margin: 10px auto;
   background-color: rgb(0, 155, 116);
   color: white;
@@ -399,7 +429,7 @@ footer {
 [class^="open-popup-btn-red-"] {
   display: block;
   margin: 20px auto;
-  background-color: rgb(255,152,153);
+  background-color: rgb(255, 152, 153);
   color: black;
   border: 0;
   padding: 20px 35px;
@@ -408,15 +438,16 @@ footer {
 [class^="open-popup-btn-blue-"] {
   display: block;
   margin: 20px auto;
-  background-color: rgb(153,205,255);
+  background-color: rgb(153, 205, 255);
   color: black;
   border: 0;
   padding: 20px 35px;
 }
+
 [class^="open-popup-btn-yellow-"] {
   display: block;
   margin: 20px auto;
-  background-color: rgb(254,255,153);
+  background-color: rgb(254, 255, 153);
   color: black;
   border: 0;
   padding: 20px 35px;
@@ -425,7 +456,7 @@ footer {
 [class^="open-popup-btn-pink-"] {
   display: block;
   margin: 20px auto;
-  background-color: rgb(255,153,203);
+  background-color: rgb(255, 153, 203);
   color: black;
   border: 0;
   padding: 20px 35px;
@@ -434,7 +465,7 @@ footer {
 [class^="open-popup-btn-purple-"] {
   display: block;
   margin: 20px auto;
-  background-color: rgb(204,153,254);
+  background-color: rgb(204, 153, 254);
   color: black;
   border: 0;
   padding: 20px 35px;
@@ -584,7 +615,15 @@ footer {
     height: 100%;
   }
 
+  #deletepopup-wrapper {
+    height: 100%
+  }
+
   #signup-btn {
+    font-size: xx-large;
+  }
+
+  #delete-btn {
     font-size: xx-large;
   }
 
@@ -632,6 +671,10 @@ footer {
   }
 
   #finalize-btn {
+    font-size: 32px;
+  }
+
+  #deletefinalize-btn {
     font-size: 32px;
   }
 
@@ -683,6 +726,8 @@ footer {
 }
 
 .menu ul {
+  height: 95%;
+  position: relative;
   list-style-type: none;
   margin: 0;
   margin-top: 30px;
@@ -706,4 +751,9 @@ footer {
 
 .menu.show {
   top: 96px;
+}
+
+#debugmode {
+  position: absolute;
+  bottom: 0%;
 }

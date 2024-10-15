@@ -21,12 +21,24 @@
 const hostname = window.location.hostname;
 const queryParams = new URLSearchParams(window.location.search);
 const environment = queryParams.get('env');
-if (hostname === 'rpro.nanyatk.com' && environment === 'dev') {
-    const DEVFLAG = true;
-} else if (hostname === 'rpro.nanyatk.com') {
-    const DEVFLAG = false;
+
+let DEVFLAG = false;
+if ((hostname === 'rpro.nanyatk.com' || hostname === 'test.rpro.nanyatk.com') && environment === 'dev') {
+    DEVFLAG = true;
+} else if (hostname === 'rpro.nanyatk.com' || hostname === 'test.rpro.nanyatk.com') {
+    DEVFLAG = false;
 } else {
-    const DEVFLAG = true;
+    DEVFLAG = true;
+}
+const dbgmd = document.getElementById("debugmode");
+dbgmd.innerText = "DEBUG MODE: " + DEVFLAG;
+let consoleStyle = "font-size:x-large";
+console.log("%c[process: main] DEBUG MODE: %c" + DEVFLAG, consoleStyle, consoleStyle);
+if (DEVFLAG) {
+    const APPV = document.getElementById("APPLICCATION_VERSION");
+    APPV.style.display = "block";
+    const DBGM = document.getElementById("DEBUG_MODE");
+    DBGM.style.display = "block";
 }
 
 /* =========== service Worker 新規インストールイベント ============ */
@@ -37,11 +49,17 @@ const registerServiceWorker = async () => {
                 scope: "/",
             });
             if (registration.installing) {
-                console.log("[process: main] Service worker installing");
+                if (DEVFLAG) {
+                    console.log("[process: main] Service worker installing");
+                }
             } else if (registration.waiting) {
-                console.log("[process: main] Service worker installed");
+                if (DEVFLAG) {
+                    console.log("[process: main] Service worker installed");
+                }
             } else if (registration.active) {
-                console.log("[process: main] Service worker active");
+                if (DEVFLAG) {
+                    console.log("[process: main] Service worker active");
+                }
             }
         } catch (error) {
             console.error(`[process: main] Registration failed with ${error}`);
@@ -51,6 +69,18 @@ const registerServiceWorker = async () => {
 }
 /* ============================================================== */
 
+/* ===================== ハンバーガーメニュー ================= */
+function toggleMenu() {
+    var menu = document.getElementById("menu");
+    if (menu.classList.contains("show")) {
+        menu.classList.remove("show");
+    } else {
+        menu.classList.add("show");
+    }
+}
+const showMenu = document.getElementById("menu-icon");
+showMenu.addEventListener("click", toggleMenu);
+/* ========================================================== */
 
 /* ==================== インストールボタン関連 ==================== */
 registerInstallAppEvent(document.getElementById("install-btn"));
@@ -96,19 +126,32 @@ unregisterSW.addEventListener("click", () => {
         }
     });
     deleteAllCachesByManual();
-    //window.location.reload();
+    alert("[process: main] Pre-reload process completed.\nReloading now.")
+    window.location.reload();
 });
 /* ============================================================== */
-
 
 /* ==================== 新規登録ボタンイベント ==================== */
 const signUpBtn = document.getElementById('signup-btn');
 const popupWrapper = document.getElementById('popup-wrapper');
 const close = document.getElementById('close');
+const registState = localStorage.getItem("deleteflag");
+
+const registDataCheck = localStorage.getItem('key');
+let tmp = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+tmp = JSON.stringify(tmp);
+if (registDataCheck === tmp) {
+    signUpBtn.style.display = "block"
+} else if (registDataCheck) {
+    signUpBtn.style.display = "none"
+} else {
+    signUpBtn.style.display = "block"
+}
 
 // ボタンをクリックしたときにポップアップを表示させる
 signUpBtn.addEventListener('click', () => {
     popupWrapper.style.display = "block";
+    toggleMenu();
 });
 
 // ポップアップの外側又は「x」のマークをクリックしたときポップアップを閉じる
@@ -117,6 +160,248 @@ popupWrapper.addEventListener('click', e => {
         popupWrapper.style.display = 'none';
     }
 });
+/* ============================================================== */
+
+
+/* ================== 新規登録確定ボタンイベント ================== */
+function updateClassTable() {
+    const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
+    const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
+    const closeButtons = document.querySelectorAll('close-absent');
+    if (DEVFLAG) {
+        console.log("[process: main] " + openButtons)
+    }
+    function showPopup() {
+        overlays[this.num].style.display = 'block';
+    }
+    function hidePopup() {
+        overlays.forEach(overlay => {
+            overlay.style.display = 'none';
+        });
+    }
+    let i = 0;
+    openButtons.forEach(button => {
+        button.removeEventListener('click', showPopup);
+    });
+    closeButtons.forEach(closeButton => {
+        closeButton.removeEventListener('click', hidePopup);
+    });
+    overlays.forEach(overlay => {
+        overlay.removeEventListener('click', hidePopup);
+    });
+
+    let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
+    if (subjectElements) {
+        if (DEVFLAG) {
+            console.log("[process: main] sE: update");
+        }
+    }
+    subjectElements.forEach(function (subjectElement) {
+        let subjectId = subjectElement.dataset.subjectId;
+        // 欠席ボタンのイベントリスナーを設定
+        document.getElementById('absenceButton_' + subjectId).removeEventListener('click', function () { });
+    });
+
+    return new Promise((resolve) => {
+        let getval = localStorage.getItem('key');
+        if (getval) {
+            let getData = getval.replace(/[\[\]]/g, '');
+            if (DEVFLAG) {
+                console.log("[process: main] " + getData);
+            }
+            getData = JSON.stringify(getData);
+            if (DEVFLAG) {
+                console.log("[process: main] " + getData)
+            }
+            fetch('/main-cp.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: getData // 必要なデータを送信
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (DEVFLAG) {
+                        console.log('[process: main-cp] ', data);
+                    }
+                    if (data) {
+                        (async () => {
+                            let [subjectsData, subjectsDetail] = data;
+                            const oldDataTag = document.getElementsByClassName("asyncCNN");
+                            for (let i = 0; i < 20; i++) {
+                                oldDataTag[i].innerHTML = subjectsData[i];
+                            }
+                            const oldDetailTag = document.getElementsByClassName("asyncCD");
+                            for (let i = 0; i < 20; i++) {
+                                oldDetailTag[i].innerHTML = subjectsDetail[i];
+                            }
+
+                            await new Promise(() => {
+                                const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
+                                const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
+                                const closeButtons = document.querySelectorAll('close-absent');
+                                if (DEVFLAG) {
+                                    console.log("[process: main] " + openButtons)
+                                }
+                                function showPopup() {
+                                    overlays[this.num].style.display = 'block';
+                                }
+                                function hidePopup() {
+                                    overlays.forEach(overlay => {
+                                        overlay.style.display = 'none';
+                                    });
+                                }
+                                let i = 0;
+                                openButtons.forEach(button => {
+                                    button.addEventListener('click', { num: i++, handleEvent: showPopup });
+                                });
+                                closeButtons.forEach(closeButton => {
+                                    closeButton.addEventListener('click', hidePopup);
+                                });
+                                overlays.forEach(overlay => {
+                                    overlay.addEventListener('click', hidePopup);
+                                });
+
+                                function incrementAbsence(subjectId) {
+                                    let key = 'absenceCount_' + subjectId;
+                                    let absenceCount = parseInt(localStorage.getItem(key));
+                                    absenceCount += 1;
+                                    localStorage.setItem(key, absenceCount);
+                                    document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+                                }
+                                let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
+                                if (subjectElements) {
+                                    if (DEVFLAG) {
+                                        console.log("[process: main] sE: updating...");
+                                    }
+                                }
+                                subjectElements.forEach(function (subjectElement) {
+                                    let subjectId = subjectElement.dataset.subjectId;
+                                    initializeAbsenceCount(subjectId);
+                                    document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
+                                        incrementAbsence(subjectId);
+                                        if (DEVFLAG) {
+                                            console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
+                                        }
+                                    });
+                                });
+                                if (DEVFLAG) {
+                                    console.log("[process: main] sE: update finished");
+                                }
+                            });
+                        })();
+                    }
+                })
+                .catch(error => {
+                    console.error('[process: main-cp] ', error);
+                }).then(() => {
+                    popupWrapper.style.display = 'none';
+                });
+        }
+        const registDataCheck = localStorage.getItem('key');
+        let tmp = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+        tmp = JSON.stringify(tmp);
+        if (registDataCheck === tmp) {
+            signUpBtn.style.display = "block"
+            DeleteBtn.style.display = "none"
+        } else if (registDataCheck) {
+            signUpBtn.style.display = "none"
+            DeleteBtn.style.display = "block"
+        } else {
+            signUpBtn.style.display = "block"
+            DeleteBtn.style.display = "none"
+        }
+        resolve();
+    });
+}
+
+function getAllSelectedOptionIds() {
+    // .subject-selectクラスを持つ全てのselect要素を取得
+    const selectElements = document.querySelectorAll('.subject-select');
+    const selectedOptionIds = [];
+    // 各select要素をループして選択されたoptionのidを取得
+    selectElements.forEach(selectElement => {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const selectedOptionId = selectedOption.id;
+        selectedOptionIds.push(selectedOptionId); // 配列に追加
+    });
+
+    // 結果を表示
+    document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
+    if (DEVFLAG) {
+        console.log(selectedOptionIds);
+    }
+    const registDatas = [];
+
+    for (let i = 0; i < selectedOptionIds.length; i++) {
+        const registData = selectedOptionIds[i];
+        registDatas.push(registData);
+    }
+
+    const registJSON = JSON.stringify(registDatas);
+    localStorage.setItem('key', registJSON);
+
+    updateClassTable().then(() => {
+        if (DEVFLAG) {
+            console.log("[process: main] classTable updated");
+        }
+    })
+}
+
+const RegistBtn = document.getElementById("finalize-btn");
+RegistBtn.addEventListener('click', () => { getAllSelectedOptionIds(); })
+/* ============================================================== */
+
+/* ====================== 削除ボタンイベント ====================== */
+const DeleteBtn = document.getElementById('delete-btn');
+const DeletePopupWrapper = document.getElementById('deletepopup-wrapper');
+const DeleteClose = document.getElementById('close');
+
+if (registDataCheck === tmp) {
+    DeleteBtn.style.display = "none"
+} else if (registDataCheck) {
+    DeleteBtn.style.display = "block"
+} else {
+    DeleteBtn.style.display = "none"
+}
+
+// ボタンをクリックしたときにポップアップを表示させる
+DeleteBtn.addEventListener('click', () => {
+    DeletePopupWrapper.style.display = "block";
+    toggleMenu();
+});
+
+// ポップアップの外側又は「x」のマークをクリックしたときポップアップを閉じる
+DeletePopupWrapper.addEventListener('click', e => {
+    if (e.target.id === DeletePopupWrapper.id || e.target.id === close.id) {
+        DeletePopupWrapper.style.display = 'none';
+    }
+});
+/* ============================================================== */
+
+/* =================== 削除確定ボタンイベント ===================== */
+const DeleteFinalBtn = document.getElementById('deletefinalize-btn');
+DeleteFinalBtn.addEventListener('click', () => {
+    const registDatas = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+    const registJSON = JSON.stringify(registDatas);
+    localStorage.setItem('key', registJSON);
+    updateClassTable().then(() => {
+        if (DEVFLAG) {
+            console.log("[process: main] classTable updated");
+        }
+        for (let i = 0; i < 20; i++) {
+            let key = 'absenceCount_' + i;  // 科目ごとのキーを設定
+            localStorage.setItem(key, 0);
+            console.log(key)
+        }
+        if (DEVFLAG) {
+            console.log("[process: main] absenceCount updated");
+        }
+    })
+    DeletePopupWrapper.style.display = "none";
+    alert("[process: main] Data deleted")
+})
 /* ============================================================== */
 
 /* ==================== 時間割自動入力関連 ======================== */
@@ -150,10 +435,14 @@ function AutoCompleteClasses() {
     const selectedTermOpt = selectedTerm.options[selectedTerm.selectedIndex];
     const selectedTermId = selectedTermOpt.id;
     const CTData = selectedClassId + "," + selectedTermId;
-    console.log("[process: main] " + CTData);
+    if (DEVFLAG) {
+        console.log("[process: main] " + CTData);
+    }
     FilterClasses(selectedClassId);
     ableRstFlag = true;
-    console.log("[process: main] filtering finished.");
+    if (DEVFLAG) {
+        console.log("[process: main] filtering finished.");
+    }
     return CTData;
 }
 
@@ -176,10 +465,14 @@ function ResetFilter() {
             tempOptions[index] = [];
         });
         ableRstFlag = false;
-        console.log("[process: main] filtering reseted.");
+        if (DEVFLAG) {
+            console.log("[process: main] filtering reseted.");
+        }
     } else {
         ableRstFlag = false;
-        console.log("[process: main] filtering was not reseted.");
+        if (DEVFLAG) {
+            console.log("[process: main] filtering was not reseted.");
+        }
     }
 }
 
@@ -198,15 +491,23 @@ cltempBtn.addEventListener("click", () => {
     })
         .then(response => response.json())
         .then(data => {
-            console.log('[process: asyncSW] ', data);
+            if (DEVFLAG) {
+                console.log('[process: asyncSW] ', data);
+            }
             if (data) {
                 let clID = data.split(',');
-                console.log('[process: asyncSW] ', clID);
+                if (DEVFLAG) {
+                    console.log('[process: asyncSW] ', clID);
+                }
                 const classElements = document.querySelectorAll(".subject-select");
                 classElements.forEach((classElement) => {
-                    //console.log(clID[0]);
+                    if (DEVFLAG) {
+                        //console.log(clID[0]);
+                    }
                     if (clID[0] != 0) {
-                        //console.log("cs-" + (clID[0]));
+                        if (DEVFLAG) {
+                            //console.log("cs-" + (clID[0]));
+                        }
                         classElement.options["cs-" + (clID[0])].selected = true;
                     } else {
                         classElement.options[0].selected = true;
@@ -224,82 +525,11 @@ rstFilterBtn.addEventListener("click", () => { ResetFilter(); });
 
 /* ============================================================== */
 
-
-/* ================== 新規登録確定ボタンイベント ================== */
-function getAllSelectedOptionIds() {
-    // .subject-selectクラスを持つ全てのselect要素を取得
-    const selectElements = document.querySelectorAll('.subject-select');
-    const selectedOptionIds = [];
-    // 各select要素をループして選択されたoptionのidを取得
-    selectElements.forEach(selectElement => {
-        const selectedOption = selectElement.options[selectElement.selectedIndex];
-        const selectedOptionId = selectedOption.id;
-        selectedOptionIds.push(selectedOptionId); // 配列に追加
-    });
-
-    // 結果を表示
-    document.getElementById("result").innerText = "Selected Option IDs: " + selectedOptionIds.join(', ');
-    console.log(selectedOptionIds);
-    const registDatas = [];
-
-    for (let i = 0; i < selectedOptionIds.length; i++) {
-        const registData = selectedOptionIds[i];
-        registDatas.push(registData);
-    }
-
-    console.log("[process: main] " + registDatas);
-    const registJSON = JSON.stringify(registDatas);
-    localStorage.setItem('key', registJSON);
-    let getval = localStorage.getItem('key');
-    let getData = JSON.parse(getval);
-    console.log("[process: main] " + getData);
-
-    // JSONデータを文字列にして隠しフィールドにセット
-    document.getElementById('jsData').value = JSON.stringify(getData);
-
-    // フラグを設定して、次回ロード時にフォームが自動送信されるようにする
-    localStorage.setItem('flag', 1);
-    location.reload();
-}
-/* ============================================================== */
-
-/* ======================= JS-phpデータ渡し ====================== */
-// 保存された日時がある場合
-const savedTime = localStorage.getItem('savedTime');
-const savedTimestamp = parseInt(savedTime, 10); // 文字列を数値に変換
-
-// 現在のタイムスタンプを取得
-const currentTime = new Date().getTime();
-const currentTimestamp = parseInt(currentTime, 10); // 文字列を数値に変換
-localStorage.setItem('savedTime', currentTimestamp); // savedTime を更新
-
-// 時間の差をミリ秒で計算
-const timeDifference = currentTimestamp - savedTimestamp;
-console.log("[process: main] " + timeDifference);
-
-// 時間差を1秒で切り捨て（1秒未満だと0となる）
-const seconds = Math.floor(timeDifference / 1000);
-
-// 現在の時刻が保存された時刻より進んでいて、時間割のデータフラグが立っている場合のみフォーム送信
-if (seconds >= 1 && parseInt(localStorage.getItem('flag'))) {
-    let getval1 = localStorage.getItem('key');
-    let getData2 = JSON.parse(getval1);
-    // JSONデータを文字列にして隠しフィールドにセット
-    document.getElementById('jsData').value = JSON.stringify(getData2);
-    // フォームを自動送信する
-    document.getElementById('hiddenForm').submit();
-} else {
-    console.log('[process: main] The current time is earlier than or equal to the saved time.');
-}
-/* ============================================================== */
-
-/* ======================= 時間割ポップアップ関連 ====================== */
+/* ==================== 時間割ポップアップ関連 ==================== */
 document.addEventListener('DOMContentLoaded', () => {
     const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
     const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
-    const popup = document.getElementById('popup-absent');
     const closeButtons = document.querySelectorAll('close-absent');
-    const absentButton = document.querySelectorAll('.absent-btn');
 
     // ポップアップを表示する関数
     function showPopup() {
@@ -331,7 +561,7 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.addEventListener('click', hidePopup);
     });
 });
-/* ============================================================== */
+/* ========================================================== */
 
 /* ======================= 出欠回数管理 ====================== */
 // 初期化またはlocalStorageから教科ごとの欠席回数を取得
@@ -339,14 +569,18 @@ function initializeAbsenceCount(subjectId) {
     let key = 'absenceCount_' + subjectId;  // 科目ごとのキーを設定
     let absenceCount = localStorage.getItem(key);
 
-    //console.log("[process: main] cID:" + subjectId);
+    if (DEVFLAG) {
+        console.log("[process: main] cID:" + subjectId);
+    }
     // 欠席回数が存在しない場合は初期化
     if (absenceCount === null) {
         absenceCount = 0;
         localStorage.setItem(key, absenceCount);
         absenceCount = localStorage.getItem(key);
     }
-    //console.log("[process: main] absenceCount:" + absenceCount);
+    if (DEVFLAG) {
+        console.log("[process: main] absenceCount:" + absenceCount);
+    }
 
     if (absenceCount) {
         // 欠席回数を画面に反映
@@ -370,34 +604,29 @@ function incrementAbsence(subjectId) {
 }
 
 // ページ読み込み時に各教科の初期化
-window.onload = function () {
+function initializeAConload() {
     let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
     if (subjectElements) {
-        console.log("[process: main] sE:");
+        if (DEVFLAG) {
+            console.log("[process: main] sE:");
+        }
     }
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
-        //console.log("[process: main] subjectid:" + subjectId);
+        if (DEVFLAG) {
+            console.log("[process: main] subjectid:" + subjectId);
+        }
         // 初期化
         initializeAbsenceCount(subjectId);
 
         // 欠席ボタンのイベントリスナーを設定
         document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
             incrementAbsence(subjectId);
-            console.log("[process: main] " + subjectId + " was registered.");
+            if (DEVFLAG) {
+                console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
+            }
         });
     });
-};
-/* ========================================================== */
-
-/* ===================== ハンバーガーメニュー ================= */
-function toggleMenu() {
-    var menu = document.getElementById("menu");
-    if (menu.classList.contains("show")) {
-        menu.classList.remove("show");
-    } else {
-        menu.classList.add("show");
-    }
 }
 /* ========================================================== */
 
@@ -406,4 +635,22 @@ const phpV_send = document.getElementById('APPLICCATION_VERSION').textContent;
 if (navigator.serviceWorker.controller) {
     navigator.serviceWorker.controller.postMessage({ type: 'PHP_APPLICCATION_VERSION', version: phpV_send });
 }
+/* ========================================================== */
+
+/* ==================== ページ読み込み時の処理 ================ */
+window.onload = async function () {
+    await registerServiceWorker();
+    if (DEVFLAG) {
+        console.log("[process: main] processing onload method...");
+    }
+    initializeAConload();
+    updateClassTable().then(() => {
+        if (DEVFLAG) {
+            console.log("[process: main] classTable updated");
+        }
+    })
+    if (DEVFLAG) {
+        console.log("[process: main] processing onload method finished");
+    }
+};
 /* ========================================================== */

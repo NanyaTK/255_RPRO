@@ -20,7 +20,7 @@
  * sw.js is the abbreviation for ServiceWorker.js
  * This file includes function of PWA.
  */
-const APPLICCATION_VERSION = "v1.3.7"
+const APPLICCATION_VERSION = "v1.4.2"
 
 /**
  * The file path to be cached passed in the resource
@@ -39,8 +39,8 @@ function installSW() {
     console.log("[process: SW] Caching data...");
     addResourcesToCache([
         "/main.php",
-        "/asyncSW.php",
         "/main.js",
+        "/help.php",
         "/sw.js",
         "/main.css",
         "/mainManifest.json",
@@ -73,24 +73,23 @@ self.addEventListener("install", (event) => {
  * and returns it.
  */
 addEventListener("fetch", (event) => {
-    if (event.request.url.includes('/asyncSW.php')) {
-        event.respondWith((async () => {
+    event.respondWith((async () => {
+        const cachedResponse = await caches.match(event.request);
+        if (cachedResponse) {
+            console.log("[process: SW] respond from cache");
+            return cachedResponse;
+        } else if (event.request.url.includes('/asyncSW.php')) {
             return fetch(event.request)
-        })()
-        );
-    } else {
-        event.respondWith(
-            (async () => {
-                const cachedResponse = await caches.match(event.request);
-                if (cachedResponse) {
-                    console.log("[process: SW] respond from cache");
-                    return cachedResponse;
-                };
-                console.log("[process: SW] respond from network");
-                return fetch(event.request, { cache: 'no-cache' });
-            })(),
-        );
-    }
+        } else if (event.request.url.includes('/main-cp.php')) {
+            return fetch(event.request)
+        }
+        console.log("[process: SW] respond from network");
+        return fetch(event.request, { cache: 'no-cache' });
+    })(),
+    );
+
+
+
 });
 
 /**
