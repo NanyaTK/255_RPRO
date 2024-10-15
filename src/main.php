@@ -19,7 +19,7 @@
  * 
  * main.php is the main file of RPRO app.
  */
-define("APPLICCATION_VERSION", "v1.4.0");
+define("APPLICCATION_VERSION", "v1.4.2");
 
 /*
 // POSTされたデータを取得
@@ -86,17 +86,20 @@ $mysqli->close();
 </head>
 
 <body>
-    <?php echo '<div id="APPLICCATION_VERSION">' . APPLICCATION_VERSION . '</div>' ?>
+    <?php echo '<div id="APPLICCATION_VERSION">APPLICCATION VERSION: ' . APPLICCATION_VERSION . '</div>' ?>
+    <div id="DEBUG_MODE">DEBUG MODE: TRUE</div>
     <header>
         <div class="flex-byForce">
             <a class="header" href="/main.php">留年プロテクター <?php echo APPLICCATION_VERSION ?></a>
-            <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+            <div class="menu-icon" id="menu-icon">&#9776;</div>
             <nav id="menu" class="menu">
                 <ul>
                     <li><a href="help.php">よくある質問</a></li>
+                    <li><button id="signup-btn">新規登録</button></li>
+                    <li> <button id="delete-btn">データ削除</button></li>
                     <li><button id="install-btn">インストール</button></li>
-                    <li> <button id="uninstall-btn">再起動</button>
-                    </li>
+                    <li> <button id="uninstall-btn">再起動</button></li>
+                    <li id="debugmode">デバッグモード</li>
                 </ul>
             </nav>
         </div>
@@ -104,10 +107,6 @@ $mysqli->close();
     <div class="content">
 
         <div class="main">
-            <div class="flex-byForce">
-                <button id="signup-btn">新規登録</button>
-                <button id="delete-btn">削除</button>
-            </div>
             <?php // ここから新規登録画面
             ?>
             <div id="popup-wrapper">
@@ -175,12 +174,6 @@ $mysqli->close();
                             </table>
                         </div>
                         <button id="finalize-btn">確定する</button>
-                        <!--
-                        <form method="POST" action="main.php" id="hiddenForm">
-                            <input type="hidden" name="jsData" id="jsData">
-                            <button id="finalize-btn" onclick="getAllSelectedOptionIds()" type="submit">確定する</button>
-                        </form>
-                        --->
                         <p id="result" style="display: none;"></p>
                     </div>
                 </div>
@@ -191,30 +184,17 @@ $mysqli->close();
                 <div id="popup-inside">
                     <div id="close">&times;</div>
                     <div id="message">
-                        <p>本当に削除しますか?</p>
-                        <button id="deletefinalize-btn">確定する</button>
+                        <p>時間割 / 出欠データを削除します．</p>
+                        <p>データを復旧することはできません．</p>
+                        <button id="deletefinalize-btn">削除</button>
                     </div>
                 </div>
             </div>
             <div class="jikanwari">
                 <?php
-                // ここから時間割表示
-                if (!$subjects) {
-                    // POSTデータが無い時の時間割データの初期値
-                    $subjects = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
-                }
-                foreach ($subjects as &$subject) {
-                    $subject = substr($subject, 3);
-                }
-                // 曜日と時間割の初期データ
+                // 曜日と時間割の枠データ
                 $days = ['月', '火', '水', '木', '金'];
                 $times = ['1', '2', '3', '4'];
-
-                // 1週間の時間割の科目数（曜日数×時間数）
-                $subjectsPerDay = count($subjects) / count($days);
-
-                // 各曜日ごとに科目を分割
-                $subjectsByDay = array_chunk($subjects, $subjectsPerDay);
                 ?>
                 <script>
                     console.log('[process: main] subjects finish');
@@ -222,10 +202,7 @@ $mysqli->close();
                 <table class="timetable">
                     <tr>
                         <th class="day-column">曜日</th>
-                        <?php
-                        $howmanyA = 0;
-                        $howmanyB = 0;
-                        foreach ($times as $time) : ?>
+                        <?php foreach ($times as $time) : ?>
                             <th><?php echo $time; ?></th>
                         <?php endforeach; ?>
                     </tr>
@@ -242,51 +219,11 @@ $mysqli->close();
             </div>
             <div>
                 <?php
-                /* こちらを採用 */
+                /* 科目詳細表示 */
                 foreach ($days as $index => $day) :
-                    foreach ($times as $timeIndex) :
-                        echo ('<div class="overlay-absent-' . $howmanyB . '" id="overlay-absent">');
-
-                        echo (' <div class="popup-absent" id="popup-absent">
-                    <p class="close-absent" id="close-absent">&times;</p>
-                    <div class="sm-w">
-                        <p class="name-subjects">');
-
-                        //各要素に適するRowを設定
-                        if ($subjectsByDay[$index][$timeIndex - 1]) {
-                            if ($subjectsByDay[$index][$timeIndex - 1] == 1) {
-                                // 国語IVのid対策用
-                                $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1];
-                            } else {
-                                $row_no = $time_schdule->num_rows - $subjectsByDay[$index][$timeIndex - 1] + 1;
-                            }
-                            $time_schdule->data_seek($row_no);
-                            $row = $time_schdule->fetch_assoc();
-
-                            echo $row["科目名"];
-                            echo ('</p>
-                                    <p class="teacher-subjects">');
-                            echo ("担当教員" . "：" . $row["学科ID"]);
-                            echo ("</p>");
-                            if (!empty($row["特殊欠席条件"])) {
-                                echo '<p class = "absent-condition">' . $row["特殊欠席条件"] . '</p>';
-                            } else {
-                                echo '<p class = "absent-condition">特殊欠席条件はありません</p>';
-                            }
-                            echo '<div class="scroll"><table class="rating-subjects">' . $row["評価割合"] . '</table></div>';
-                            echo ("</p>");
-                            echo ('<p class="absent-msg">本当に欠席しますか？</p>');
-                            echo ('<button id="absenceButton_' . $howmanyB . '"  class="absenceButton_' . $howmanyB . ' absent-btn" data-subject-id=' . $howmanyB . '>欠席する</button>');
-                        } else {
-                            echo '<p class="name-subjects">開きコマです</p>';
-                            echo '<p class="name-subjects">ゆっくりお休みください</p>';
-                        }
-
-                        echo ('</div>');
-                        echo ('</div>');
-                        echo ('</div>');
-                        $howmanyB += 1;
-                    endforeach;
+                    foreach ($times as $timeIndex) : ?>
+                        <div class="asyncCD"></div>
+                <?php endforeach;
                 endforeach;
                 ?>
             </div>
