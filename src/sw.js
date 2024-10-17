@@ -20,7 +20,7 @@
  * sw.js is the abbreviation for ServiceWorker.js
  * This file includes function of PWA.
  */
-const APPLICCATION_VERSION = "v1.4.2"
+const APPLICCATION_VERSION = "v1.4.3"
 
 /**
  * The file path to be cached passed in the resource
@@ -38,12 +38,11 @@ const addResourcesToCache = async (resources) => {
 function installSW() {
     console.log("[process: SW] Caching data...");
     addResourcesToCache([
-        "/main.php",
-        "/main.js",
-        "/help.php",
-        "/sw.js",
-        "/main.css",
-        "/mainManifest.json",
+        // "/main.js",
+        // "/help.php",
+        // "/sw.js",
+        // "/main.css",
+        // "/mainManifest.json",
         "/screenshots/ss1.webp",
         "/icon-images/48.png",
         "/icon-images/72.png",
@@ -79,8 +78,10 @@ addEventListener("fetch", (event) => {
             console.log("[process: SW] respond from cache");
             return cachedResponse;
         } else if (event.request.url.includes('/asyncSW.php')) {
+            console.log("[process: SW] asyncSW");
             return fetch(event.request)
         } else if (event.request.url.includes('/main-cp.php')) {
+            console.log("[process: SW] main-cp");
             return fetch(event.request)
         }
         console.log("[process: SW] respond from network");
@@ -121,13 +122,13 @@ function deleteAllCachesByManual() {
 /**
  * This will be executed automatically to Re-caching when the SW is updated.
  */
-self.addEventListener("activate", (event) => {
-    event.waitUntil(deleteAllCaches().then(() => {
-        console.log("[process: SW] old caches deleted");
-        console.log("[process: SW] new caches installing...");
-        event.waitUntil(installSW());
-    }));
-});
+// self.addEventListener("activate", (event) => {
+//     event.waitUntil(deleteAllCaches().then(() => {
+//         console.log("[process: SW] old caches deleted");
+//         console.log("[process: SW] new caches installing...");
+//         event.waitUntil(installSW());
+//     }));
+// });
 
 /**
  * 
@@ -162,7 +163,7 @@ self.addEventListener('message', event => {
                     });
                 }
             } else {
-                console.log("No Cache Version Found.");
+                console.log("[process: sw] No Cache Version Found.");
             }
         });
     }
