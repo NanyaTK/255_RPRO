@@ -4,8 +4,9 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
-| < 1.0.0   | :x:                |
+| 1.4.x   | :x:
+| 1.3.x   | :white_check_mark: |
+| < 1.3.0   | :x:                |
 
 ## 脆弱性の報告 / Reporting a Vulnerability
 
