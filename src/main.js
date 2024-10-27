@@ -391,15 +391,18 @@ DeleteFinalBtn.addEventListener('click', () => {
     const registDatas = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
     const registJSON = JSON.stringify(registDatas);
     localStorage.setItem('key', registJSON);
+    let i = 0;
+    let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
     updateClassTable().then(() => {
         if (DEVFLAG) {
             console.log("[process: main] classTable updated");
         }
-        for (let i = 0; i < 100; i++) {
+        subjectElements.forEach(function (subjectElement) {
+            i = subjectElement.dataset.subjectId;
             let key = 'absenceCount_' + i;  // 科目ごとのキーを設定
             localStorage.setItem(key, 0);
             console.log(key)
-        }
+        });
         if (DEVFLAG) {
             console.log("[process: main] absenceCount updated");
         }
