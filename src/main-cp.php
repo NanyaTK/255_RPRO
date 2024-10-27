@@ -201,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     EOD;
                 }
                 $resSubjectsDetail[$howmanyB] .= <<<EOD
-                <div class='scroll'><table class='rating-subjects'>$subjectRate</table></div><p class='absent-msg'>本当に欠席しますか？</p><button id='absenceButton_$u_subjectId'  class='absenceButton_$u_subjectId absent-btn' data-subject-id='$u_subjectId'>欠席する</button>
+                <div class='scroll'><table class='rating-subjects'>$subjectRate</table></div><p class='absent-msg'>本当に欠席しますか？</p><button id='absenceButton_$howmanyB'  class='absenceButton_$u_subjectId absent-btn' data-subject-id='$u_subjectId'>欠席する</button>
                 EOD;
             } else {
                 $resSubjectsDetail[$howmanyB] .= <<<EOD

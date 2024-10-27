@@ -199,7 +199,7 @@ function updateClassTable() {
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
         // 欠席ボタンのイベントリスナーを設定
-        document.getElementById('absenceButton_' + subjectId).removeEventListener('click', function () { });
+        subjectElement.removeEventListener('click', function () { });
     });
 
     return new Promise((resolve) => {
@@ -279,7 +279,8 @@ function updateClassTable() {
                                 subjectElements.forEach(function (subjectElement) {
                                     let subjectId = subjectElement.dataset.subjectId;
                                     initializeAbsenceCount(subjectId);
-                                    document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
+                                    //document.querySelectorAll(".absenceButton_" + subjectId).addEventListener('click', function () {
+                                    subjectElement.addEventListener('click',function() {
                                         incrementAbsence(subjectId);
                                         if (DEVFLAG) {
                                             console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
@@ -589,7 +590,6 @@ function initializeAbsenceCount(subjectId) {
 }
 
 // 欠席ボタンが押された時の処理
-let ABSENT_FLAG = [];
 function incrementAbsence(subjectId) {
     let key = 'absenceCount_' + subjectId;
     let absenceCount = parseInt(localStorage.getItem(key));
@@ -597,7 +597,6 @@ function incrementAbsence(subjectId) {
         absenceCount += 1;
     // localStorageに保存
     localStorage.setItem(key, absenceCount);
-
     // 画面の表示を更新
     document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
 }
@@ -619,7 +618,8 @@ function initializeAConload() {
         initializeAbsenceCount(subjectId);
 
         // 欠席ボタンのイベントリスナーを設定
-        document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
+        //document.querySelectorAll(".absenceButton_" + subjectId).addEventListener('click', function () {
+        subjectElement.addEventListener('click',function() {
             incrementAbsence(subjectId);
             if (DEVFLAG) {
                 console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
