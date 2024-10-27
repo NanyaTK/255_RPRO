@@ -266,9 +266,13 @@ function updateClassTable() {
                                 function incrementAbsence(subjectId) {
                                     let key = 'absenceCount_' + subjectId;
                                     let absenceCount = parseInt(localStorage.getItem(key));
+                                    let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
                                         absenceCount += 1;
-                                    localStorage.setItem(key, absenceCount);
-                                    document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+                                    localStorage.setItem(key, absenceCount)
+                                    counters.forEach(counter => {
+                                        counter.innerText = absenceCount; // 値を更新
+                                    })
+                                    //document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
                                 }
                                 let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
                                 if (subjectElements) {
@@ -569,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeAbsenceCount(subjectId) {
     let key = 'absenceCount_' + subjectId;  // 科目ごとのキーを設定
     let absenceCount = localStorage.getItem(key);
-
+    let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
     if (DEVFLAG) {
         console.log("[process: main] cID:" + subjectId);
     }
@@ -585,7 +589,10 @@ function initializeAbsenceCount(subjectId) {
 
     if (absenceCount) {
         // 欠席回数を画面に反映
-        document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+        counters.forEach(count => {
+            counter.innerText = absenceCount; // 値を更新
+        })
+        //document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
     }
 }
 
@@ -593,12 +600,16 @@ function initializeAbsenceCount(subjectId) {
 function incrementAbsence(subjectId) {
     let key = 'absenceCount_' + subjectId;
     let absenceCount = parseInt(localStorage.getItem(key));
+    let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
         // 欠席回数を1増やす
         absenceCount += 1;
     // localStorageに保存
     localStorage.setItem(key, absenceCount);
     // 画面の表示を更新
-    document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+    counters.forEach(counter => {
+        counter.innerText = absenceCount; // 値を更新
+    })
+    //document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
 }
 
 // ページ読み込み時に各教科の初期化

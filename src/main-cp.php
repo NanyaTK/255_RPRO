@@ -142,15 +142,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 EOD;
                 if ($maxabsent) {
                     $resSubjectsData[$howmanyA] .= <<<EOD
-                    <p> <span id='absenceCount_$subjectId'>0</span> / $maxabsent</p>
+                    <p> <span id = $howmanyA class ='absenceCount_' data-absent-id $subjectId>0</span> / $maxabsent</p>
                     EOD;
+                    #<p> <span id='absenceCount_$subjectId'>0</span> / $maxabsent</p>
+                    
                 } else {
                     $resSubjectsData[$howmanyA] .= <<<EOD
                     <p style='font-size: x-large;'>特殊欠席条件</p>
                     EOD;
                     $resSubjectsData[$howmanyA] .= <<<EOD
-                    <p> <span id='absenceCount_$subjectId' class='unvisible'>0</span>  $maxabsent</p>
+                    <p> <span class='unvisible'>0</span>  $maxabsent</p>
                     EOD;
+                    #<p> <span id='absenceCount_$subjectId' class='unvisible'>0</span>  $maxabsent</p>
                 }
             } else {
                 $resSubjectsData[$howmanyA] .= <<<EOD
