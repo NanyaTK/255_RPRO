@@ -266,7 +266,7 @@ function updateClassTable() {
                                 function incrementAbsence(subjectId) {
                                     let key = 'absenceCount_' + subjectId;
                                     let absenceCount = parseInt(localStorage.getItem(key));
-                                    absenceCount += 1;
+                                        absenceCount += 1;
                                     localStorage.setItem(key, absenceCount);
                                     document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
                                 }
@@ -390,7 +390,7 @@ DeleteFinalBtn.addEventListener('click', () => {
         if (DEVFLAG) {
             console.log("[process: main] classTable updated");
         }
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 100; i++) {
             let key = 'absenceCount_' + i;  // 科目ごとのキーを設定
             localStorage.setItem(key, 0);
             console.log(key)
@@ -589,13 +589,12 @@ function initializeAbsenceCount(subjectId) {
 }
 
 // 欠席ボタンが押された時の処理
+let ABSENT_FLAG = [];
 function incrementAbsence(subjectId) {
     let key = 'absenceCount_' + subjectId;
     let absenceCount = parseInt(localStorage.getItem(key));
-
-    // 欠席回数を1増やす
-    absenceCount += 1;
-
+        // 欠席回数を1増やす
+        absenceCount += 1;
     // localStorageに保存
     localStorage.setItem(key, absenceCount);
 
