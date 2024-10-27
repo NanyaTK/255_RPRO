@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 EOD;
                 if ($maxabsent) {
                     $resSubjectsData[$howmanyA] .= <<<EOD
-                    <p> <span id = $howmanyA class ='absenceCount_' data-absent-id $subjectId>0</span> / $maxabsent</p>
+                    <p> <span id = $howmanyA class ='absenceCount_' data-absent-id='$subjectId'>0</span> / $maxabsent</p>
                     EOD;
                     #<p> <span id='absenceCount_$subjectId'>0</span> / $maxabsent</p>
                     

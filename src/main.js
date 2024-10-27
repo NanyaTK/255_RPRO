@@ -589,7 +589,7 @@ function initializeAbsenceCount(subjectId) {
 
     if (absenceCount) {
         // 欠席回数を画面に反映
-        counters.forEach(count => {
+        counters.forEach(counter => {
             counter.innerText = absenceCount; // 値を更新
         })
         //document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
