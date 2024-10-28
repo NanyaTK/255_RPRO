@@ -400,7 +400,7 @@ DeleteFinalBtn.addEventListener('click', () => {
         subjectElements.forEach(function (subjectElement) {
             i = subjectElement.dataset.subjectId;
             let key = 'absenceCount_' + i;  // 科目ごとのキーを設定
-            localStorage.setItem(key, 0);
+            localStorage.removeItem(key);
             console.log(key)
         });
         if (DEVFLAG) {
