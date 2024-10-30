@@ -199,7 +199,7 @@ function updateClassTable() {
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
         // 欠席ボタンのイベントリスナーを設定
-        document.getElementById('absenceButton_' + subjectId).removeEventListener('click', function () { });
+        subjectElement.removeEventListener('click', function () { });
     });
 
     return new Promise((resolve) => {
@@ -266,9 +266,13 @@ function updateClassTable() {
                                 function incrementAbsence(subjectId) {
                                     let key = 'absenceCount_' + subjectId;
                                     let absenceCount = parseInt(localStorage.getItem(key));
-                                    absenceCount += 1;
-                                    localStorage.setItem(key, absenceCount);
-                                    document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+                                    let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
+                                        absenceCount += 1;
+                                    localStorage.setItem(key, absenceCount)
+                                    counters.forEach(counter => {
+                                        counter.innerText = absenceCount; // 値を更新
+                                    })
+                                    //document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
                                 }
                                 let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
                                 if (subjectElements) {
@@ -279,7 +283,8 @@ function updateClassTable() {
                                 subjectElements.forEach(function (subjectElement) {
                                     let subjectId = subjectElement.dataset.subjectId;
                                     initializeAbsenceCount(subjectId);
-                                    document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
+                                    //document.querySelectorAll(".absenceButton_" + subjectId).addEventListener('click', function () {
+                                    subjectElement.addEventListener('click',function() {
                                         incrementAbsence(subjectId);
                                         if (DEVFLAG) {
                                             console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
@@ -386,15 +391,18 @@ DeleteFinalBtn.addEventListener('click', () => {
     const registDatas = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
     const registJSON = JSON.stringify(registDatas);
     localStorage.setItem('key', registJSON);
+    let i = 0;
+    let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
     updateClassTable().then(() => {
         if (DEVFLAG) {
             console.log("[process: main] classTable updated");
         }
-        for (let i = 0; i < 20; i++) {
+        subjectElements.forEach(function (subjectElement) {
+            i = subjectElement.dataset.subjectId;
             let key = 'absenceCount_' + i;  // 科目ごとのキーを設定
-            localStorage.setItem(key, 0);
+            localStorage.removeItem(key);
             console.log(key)
-        }
+        });
         if (DEVFLAG) {
             console.log("[process: main] absenceCount updated");
         }
@@ -568,7 +576,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeAbsenceCount(subjectId) {
     let key = 'absenceCount_' + subjectId;  // 科目ごとのキーを設定
     let absenceCount = localStorage.getItem(key);
-
+    let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
     if (DEVFLAG) {
         console.log("[process: main] cID:" + subjectId);
     }
@@ -584,7 +592,10 @@ function initializeAbsenceCount(subjectId) {
 
     if (absenceCount) {
         // 欠席回数を画面に反映
-        document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+        counters.forEach(counter => {
+            counter.innerText = absenceCount; // 値を更新
+        })
+        //document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
     }
 }
 
@@ -592,15 +603,16 @@ function initializeAbsenceCount(subjectId) {
 function incrementAbsence(subjectId) {
     let key = 'absenceCount_' + subjectId;
     let absenceCount = parseInt(localStorage.getItem(key));
-
-    // 欠席回数を1増やす
-    absenceCount += 1;
-
+    let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
+        // 欠席回数を1増やす
+        absenceCount += 1;
     // localStorageに保存
     localStorage.setItem(key, absenceCount);
-
     // 画面の表示を更新
-    document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+    counters.forEach(counter => {
+        counter.innerText = absenceCount; // 値を更新
+    })
+    //document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
 }
 
 // ページ読み込み時に各教科の初期化
@@ -620,7 +632,8 @@ function initializeAConload() {
         initializeAbsenceCount(subjectId);
 
         // 欠席ボタンのイベントリスナーを設定
-        document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
+        //document.querySelectorAll(".absenceButton_" + subjectId).addEventListener('click', function () {
+        subjectElement.addEventListener('click',function() {
             incrementAbsence(subjectId);
             if (DEVFLAG) {
                 console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
