@@ -616,7 +616,7 @@ function incrementAbsence(subjectId) {
 
 // ページ読み込み時に各教科の初期化
 function initializeAConload() {
-    let subjectElements = document.querySelectorAll('class ^="absenceButton_"]');
+    let subjectElements = document.querySelectorAll('button[datasubjectid]');
     if (subjectElements) {
         if (DEVFLAG) {
             console.log("[process: main] sE:622");
