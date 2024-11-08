@@ -273,7 +273,7 @@ function updateClassTable() {
                                     })
                                     //document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
                                 }
-                                let subjectElements = document.querySelectorAll('button[data - subject - id]');
+                                let subjectElements = document.querySelectorAll('button[datasubjectid]');
                                 if (subjectElements) {
                                     if (DEVFLAG) {
                                         console.log("[process: main] sE: updating...");
