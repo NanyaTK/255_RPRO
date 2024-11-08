@@ -197,7 +197,6 @@ function updateClassTable() {
         }
     }
     subjectElements.forEach(function (subjectElement) {
-        let subjectId = subjectElement.dataset.subjectId;
         // 欠席ボタンのイベントリスナーを設定
         subjectElement.removeEventListener('click', function () { });
     });
@@ -267,14 +266,14 @@ function updateClassTable() {
                                     let key = 'absenceCount_' + subjectId;
                                     let absenceCount = parseInt(localStorage.getItem(key));
                                     let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
-                                        absenceCount += 1;
+                                    absenceCount += 1;
                                     localStorage.setItem(key, absenceCount)
                                     counters.forEach(counter => {
                                         counter.innerText = absenceCount; // 値を更新
                                     })
                                     //document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
                                 }
-                                let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
+                                let subjectElements = document.querySelectorAll('button[data - subject - id]');
                                 if (subjectElements) {
                                     if (DEVFLAG) {
                                         console.log("[process: main] sE: updating...");
@@ -284,7 +283,7 @@ function updateClassTable() {
                                     let subjectId = subjectElement.dataset.subjectId;
                                     initializeAbsenceCount(subjectId);
                                     //document.querySelectorAll(".absenceButton_" + subjectId).addEventListener('click', function () {
-                                    subjectElement.addEventListener('click',function() {
+                                    subjectElement.addEventListener('click', function () {
                                         incrementAbsence(subjectId);
                                         if (DEVFLAG) {
                                             console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
@@ -392,7 +391,7 @@ DeleteFinalBtn.addEventListener('click', () => {
     const registJSON = JSON.stringify(registDatas);
     localStorage.setItem('key', registJSON);
     let i = 0;
-    let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
+    let subjectElements = document.querySelectorAll('button[data-subject-id]');
     updateClassTable().then(() => {
         if (DEVFLAG) {
             console.log("[process: main] classTable updated");
@@ -604,8 +603,8 @@ function incrementAbsence(subjectId) {
     let key = 'absenceCount_' + subjectId;
     let absenceCount = parseInt(localStorage.getItem(key));
     let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
-        // 欠席回数を1増やす
-        absenceCount += 1;
+    // 欠席回数を1増やす
+    absenceCount += 1;
     // localStorageに保存
     localStorage.setItem(key, absenceCount);
     // 画面の表示を更新
@@ -617,7 +616,7 @@ function incrementAbsence(subjectId) {
 
 // ページ読み込み時に各教科の初期化
 function initializeAConload() {
-    let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
+    let subjectElements = document.querySelectorAll('button[data-subject-id]');
     if (subjectElements) {
         if (DEVFLAG) {
             console.log("[process: main] sE:");
@@ -633,7 +632,7 @@ function initializeAConload() {
 
         // 欠席ボタンのイベントリスナーを設定
         //document.querySelectorAll(".absenceButton_" + subjectId).addEventListener('click', function () {
-        subjectElement.addEventListener('click',function() {
+        subjectElement.addEventListener('click', function () {
             incrementAbsence(subjectId);
             if (DEVFLAG) {
                 console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
