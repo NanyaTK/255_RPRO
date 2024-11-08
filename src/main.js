@@ -276,7 +276,10 @@ function updateClassTable() {
                                 let subjectElements = document.querySelectorAll('button[datasubjectid]');
                                 if (subjectElements) {
                                     if (DEVFLAG) {
-                                        console.log("[process: main] sE: updating..." + subjectElements[0]);
+                                        console.log("[process: main] sE: updating...");
+                                        subjectElements.forEach(sub => {
+                                            console.log(sub);
+                                        })
                                     }
                                 }
                                 subjectElements.forEach(function (subjectElement) {
