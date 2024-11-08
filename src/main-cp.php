@@ -157,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             } else {
                 $resSubjectsData[$howmanyA] .= <<<EOD
-                <button style='display:none;' class ='open-popup-btn-green-$howmanyA subject data-subject-id=$subjectId'>
+                <button style='display:none;' class ='open-popup-btn-green-$howmanyA subject datasubjectid=$subjectId'>
                 EOD;
                 $tmp = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                 $resSubjectsData[$howmanyA] .= <<<EOD
