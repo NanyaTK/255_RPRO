@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                     $subjectTypeClass .= $colorName;
                 }
-                $resSubjectsData[$howmanyA] = <<<EOD
+                $resSubjectsData[$howmanyA] .= <<<EOD
                 <button class ='$subjectTypeClass$howmanyA subject' data-subject-id='$subjectId'>{$row["科目名"]}</button>
                 EOD;
                 if ($maxabsent) {
