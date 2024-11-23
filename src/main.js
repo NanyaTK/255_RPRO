@@ -128,8 +128,8 @@ unregisterSW.addEventListener("click", () => {
     setTimeout(() => {
         deleteAllCachesByManual();
         alert("[process: main] Pre-reload process completed.\nReloading now.")
+        window.location.reload();
     }, 1000);
-    window.location.reload();
 });
 /* ============================================================== */
 
@@ -307,7 +307,7 @@ function updateClassTable() {
                 ochinpo();
                 popupWrapper.style.display = 'none';
             } else {
-                if (0) {
+                if (0) {// 開発途中
                     if (DEVFLAG) {
                         console.log("[process: main] response classData from cahce");
                     }
@@ -400,6 +400,9 @@ RegistBtn.addEventListener('click', () => {
     getAllSelectedOptionIds();
 })
 /* ============================================================== */
+
+/* ====================== 新規登録画面の生成 ====================== */
+
 
 /* ====================== 削除ボタンイベント ====================== */
 const DeleteBtn = document.getElementById('delete-btn');
