@@ -20,7 +20,7 @@
  * sw.js is the abbreviation for ServiceWorker.js
  * This file includes function of PWA.
  */
-const APPLICCATION_VERSION = "v1.4.3"
+const APPLICCATION_VERSION = "v1.5.0"
 
 /**
  * The file path to be cached passed in the resource
@@ -38,11 +38,11 @@ const addResourcesToCache = async (resources) => {
 function installSW() {
     console.log("[process: SW] Caching data...");
     addResourcesToCache([
-        // "/main.js",
-        // "/help.php",
-        // "/sw.js",
-        // "/main.css",
-        // "/mainManifest.json",
+        "/main.js",
+        "/help.php",
+        "/sw.js",
+        "/main.css",
+        "/mainManifest.json",
         "/screenshots/ss1.webp",
         "/icon-images/48.png",
         "/icon-images/72.png",
@@ -142,29 +142,3 @@ async function getCurrentCacheVersion() {
     let caV = [currentCacheVersion, newlyCacheVersion];
     return caV;
 }
-
-/**
- * 更新を検知して自動更新する
- */
-self.addEventListener('message', event => {
-    if (event.data && event.data.type === 'PHP_APPLICCATION_VERSION') {
-        const phpV_recv = event.data.version;
-        console.log("[process: SW] Current PHP Version is: ", phpV_recv);
-        getCurrentCacheVersion().then(caV => {
-            let caCV = caV[0];
-            let caNV = caV[1];
-            if (caNV) {
-                console.log("[process: SW] Latest Cache Version is: ", caNV);
-                console.log("[process: SW] Current Cache Version is: ", caCV);
-                if (phpV_recv == caNV) { } else {
-                    caches.delete(caCV);
-                    self.clients.matchAll({ includeUncontrolled: true }).then(clients => {
-                        clients.forEach(client => client.navigate(client.url));
-                    });
-                }
-            } else {
-                console.log("[process: sw] No Cache Version Found.");
-            }
-        });
-    }
-})
