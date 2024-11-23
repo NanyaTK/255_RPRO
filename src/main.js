@@ -110,24 +110,27 @@ function registerInstallAppEvent(element) {
 /* ====================== 再起動ボタン関連 ======================= */
 const unregisterSW = document.getElementById("uninstall-btn");
 unregisterSW.addEventListener("click", () => {
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-        if (registrations) {
-            for (const registration of registrations) {
-                registration.unregister().then((boolean) => {
-                    if (boolean === true) {
-                        console.log("[process: main] unregister is successful");
-                        console.log("[process: main] Service worker uninstalled");
-                    }
-                    else { console.log("[process: main] unregister is failed"); }
-                })
-            }
-        } else {
-            console.log("[process: main] Service worker not found");
-        }
-    });
-    deleteAllCachesByManual();
-    alert("[process: main] Pre-reload process completed.\nReloading now.")
-    window.location.reload();
+    // navigator.serviceWorker.getRegistrations().then(registrations => {
+    //     if (registrations) {
+    //         for (const registration of registrations) {
+    //             registration.unregister().then((boolean) => {
+    //                 if (boolean === true) {
+    //                     console.log("[process: main] unregister is successful");
+    //                     console.log("[process: main] Service worker uninstalled");
+    //                 }
+    //                 else { console.log("[process: main] unregister is failed"); }
+    //             })
+    //         }
+    //     } else {
+    //         console.log("[process: main] Service worker not found");
+    //     }
+    // });
+    setTimeout(() => {
+        // deleteAllCachesByManual();
+        // alert("[process: main] Pre-reload process completed.\nReloading now.");
+        alert("[process: main] Reloading now.");
+        window.location.reload();
+    }, 1000);
 });
 /* ============================================================== */
 
