@@ -19,7 +19,7 @@
  * 
  * main.php is the main file of RPRO app.
  */
-define("APPLICCATION_VERSION", "v1.4.3");
+define("APPLICCATION_VERSION", "v1.5.0");
 
 /*
 // POSTされたデータを取得
@@ -191,41 +191,75 @@ $mysqli->close();
                 </div>
             </div>
             <div class="jikanwari">
-                <?php
-                // 曜日と時間割の枠データ
-                $days = ['月', '火', '水', '木', '金'];
-                $times = ['1', '2', '3', '4'];
-                ?>
                 <script>
                     console.log('[process: main] subjects finish');
                 </script>
                 <table class="timetable">
                     <tr>
                         <th class="day-column">曜日</th>
-                        <?php foreach ($times as $time) : ?>
-                            <th><?php echo $time; ?></th>
-                        <?php endforeach; ?>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
                     </tr>
-                    <?php
-                    foreach ($days as $index => $day) : ?>
-                        <tr>
-                            <td class="day-column"><?php echo $day; ?></td>
-                            <?php foreach ($times as $timeIndex) : ?>
-                                <td class="time-cell asyncCNN"></td>
-                            <?php endforeach; ?>
-                        </tr>
-                    <?php endforeach; ?>
+                    <tr>
+                        <td class="day-column">月</td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                    </tr>
+                    <tr>
+                        <td class="day-column">火</td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                    </tr>
+                    <tr>
+                        <td class="day-column">水</td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                    </tr>
+                    <tr>
+                        <td class="day-column">木</td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                    </tr>
+                    <tr>
+                        <td class="day-column">金</td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                        <td class="time-cell asyncCNN"></td>
+                    </tr>
                 </table>
             </div>
             <div>
-                <?php
-                /* 科目詳細表示 */
-                foreach ($days as $index => $day) :
-                    foreach ($times as $timeIndex) : ?>
-                        <div class="asyncCD"></div>
-                <?php endforeach;
-                endforeach;
-                ?>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
+                <div class="asyncCD"></div>
             </div>
         </div>
         <?php // ここまで時間割表示   
