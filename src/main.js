@@ -681,15 +681,15 @@ if (navigator.serviceWorker.controller) {
 
 /* ==================== ページ読み込み時の処理 ================ */
 window.onload = async function () {
-    await registerServiceWorker();
     if (DEVFLAG) {
         console.log("[process: main] processing onload method...");
     }
-    initializeAConload();
     updateClassTable().then(() => {
         if (DEVFLAG) {
             console.log("[process: main] classTable updated");
         }
+        initializeAConload();
+        genResisterClassTable();
     })
     if (DEVFLAG) {
         console.log("[process: main] processing onload method finished");
