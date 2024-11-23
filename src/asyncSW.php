@@ -18,12 +18,23 @@
  * asyncSW.php
  * 
  * asyncSW.php is asynchronous processing file.
+ * 
+ * get classtable templates data
  */
+
+require __DIR__ .  '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+$dbHost = $_ENV['DB_HOST'];
+$dbUser = $_ENV['DB_USER'];
+$dbPass = $_ENV['DB_PASS'];
+$dbName = $_ENV['DB_NAME'];
+$dbPort = $_ENV['DB_PORT'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $data = explode(",", $data);
-    $mysqli = new mysqli("127.0.0.1", "rpro_u", "uhe6WTScplbJ", "rpro", 3306);
+    $mysqli = new mysqli($dbHost, $dbUser, $dbPass, $dbName, $dbPort);
     if ($mysqli->connect_error) {
         echo $mysqli->connect_error;
         exit();
