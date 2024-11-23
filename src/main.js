@@ -701,6 +701,7 @@ window.onload = async function () {
         if (DEVFLAG) {
             console.log("[process: main] classTable updated");
         }
+        initializeAConload();
     })
     if (DEVFLAG) {
         console.log("[process: main] processing onload method finished");
