@@ -267,7 +267,7 @@ function updateClassTable() {
                                     let key = 'absenceCount_' + subjectId;
                                     let absenceCount = parseInt(localStorage.getItem(key));
                                     let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
-                                        absenceCount += 1;
+                                    absenceCount += 1;
                                     localStorage.setItem(key, absenceCount)
                                     counters.forEach(counter => {
                                         counter.innerText = absenceCount; // 値を更新
@@ -284,7 +284,7 @@ function updateClassTable() {
                                     let subjectId = subjectElement.dataset.subjectId;
                                     initializeAbsenceCount(subjectId);
                                     //document.querySelectorAll(".absenceButton_" + subjectId).addEventListener('click', function () {
-                                    subjectElement.addEventListener('click',function() {
+                                    subjectElement.addEventListener('click', function () {
                                         incrementAbsence(subjectId);
                                         if (DEVFLAG) {
                                             console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
@@ -356,6 +356,32 @@ function getAllSelectedOptionIds() {
 
 const RegistBtn = document.getElementById("finalize-btn");
 RegistBtn.addEventListener('click', () => { getAllSelectedOptionIds(); })
+/* ============================================================== */
+
+/* ====================== 新規登録画面の生成 ====================== */
+function genResisterClassTable() {
+    fetch('/asyncCL.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        //body: JSON.stringify() // 必要なデータを送信
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (DEVFLAG) {
+                console.log('[process: asyncCL] got data');
+            }
+            if (data) {
+                const table = document.getElementById("table-signup").getElementsByTagName("tbody")[0];
+                table.innerHTML += data;
+
+            }
+        })
+        .catch(error => {
+            console.error('[process: asyncCL] ', error);
+        });
+}
 /* ============================================================== */
 
 /* ====================== 削除ボタンイベント ====================== */
@@ -604,8 +630,8 @@ function incrementAbsence(subjectId) {
     let key = 'absenceCount_' + subjectId;
     let absenceCount = parseInt(localStorage.getItem(key));
     let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
-        // 欠席回数を1増やす
-        absenceCount += 1;
+    // 欠席回数を1増やす
+    absenceCount += 1;
     // localStorageに保存
     localStorage.setItem(key, absenceCount);
     // 画面の表示を更新
@@ -633,7 +659,7 @@ function initializeAConload() {
 
         // 欠席ボタンのイベントリスナーを設定
         //document.querySelectorAll(".absenceButton_" + subjectId).addEventListener('click', function () {
-        subjectElement.addEventListener('click',function() {
+        subjectElement.addEventListener('click', function () {
             incrementAbsence(subjectId);
             if (DEVFLAG) {
                 console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
