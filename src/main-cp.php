@@ -72,6 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $resSubjectsData = [];
     $resSubjectsDetail = [];
 
+    $subjectIDs = [];
+
     // ここから時間割表示
     if (!$subjects) {
         // POSTデータが無い時の時間割データの初期値
@@ -106,7 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $time_schdule->data_seek($row_no);
                 $row = $time_schdule->fetch_assoc();
                 $subjectName = $row["科目名"];
-                $subjectId = $row["ID"]; // IDを使う  
+                $subjectId = $row["ID"]; // IDを使う
+                $subjectIDs[$howmanyA] = $subjectId;
                 $maxabsent = $row["最大欠席可能回数"]; //　最大欠席回数を取得する
                 $subjectType = $row["科目分類"];
                 $subjectTypeClass = "open-popup-btn-";
@@ -139,14 +142,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 EOD;
                 if ($maxabsent) {
                     $resSubjectsData[$howmanyA] .= <<<EOD
-                    <p> <span id='absenceCount_$howmanyA'>0</span> / $maxabsent</p>
+                    <p> <span id = $howmanyA class ='absenceCount_' data-absent-id='$subjectId'>0</span> / $maxabsent</p>
                     EOD;
                 } else {
                     $resSubjectsData[$howmanyA] .= <<<EOD
                     <p style='font-size: x-large;'>特殊欠席条件</p>
                     EOD;
                     $resSubjectsData[$howmanyA] .= <<<EOD
-                    <p> <span id='absenceCount_$howmanyA' class='unvisible'>0</span>  $maxabsent</p>
+                    <p> <span class='unvisible'>0</span> $maxabsent</p>
                     EOD;
                 }
             } else {
@@ -159,6 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 EOD;
                 $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
                 $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
+                $subjectIDs[$howmanyA] = $subjectId;
                 $maxabsent = 0; //　時間割に設定していないマスは0を表示
                 $resSubjectsData[$howmanyA] .= '</button>';
             }
@@ -180,6 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 $time_schdule->data_seek($row_no);
                 $row = $time_schdule->fetch_assoc();
+                $u_subjectId = $subjectIDs[$howmanyB];
                 $subjectName = $row["科目名"];
                 $subjectIF = $row["特殊欠席条件"];
                 $subjectRate = $row["評価割合"];
@@ -196,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     EOD;
                 }
                 $resSubjectsDetail[$howmanyB] .= <<<EOD
-                <div class='scroll'><table class='rating-subjects'>$subjectRate</table></div><p class='absent-msg'>本当に欠席しますか？</p><button id='absenceButton_$howmanyB'  class='absenceButton_$howmanyB absent-btn' data-subject-id='$howmanyB'>欠席する</button>
+                <div class='scroll'><table class='rating-subjects'>$subjectRate</table></div><p class='absent-msg'>本当に欠席しますか？</p><button id='absenceButton_$howmanyB' class='absenceButton_$u_subjectId absent-btn' data-subject-id='$u_subjectId'>欠席する</button>
                 EOD;
             } else {
                 $resSubjectsDetail[$howmanyB] .= <<<EOD
