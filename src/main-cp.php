@@ -144,16 +144,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $resSubjectsData[$howmanyA] .= <<<EOD
                     <p> <span id = $howmanyA class ='absenceCount_' data-absent-id='$subjectId'>0</span> / $maxabsent</p>
                     EOD;
-                    #<p> <span id='absenceCount_$subjectId'>0</span> / $maxabsent</p>
-                    
                 } else {
                     $resSubjectsData[$howmanyA] .= <<<EOD
                     <p style='font-size: x-large;'>特殊欠席条件</p>
                     EOD;
                     $resSubjectsData[$howmanyA] .= <<<EOD
-                    <p> <span class='unvisible'>0</span>  $maxabsent</p>
+                    <p> <span class='unvisible'>0</span> $maxabsent</p>
                     EOD;
-                    #<p> <span id='absenceCount_$subjectId' class='unvisible'>0</span>  $maxabsent</p>
                 }
             } else {
                 $resSubjectsData[$howmanyA] .= <<<EOD
@@ -164,8 +161,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $tmp
                 EOD;
                 $subjectName = isset($subjectsByDay[$index][$timeIndex - 1]) ? $subjectsByDay[$index][$timeIndex - 1] : '';
-                $subjectId = $index. '-' .$timeIndex; // 科目IDがない場合はデフォルトのIDを作る
-                $subjectIDs[$howmanyA] = $subjectId; 
+                $subjectId = $index . '-' . $timeIndex; // 科目IDがない場合はデフォルトのIDを作る
+                $subjectIDs[$howmanyA] = $subjectId;
                 $maxabsent = 0; //　時間割に設定していないマスは0を表示
                 $resSubjectsData[$howmanyA] .= '</button>';
             }
@@ -204,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     EOD;
                 }
                 $resSubjectsDetail[$howmanyB] .= <<<EOD
-                <div class='scroll'><table class='rating-subjects'>$subjectRate</table></div><p class='absent-msg'>本当に欠席しますか？</p><button id='absenceButton_$howmanyB'  class='absenceButton_$u_subjectId absent-btn' data-subject-id='$u_subjectId'>欠席する</button>
+                <div class='scroll'><table class='rating-subjects'>$subjectRate</table></div><p class='absent-msg'>本当に欠席しますか？</p><button id='absenceButton_$howmanyB' class='absenceButton_$u_subjectId absent-btn' data-subject-id='$u_subjectId'>欠席する</button>
                 EOD;
             } else {
                 $resSubjectsDetail[$howmanyB] .= <<<EOD
