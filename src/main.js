@@ -125,9 +125,11 @@ unregisterSW.addEventListener("click", () => {
             console.log("[process: main] Service worker not found");
         }
     });
-    deleteAllCachesByManual();
-    alert("[process: main] Pre-reload process completed.\nReloading now.")
-    //window.location.reload();
+    setTimeout(() => {
+        deleteAllCachesByManual();
+        alert("[process: main] Pre-reload process completed.\nReloading now.")
+    }, 1000);
+    window.location.reload();
 });
 /* ============================================================== */
 
