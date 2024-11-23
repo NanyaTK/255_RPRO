@@ -122,13 +122,13 @@ function deleteAllCachesByManual() {
 /**
  * This will be executed automatically to Re-caching when the SW is updated.
  */
-// self.addEventListener("activate", (event) => {
-//     event.waitUntil(deleteAllCaches().then(() => {
-//         console.log("[process: SW] old caches deleted");
-//         console.log("[process: SW] new caches installing...");
-//         event.waitUntil(installSW());
-//     }));
-// });
+self.addEventListener("activate", (event) => {
+    event.waitUntil(deleteAllCaches().then(() => {
+        console.log("[process: SW] old caches deleted");
+        console.log("[process: SW] new caches installing...");
+        event.waitUntil(installSW());
+    }));
+});
 
 /**
  * 
