@@ -165,6 +165,87 @@ popupWrapper.addEventListener('click', e => {
 });
 /* ============================================================== */
 
+/**
+ * ochinpo function
+ * Named by Ousuke Tanijiri
+ */
+async function ochinpo(subjectsData, subjectsDetail) {
+    console.log("[process: ochinpo] called");
+    if (!subjectsData && !subjectsDetail) {
+        let subjectsDataStr = localStorage.getItem('classDataCache');
+        let subjectsDetailStr = localStorage.getItem('classDetailCache');
+        if (subjectsDataStr) {
+            let subjectsData = subjectsDataStr.split(",");
+        } if (subjectsDetailStr) {
+            let subjectsDetail = subjectsDetailStr.split(",");
+        }
+    }
+
+    if (subjectsData && subjectsDetail) {
+        const oldDataTag = document.getElementsByClassName("asyncCNN");
+        for (let i = 0; i < 20; i++) {
+            oldDataTag[i].innerHTML = subjectsData[i];
+        }
+        const oldDetailTag = document.getElementsByClassName("asyncCD");
+        for (let i = 0; i < 20; i++) {
+            oldDetailTag[i].innerHTML = subjectsDetail[i];
+        }
+    }
+
+    await new Promise(() => {
+        const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
+        const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
+        const closeButtons = document.querySelectorAll('close-absent');
+        if (DEVFLAG) {
+            console.log("[process: main] " + openButtons)
+        }
+        function showPopup() {
+            overlays[this.num].style.display = 'block';
+        }
+        function hidePopup() {
+            overlays.forEach(overlay => {
+                overlay.style.display = 'none';
+            });
+        }
+        let i = 0;
+        openButtons.forEach(button => {
+            button.addEventListener('click', { num: i++, handleEvent: showPopup });
+        });
+        closeButtons.forEach(closeButton => {
+            closeButton.addEventListener('click', hidePopup);
+        });
+        overlays.forEach(overlay => {
+            overlay.addEventListener('click', hidePopup);
+        });
+
+        function incrementAbsence(subjectId) {
+            let key = 'absenceCount_' + subjectId;
+            let absenceCount = parseInt(localStorage.getItem(key));
+            absenceCount += 1;
+            localStorage.setItem(key, absenceCount);
+            document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+        }
+        let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
+        if (subjectElements) {
+            if (DEVFLAG) {
+                console.log("[process: main] sE: updating...");
+            }
+        }
+        subjectElements.forEach(function (subjectElement) {
+            let subjectId = subjectElement.dataset.subjectId;
+            initializeAbsenceCount(subjectId);
+            document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
+                incrementAbsence(subjectId);
+                if (DEVFLAG) {
+                    console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
+                }
+            });
+        });
+        if (DEVFLAG) {
+            console.log("[process: main] sE: update finished");
+        }
+    });
+}
 
 /* ================== 新規登録確定ボタンイベント ================== */
 function updateClassTable() {
@@ -202,7 +283,7 @@ function updateClassTable() {
     subjectElements.forEach(function (subjectElement) {
         let subjectId = subjectElement.dataset.subjectId;
         // 欠席ボタンのイベントリスナーを設定
-        subjectElement.removeEventListener('click', function () { });
+        document.getElementById('absenceButton_' + subjectId).removeEventListener('click', function () { });
     });
 
     return new Promise((resolve) => {
@@ -216,96 +297,52 @@ function updateClassTable() {
             if (DEVFLAG) {
                 console.log("[process: main] " + getData)
             }
-            fetch('/main-cp.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: getData // 必要なデータを送信
-            })
-                .then(response => response.json())
-                .then(data => {
+
+            let classDataCache = localStorage.getItem('classDataCache');
+            let classDetailCache = localStorage.getItem('classDetailCache');
+            const deleteCacheFLAG = localStorage.getItem('deleteCacheFLAG');
+            if (0) {
+                if (DEVFLAG) {
+                    console.log("[process: main] Unregistered user");
+                }
+                ochinpo();
+                popupWrapper.style.display = 'none';
+            } else {
+                if (0) {// 開発途中
                     if (DEVFLAG) {
-                        console.log('[process: main-cp] ', data);
+                        console.log("[process: main] response classData from cahce");
                     }
-                    if (data) {
-                        (async () => {
-                            let [subjectsData, subjectsDetail] = data;
-                            const oldDataTag = document.getElementsByClassName("asyncCNN");
-                            for (let i = 0; i < 20; i++) {
-                                oldDataTag[i].innerHTML = subjectsData[i];
+                    ochinpo();
+                } else {
+                    fetch('/main-cp.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: getData // 必要なデータを送信
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (DEVFLAG) {
+                                console.log('[process: main-cp] ', data);
                             }
-                            const oldDetailTag = document.getElementsByClassName("asyncCD");
-                            for (let i = 0; i < 20; i++) {
-                                oldDetailTag[i].innerHTML = subjectsDetail[i];
+                            if (data) {
+                                let [subjectsData, subjectsDetail] = data;
+                                localStorage.setItem('classDataCache', subjectsData);
+                                localStorage.setItem('classDetailCache', subjectsDetail);
+                                if (DEVFLAG) {
+                                    console.log("[process: main] response classData from network");
+                                }
+                                ochinpo(subjectsData, subjectsDetail);
                             }
-
-                            await new Promise(() => {
-                                const openButtons = document.querySelectorAll('[class ^="open-popup-btn"]');
-                                const overlays = document.querySelectorAll('[class ^="overlay-absent"]');
-                                const closeButtons = document.querySelectorAll('close-absent');
-                                if (DEVFLAG) {
-                                    console.log("[process: main] " + openButtons)
-                                }
-                                function showPopup() {
-                                    overlays[this.num].style.display = 'block';
-                                }
-                                function hidePopup() {
-                                    overlays.forEach(overlay => {
-                                        overlay.style.display = 'none';
-                                    });
-                                }
-                                let i = 0;
-                                openButtons.forEach(button => {
-                                    button.addEventListener('click', { num: i++, handleEvent: showPopup });
-                                });
-                                closeButtons.forEach(closeButton => {
-                                    closeButton.addEventListener('click', hidePopup);
-                                });
-                                overlays.forEach(overlay => {
-                                    overlay.addEventListener('click', hidePopup);
-                                });
-
-                                function incrementAbsence(subjectId) {
-                                    let key = 'absenceCount_' + subjectId;
-                                    let absenceCount = parseInt(localStorage.getItem(key));
-                                    let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
-                                    absenceCount += 1;
-                                    localStorage.setItem(key, absenceCount)
-                                    counters.forEach(counter => {
-                                        counter.innerText = absenceCount; // 値を更新
-                                    })
-                                    //document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
-                                }
-                                let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
-                                if (subjectElements) {
-                                    if (DEVFLAG) {
-                                        console.log("[process: main] sE: updating...");
-                                    }
-                                }
-                                subjectElements.forEach(function (subjectElement) {
-                                    let subjectId = subjectElement.dataset.subjectId;
-                                    initializeAbsenceCount(subjectId);
-                                    //document.querySelectorAll(".absenceButton_" + subjectId).addEventListener('click', function () {
-                                    subjectElement.addEventListener('click', function () {
-                                        incrementAbsence(subjectId);
-                                        if (DEVFLAG) {
-                                            console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
-                                        }
-                                    });
-                                });
-                                if (DEVFLAG) {
-                                    console.log("[process: main] sE: update finished");
-                                }
-                            });
-                        })();
-                    }
-                })
-                .catch(error => {
-                    console.error('[process: main-cp] ', error);
-                }).then(() => {
-                    popupWrapper.style.display = 'none';
-                });
+                        })
+                        .catch(error => {
+                            console.error('[process: main-cp] ', error);
+                        }).then(() => {
+                            popupWrapper.style.display = 'none';
+                        });
+                }
+            }
         }
         const registDataCheck = localStorage.getItem('key');
         let tmp = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
@@ -355,10 +392,14 @@ function getAllSelectedOptionIds() {
             console.log("[process: main] classTable updated");
         }
     })
+    localStorage.setItem('deleteCacheFLAG', false);
 }
 
 const RegistBtn = document.getElementById("finalize-btn");
-RegistBtn.addEventListener('click', () => { getAllSelectedOptionIds(); })
+RegistBtn.addEventListener('click', () => {
+    localStorage.setItem('deleteCacheFLAG', true);
+    getAllSelectedOptionIds();
+})
 /* ============================================================== */
 
 /* ====================== 新規登録画面の生成 ====================== */
@@ -417,25 +458,27 @@ DeletePopupWrapper.addEventListener('click', e => {
 /* =================== 削除確定ボタンイベント ===================== */
 const DeleteFinalBtn = document.getElementById('deletefinalize-btn');
 DeleteFinalBtn.addEventListener('click', () => {
+    localStorage.removeItem('classDataCache');
+    localStorage.removeItem('classDetailCache');
     const registDatas = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
     const registJSON = JSON.stringify(registDatas);
     localStorage.setItem('key', registJSON);
-    let i = 0;
-    let subjectElements = document.querySelectorAll('[class ^="absenceButton_"]');
     updateClassTable().then(() => {
         if (DEVFLAG) {
             console.log("[process: main] classTable updated");
         }
-        subjectElements.forEach(function (subjectElement) {
-            i = subjectElement.dataset.subjectId;
+        for (let i = 0; i < 20; i++) {
             let key = 'absenceCount_' + i;  // 科目ごとのキーを設定
-            localStorage.removeItem(key);
-            console.log(key)
-        });
+            localStorage.setItem(key, 0);
+            if (DEVFLAG) {
+                console.log(key)
+            }
+        }
         if (DEVFLAG) {
             console.log("[process: main] absenceCount updated");
         }
     })
+    localStorage.setItem('deleteCacheFLAG', true);
     DeletePopupWrapper.style.display = "none";
     alert("[process: main] Data deleted")
 })
@@ -605,9 +648,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeAbsenceCount(subjectId) {
     let key = 'absenceCount_' + subjectId;  // 科目ごとのキーを設定
     let absenceCount = localStorage.getItem(key);
-    let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
+
     if (DEVFLAG) {
-        console.log("[process: main] cID:" + subjectId);
+        //console.log("[process: main] cID:" + subjectId);
     }
     // 欠席回数が存在しない場合は初期化
     if (absenceCount === null) {
@@ -616,15 +659,12 @@ function initializeAbsenceCount(subjectId) {
         absenceCount = localStorage.getItem(key);
     }
     if (DEVFLAG) {
-        console.log("[process: main] absenceCount:" + absenceCount);
+        //console.log("[process: main] absenceCount:" + absenceCount);
     }
 
     if (absenceCount) {
         // 欠席回数を画面に反映
-        counters.forEach(counter => {
-            counter.innerText = absenceCount; // 値を更新
-        })
-        //document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+        document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
     }
 }
 
@@ -632,16 +672,15 @@ function initializeAbsenceCount(subjectId) {
 function incrementAbsence(subjectId) {
     let key = 'absenceCount_' + subjectId;
     let absenceCount = parseInt(localStorage.getItem(key));
-    let counters = document.querySelectorAll(`.absenceCount_[data-absent-id="${subjectId}"]`);
+
     // 欠席回数を1増やす
     absenceCount += 1;
+
     // localStorageに保存
     localStorage.setItem(key, absenceCount);
+
     // 画面の表示を更新
-    counters.forEach(counter => {
-        counter.innerText = absenceCount; // 値を更新
-    })
-    //document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
+    document.getElementById('absenceCount_' + subjectId).innerText = absenceCount;
 }
 
 // ページ読み込み時に各教科の初期化
@@ -661,8 +700,7 @@ function initializeAConload() {
         initializeAbsenceCount(subjectId);
 
         // 欠席ボタンのイベントリスナーを設定
-        //document.querySelectorAll(".absenceButton_" + subjectId).addEventListener('click', function () {
-        subjectElement.addEventListener('click', function () {
+        document.getElementById('absenceButton_' + subjectId).addEventListener('click', function () {
             incrementAbsence(subjectId);
             if (DEVFLAG) {
                 console.log("[process: main] subjectDstNum: " + subjectId + " was registered.");
@@ -681,6 +719,7 @@ if (navigator.serviceWorker.controller) {
 
 /* ==================== ページ読み込み時の処理 ================ */
 window.onload = async function () {
+
     if (DEVFLAG) {
         console.log("[process: main] processing onload method...");
     }
@@ -694,5 +733,7 @@ window.onload = async function () {
     if (DEVFLAG) {
         console.log("[process: main] processing onload method finished");
     }
+
+    //await registerServiceWorker();
 };
 /* ========================================================== */
