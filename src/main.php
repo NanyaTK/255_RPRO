@@ -34,47 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="ja">
 
-<?php
-require __DIR__ .  '/../vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
-$dotenv->load();
-$dbHost = $_ENV['DB_HOST'];
-$dbUser = $_ENV['DB_USER'];
-$dbPass = $_ENV['DB_PASS'];
-$dbName = $_ENV['DB_NAME'];
-$dbPort = $_ENV['DB_PORT'];
-
-$mysqli = new mysqli($dbHost, $dbUser, $dbPass, $dbName, $dbPort);
-if ($mysqli->connect_error) {
-    echo $mysqli->connect_error;
-    exit();
-} else {
-    $mysqli->set_charset("utf8");
-}
-$mysqli->query("use rpro");
-$result = $mysqli->prepare(
-    "SELECT
-    `ID`
-    ,`科目ID`
-    , `学科ID`
-    , `科目名`
-    , `講義回数`
-    , `最大欠席可能回数`
-    , `特殊欠席条件`
-    , `評価割合`
-    , `科目分類`
-FROM
-    rpro.classtable
-ORDER BY
-    `ID` DESC"
-);
-$result->execute();
-$time_schdule = $result->get_result();
-$row_data = $time_schdule->fetch_array(MYSQLI_NUM);
-
-$mysqli->close();
-?>
-
 <head>
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
@@ -134,43 +93,15 @@ $mysqli->close();
                             <button id="rstFilter-btn" class="clt-fil-btn">リセット</button>
                         </div>
                         <div class="jikanwari">
-                            <?php
-                            // 曜日と時間割の初期データ
-                            $days = ['月', '火', '水', '木', '金'];
-                            $times = ['1', '2', '3', '4'];
-                            ?>
-                            <table class="timetable-signup">
+                            <table id="table-signup" class="timetable-signup">
                                 <tr>
                                     <th class="day-column">曜日</th>
-                                    <?php foreach ($times as $time) : ?>
-                                        <th><?php echo $time; ?></th>
-                                    <?php endforeach; ?>
+                                    <th>1</th>
+                                    <th>2</th>
+                                    <th>3</th>
+                                    <th>4</th>
                                 </tr>
-                                <?php foreach ($days as $day) : ?>
-                                    <tr>
-                                        <td class="day-column"><?php echo $day; ?></td>
-                                        <?php foreach ($times as $timeIndex => $time) : ?>
-                                            <td class="time-cell">
-                                                <label class="select-subject">
-                                                    <?php
-                                                    // selectタグのidを動的に生成
-                                                    $selectId = 'mys-' . $day . '-' . $timeIndex;
-                                                    ?>
-                                                    <select id="<?php echo $selectId; ?>" class="subject-select">
-                                                        <option class="empty">空コマ</option>
-                                                        <?php
-                                                        for ($row_no = $time_schdule->num_rows - 1; $row_no >= 0; $row_no--) {
-                                                            $time_schdule->data_seek($row_no);
-                                                            $row = $time_schdule->fetch_assoc();
-                                                            echo '<option id ="cs-' . $row["ID"] . '" class="c-' . $row["学科ID"] . '">' . $row["科目名"] . '</option>';
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                </label>
-                                            </td>
-                                        <?php endforeach; ?>
-                                    </tr>
-                                <?php endforeach; ?>
+
                             </table>
                         </div>
                         <button id="finalize-btn">確定する</button>

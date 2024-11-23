@@ -38,8 +38,9 @@ const addResourcesToCache = async (resources) => {
 function installSW() {
     console.log("[process: SW] Caching data...");
     addResourcesToCache([
-        "/main.js",
+        "/main.php",
         "/help.php",
+        "/main.js",
         "/sw.js",
         "/main.css",
         "/mainManifest.json",
@@ -79,6 +80,9 @@ addEventListener("fetch", (event) => {
             return cachedResponse;
         } else if (event.request.url.includes('/asyncSW.php')) {
             console.log("[process: SW] asyncSW");
+            return fetch(event.request)
+        } else if (event.request.url.includes('/asyncCL.php')) {
+            console.log("[process: SW] asyncCL");
             return fetch(event.request)
         } else if (event.request.url.includes('/main-cp.php')) {
             console.log("[process: SW] main-cp");

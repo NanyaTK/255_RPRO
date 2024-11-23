@@ -110,24 +110,25 @@ function registerInstallAppEvent(element) {
 /* ====================== 再起動ボタン関連 ======================= */
 const unregisterSW = document.getElementById("uninstall-btn");
 unregisterSW.addEventListener("click", () => {
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-        if (registrations) {
-            for (const registration of registrations) {
-                registration.unregister().then((boolean) => {
-                    if (boolean === true) {
-                        console.log("[process: main] unregister is successful");
-                        console.log("[process: main] Service worker uninstalled");
-                    }
-                    else { console.log("[process: main] unregister is failed"); }
-                })
-            }
-        } else {
-            console.log("[process: main] Service worker not found");
-        }
-    });
+    // navigator.serviceWorker.getRegistrations().then(registrations => {
+    //     if (registrations) {
+    //         for (const registration of registrations) {
+    //             registration.unregister().then((boolean) => {
+    //                 if (boolean === true) {
+    //                     console.log("[process: main] unregister is successful");
+    //                     console.log("[process: main] Service worker uninstalled");
+    //                 }
+    //                 else { console.log("[process: main] unregister is failed"); }
+    //             })
+    //         }
+    //     } else {
+    //         console.log("[process: main] Service worker not found");
+    //     }
+    // });
     setTimeout(() => {
-        deleteAllCachesByManual();
-        alert("[process: main] Pre-reload process completed.\nReloading now.")
+        // deleteAllCachesByManual();
+        // alert("[process: main] Pre-reload process completed.\nReloading now.");
+        alert("[process: main] Reloading now.");
         window.location.reload();
     }, 1000);
 });
@@ -402,7 +403,30 @@ RegistBtn.addEventListener('click', () => {
 /* ============================================================== */
 
 /* ====================== 新規登録画面の生成 ====================== */
+function genResisterClassTable() {
+    fetch('/asyncCL.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        //body: JSON.stringify() // 必要なデータを送信
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (DEVFLAG) {
+                console.log('[process: asyncCL] got data');
+            }
+            if (data) {
+                const table = document.getElementById("table-signup").getElementsByTagName("tbody")[0];
+                table.innerHTML += data;
 
+            }
+        })
+        .catch(error => {
+            console.error('[process: asyncCL] ', error);
+        });
+}
+/* ============================================================== */
 
 /* ====================== 削除ボタンイベント ====================== */
 const DeleteBtn = document.getElementById('delete-btn');
@@ -699,12 +723,12 @@ window.onload = async function () {
     if (DEVFLAG) {
         console.log("[process: main] processing onload method...");
     }
-    initializeAConload();
     updateClassTable().then(() => {
         if (DEVFLAG) {
             console.log("[process: main] classTable updated");
         }
         initializeAConload();
+        genResisterClassTable();
     })
     if (DEVFLAG) {
         console.log("[process: main] processing onload method finished");
