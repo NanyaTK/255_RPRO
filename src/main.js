@@ -166,11 +166,10 @@ popupWrapper.addEventListener('click', e => {
 /* ============================================================== */
 
 /**
- * ochinpo function
- * Named by Ousuke Tanijiri
+ * impor function
  */
-async function ochinpo(subjectsData, subjectsDetail) {
-    console.log("[process: ochinpo] called");
+async function impor(subjectsData, subjectsDetail) {
+    console.log("[process: impor] called");
     if (!subjectsData && !subjectsDetail) {
         let subjectsDataStr = localStorage.getItem('classDataCache');
         let subjectsDetailStr = localStorage.getItem('classDetailCache');
@@ -310,14 +309,14 @@ function updateClassTable() {
                 if (DEVFLAG) {
                     console.log("[process: main] Unregistered user");
                 }
-                ochinpo();
+                impor();
                 popupWrapper.style.display = 'none';
             } else {
                 if (0) {// 開発途中
                     if (DEVFLAG) {
                         console.log("[process: main] response classData from cahce");
                     }
-                    ochinpo();
+                    impor();
                 } else {
                     fetch('/main-cp.php', {
                         method: 'POST',
@@ -338,7 +337,7 @@ function updateClassTable() {
                                 if (DEVFLAG) {
                                     console.log("[process: main] response classData from network");
                                 }
-                                ochinpo(subjectsData, subjectsDetail);
+                                impor(subjectsData, subjectsDetail);
                             }
                         })
                         .catch(error => {
