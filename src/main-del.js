@@ -48,7 +48,7 @@ async function delCacheAndSW() {
 const delBtn = document.getElementById("delete-btn")
 delBtn.addEventListener('click', () => {
     const delLocalstrage = new Promise((resolve, reject) => {
-        for (let i = 0; i <= 75; i++) {
+        for (let i = 0; i <= 10000; i++) {
             localStorage.removeItem(`absenceCount_${i}`);
         }
         localStorage.removeItem('classDataCache');
