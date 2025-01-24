@@ -28,6 +28,8 @@
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
     <link rel="stylesheet" href="main-del.css" />
+    <script type="text/javascript" src="sw.js"></script>
+    <link rel="manifest" href="mainManifest.json" />
     <meta name="google-site-verification" content="E3maZI8wva9G9nRwR8SETlWMM2MSqnCULOvfpkELHsI" />
 </head>
 
