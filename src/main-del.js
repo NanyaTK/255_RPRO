@@ -48,17 +48,7 @@ async function delCacheAndSW() {
 const delBtn = document.getElementById("delete-btn")
 delBtn.addEventListener('click', () => {
     const delLocalstrage = new Promise((resolve, reject) => {
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key && key.startsWith('absenceCount_')) {
-                localStorage.removeItem(key);
-                i--;
-            }
-        }
-        localStorage.removeItem('classDataCache');
-        localStorage.removeItem('classDetailCache');
-        localStorage.removeItem('deleteCacheFLAG');
-        localStorage.removeItem('key');
+        localStorage.clear();
         if (localStorage.length > 0) {
             reject("error. key detected." + localStorage.key(0))
         } else {
