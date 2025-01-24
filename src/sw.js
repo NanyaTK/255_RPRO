@@ -20,7 +20,7 @@
  * sw.js is the abbreviation for ServiceWorker.js
  * This file includes function of PWA.
  */
-const APPLICCATION_VERSION = "v1.5.1"
+const APPLICCATION_VERSION = "v1.5.2"
 
 /**
  * The file path to be cached passed in the resource
@@ -38,11 +38,9 @@ const addResourcesToCache = async (resources) => {
 function installSW() {
     console.log("[process: SW] Caching data...");
     addResourcesToCache([
-        "/main.php",
-        "/help.php",
-        "/main.js",
+        "/main-del.php",
         "/sw.js",
-        "/main.css",
+        "/main-del.css",
         "/mainManifest.json",
         "/screenshots/ss1.webp",
         "/icon-images/48.png",

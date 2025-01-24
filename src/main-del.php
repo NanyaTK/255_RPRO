@@ -35,7 +35,7 @@
 
 <body>
     <header>
-        <a class="header" href="#">留年プロテクター</a>
+        <a class="header" href="#">留年プロテクター v1.5.2</a>
 
     </header>
     <div class="content">
