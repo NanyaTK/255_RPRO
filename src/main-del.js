@@ -48,8 +48,12 @@ async function delCacheAndSW() {
 const delBtn = document.getElementById("delete-btn")
 delBtn.addEventListener('click', () => {
     const delLocalstrage = new Promise((resolve, reject) => {
-        for (let i = 0; i <= 10000; i++) {
-            localStorage.removeItem(`absenceCount_${i}`);
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('absenceCount_')) {
+                localStorage.removeItem(key);
+                i--; // 削除するとキーのインデックスがずれるため調整
+            }
         }
         localStorage.removeItem('classDataCache');
         localStorage.removeItem('classDetailCache');
