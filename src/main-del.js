@@ -52,7 +52,7 @@ delBtn.addEventListener('click', () => {
             const key = localStorage.key(i);
             if (key && key.startsWith('absenceCount_')) {
                 localStorage.removeItem(key);
-                i--; // 削除するとキーのインデックスがずれるため調整
+                i--;
             }
         }
         localStorage.removeItem('classDataCache');
