@@ -28,22 +28,21 @@
     <meta charset="UTF-8" />
     <title>留年プロテクター</title>
     <link rel="stylesheet" href="main-del.css" />
-    <script type="text/javascript" src="sw.js"></script>
-    <link rel="manifest" href="mainManifest.json" />
     <meta name="google-site-verification" content="E3maZI8wva9G9nRwR8SETlWMM2MSqnCULOvfpkELHsI" />
 </head>
 
 <body>
     <header>
-        <a class="header" href="/main.php">留年プロテクター</a>
+        <a class="header" href="#">留年プロテクター</a>
 
     </header>
     <div class="content">
         <div class="main">
             <h3 class="text">留年プロテクターは，2025年1月31日をもってサービスの提供を終了しました．</h3>
-            <p class="texta">下のボタンからデータを削除後，インストールしたユーザは一般的なアプリと同じ方法でアンインストールしてください．</p>
-            <div class="delete-btn texta" id="delete-btn">データ削除</div>
-
+            <dev id="hide">
+                <p class="texta">下のボタンからデータを削除後，インストールしたユーザは一般的なアプリと同じ方法でアンインストールしてください．</p>
+                <div class="delete-btn texta" id="delete-btn">データ削除</div>
+            </dev>
         </div>
     </div>
     <script type=" text/javascript" src="main-del.js">
