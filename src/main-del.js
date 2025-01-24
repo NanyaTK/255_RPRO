@@ -56,7 +56,7 @@ delBtn.addEventListener('click', () => {
         localStorage.removeItem('deleteCacheFLAG');
         localStorage.removeItem('key');
         if (localStorage.length > 0) {
-            reject("error. key detected.")
+            reject("error. key detected." + localStorage.key(0))
         } else {
             resolve("key deleted.")
         }
