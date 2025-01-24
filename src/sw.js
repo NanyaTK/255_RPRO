@@ -144,3 +144,6 @@ async function getCurrentCacheVersion() {
     let caV = [currentCacheVersion, newlyCacheVersion];
     return caV;
 }
+self.addEventListener('install', (event) => {
+    self.skipWaiting();
+});
