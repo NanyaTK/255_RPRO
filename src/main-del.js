@@ -63,3 +63,9 @@ delBtn.addEventListener('click', () => {
     })
 })
 
+window.addEventListener('beforeinstallprompt', function (event) {
+    event.preventDefault();
+    element.promptEvent = event;
+    element.style.display = "flex";
+    return false;
+});
