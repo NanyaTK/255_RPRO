@@ -101,7 +101,7 @@ addEventListener("fetch", (event) => {
  * Delete all caches
  * @returns 
  */
-function deleteAllCaches() {
+async function deleteAllCaches() {
     return caches.keys().then((cacheNames) => {
         return Promise.all(
             cacheNames.map((cacheName) => {
