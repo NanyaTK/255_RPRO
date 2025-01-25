@@ -16,15 +16,6 @@
             "purpose": "any"
         }
     ],
-    "screenshots": [
-        {
-            "src": "screenshots/ss1.webp",
-            "sizes": "1280x720",
-            "type": "image/webp",
-            "platform": "wide",
-            "label": "Homepage"
-        }
-    ],
     "display_override": [
         "fullscreen",
         "minimal-ui"
